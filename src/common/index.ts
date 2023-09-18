@@ -8,36 +8,12 @@ export { Utils, Observer, api };
 export enum RouterNameEnum {
   // 首页
   HOME = 'Home',
-  // 订单
-  ORDERS = 'Orders',
-  // share
-  SHARE = 'Share',
-  // 充值usdt
-  RECHARGEUSDT = 'Rechargeusdt',
-  // 充值INR
-  RECHARGEINR = 'Rechargeinr',
-  // 充值INR2
-  RECHARGEINR2 = 'Rechargeinr2',
-  // invitationrecord
-  INVITATIONRECORD = 'Invitationrecord',
-  //  ADDPAYMENT
-  ADDPAYMENT = 'AddPayMent',
-  //  充值INR记录
-  RECHARGEINRRECORD = 'RechargeInrRecord',
   // 登录
   LOGIN = 'Login',
   // 注册
   REGISTER = 'Register',
   // 忘记密码
   FORGETPASSWORD = 'forgetPassword',
-  // 个人中心
-  PERSONALCENTER = 'Personalcenter',
-  // 二级代理
-  SECONDAGENT2 = 'Secondagent2',
-  // 二级代理
-  SECONDAGENT3 = 'Secondagent3',
-  // 教程
-  TUTORIAL = 'tutotial',
 }
 
 // 语言标识
