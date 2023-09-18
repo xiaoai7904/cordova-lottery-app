@@ -14,6 +14,14 @@ export enum RouterNameEnum {
   REGISTER = 'Register',
   // 忘记密码
   FORGETPASSWORD = 'forgetPassword',
+  // 比分
+  SCORE = 'score',
+  // 发现
+  FIND = 'find',
+  // 我的
+  MY = 'my',
+  // 跟单
+  ORDER = 'order',
 }
 
 // 语言标识

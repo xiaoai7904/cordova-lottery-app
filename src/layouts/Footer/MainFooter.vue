@@ -1,9 +1,8 @@
 <template>
   <div class="footer">
     <q-tabs v-model="routerActive" active-class="routerActive" indicator-color="transparent">
-      <q-tab v-for="(item, key) in footer" :key="key" :name="item.name"
-        :icon="routerActive === item.name ? item.activeIcon : item.icon" :label="item.name" @click="handleClick(item)">
-        <q-badge v-if="globalStore.isOrderNew && item.path === '/orders'" color="red" floating rounded></q-badge>
+      <q-tab v-for="(item, key) in footer" :key="key" :name="item.path"
+        :icon="routerActive === item.path ? item.activeIcon : item.icon" :label="item.name" @click="handleClick(item)">
       </q-tab>
     </q-tabs>
   </div>
@@ -23,26 +22,38 @@ interface Ifooter {
 const globalStore = useGlobalStore();
 const router = useRouter();
 const route = useRoute();
-const routerActive = ref<string>(route.name as string);
+const routerActive = ref<string>(route.path as string);
 
 const footer = ref([
   {
-    name: RouterNameEnum.HOME,
+    name: '首页',
     icon: `img:${require('./assets/home.svg')}`,
     activeIcon: `img:${require('./assets/homeActive.svg')}`,
     path: '/',
   },
   {
-    // name: RouterNameEnum.ORDERS,
-    icon: `img:${require('./assets/order.svg')}`,
-    activeIcon: `img:${require('./assets/orderActive.svg')}`,
+    name: '比分',
+    icon: `img:${require('./assets/score.svg')}`,
+    activeIcon: `img:${require('./assets/scoreActive.svg')}`,
+    path: '/score',
+  },
+  {
+    name: '',
+    icon: '',
+    activeIcon: '',
     path: '/orders',
   },
   {
-    // name: RouterNameEnum.SHARE,
-    icon: `img:${require('./assets/share.svg')}`,
-    activeIcon: `img:${require('./assets/shareActive.svg')}`,
-    path: '/share',
+    name: '发现',
+    icon: `img:${require('./assets/find.svg')}`,
+    activeIcon: `img:${require('./assets/findActive.svg')}`,
+    path: '/find',
+  },
+  {
+    name: '我的',
+    icon: `img:${require('./assets/my.svg')}`,
+    activeIcon: `img:${require('./assets/myActive.svg')}`,
+    path: '/my',
   },
 ]);
 
@@ -60,13 +71,15 @@ onMounted(() => {
 <style scoped lang="scss">
 .footer {
   width: 100%;
-  height: 70px;
+  height: 120px;
   display: flex;
   justify-content: space-between;
   position: fixed;
   bottom: 0;
   background: white;
   left: 0;
+  background: url('./assets/tabbar_bg.png') no-repeat;
+  background-size: 100% 100%;
 
   .q-tabs {
     width: 100%;
@@ -82,19 +95,28 @@ onMounted(() => {
         color: $primary;
       }
 
-      :deep(svg) {
-        width: 24px;
-        height: 24px;
+    }
 
-        path {
-          fill: rgba(0, 0, 0, 0.4);
-          fill-opacity: 1;
-        }
-      }
+    :deep(.q-tab__icon) {
+      width: 26px;
+      height: 26px;
     }
 
     :deep(.q-tab__label) {
-      font-size: 12px;
+      font-size: 14px;
+    }
+
+    :deep(.q-tab__content) {
+      justify-content: flex-end;
+      padding-bottom: 25px;
+    }
+
+    :deep(.q-ripple) {
+      display: none;
+    }
+
+    :deep(.q-focus-helper) {
+      display: none;
     }
   }
 }
