@@ -31,7 +31,7 @@ module.exports = configure(function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-webpack/boot-files
-    boot: ['i18n', 'axios', 'systemBoot', 'addressbarColor'],
+    boot: ['i18n', 'axios', 'systemBoot', 'addressbarColor', 'vant'],
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-css
     css: ['app.scss'],
@@ -73,7 +73,13 @@ module.exports = configure(function (ctx) {
 
       // https://v2.quasar.dev/quasar-cli-webpack/handling-webpack
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-      // chainWebpack (/* chain */) {}
+      // chainWebpack(chain) {
+      // chain.plugin('unplugin-vue-components').use(ComponentsPlugin, [
+      //   {
+      //     resolvers: [VantResolver()],
+      //   },
+      // ]);
+      // },
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer

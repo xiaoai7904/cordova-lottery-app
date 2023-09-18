@@ -1,5 +1,11 @@
 <template>
   <div class="home">
+    <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
+      <van-swipe-item>1</van-swipe-item>
+      <van-swipe-item>2</van-swipe-item>
+      <van-swipe-item>3</van-swipe-item>
+      <van-swipe-item>4</van-swipe-item>
+    </van-swipe>
     <!-- <div class="orders">
       <div class="title">Recharge record</div>
       <PageList scroll-target="body" :pullRefreshDisable="true" :request-api="getHistoryOrderList" :request-params="{}"
@@ -16,7 +22,11 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 // import PageList from 'src/components/PageList.vue';
+// import { Swipe, SwipeItem } from 'vant';
+import { defineComponent } from 'vue';
+export default defineComponent({
+})
 </script>
 <style scoped lang="scss"></style>
