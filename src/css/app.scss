@@ -1,0 +1,145 @@
+// app global css in SCSS form
+@import 'reset.scss';
+@import 'quasar.ui';
+
+@font-face {
+  font-family: inter-regular;
+  src: url(./fonts/Inter-Regular.ttf);
+  font-weight: 400 !important;
+}
+
+@font-face {
+  font-family: inter-medium;
+  src: url(./fonts/Inter-Medium.ttf);
+  font-weight: 500 !important;
+}
+
+@font-face {
+  font-family: inter-bold;
+  src: url(./fonts/Inter-SemiBold.ttf);
+  font-weight: 600 !important;
+}
+
+@font-face {
+  font-family: inter-v;
+  src: url(./fonts/Inter-V.ttf);
+  font-weight: 600 !important;
+}
+
+body {
+  font-family: 'PingFang SC', Arial, sans-serif;
+}
+
+.inter-regular {
+  font-family: inter-regular;
+  font-weight: 400;
+}
+.inter-medium {
+  font-family: inter-medium;
+  font-weight: 500;
+}
+.inter-bold {
+  font-family: inter-bold, inter-v;
+  font-weight: 600;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:root {
+  --animate-duration: 1s;
+  --animate-delay: 1s;
+  --animate-repeat: 1;
+}
+
+@keyframes shakeX {
+  from,
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+}
+
+.animate__shakeX {
+  animation-duration: 1s;
+  animation-duration: var(--animate-duration);
+  animation-fill-mode: both;
+  animation-name: shakeX;
+}
+
+.animation-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+.animation-leave-active {
+  will-change: transform;
+  transition: all 0.3s ease;
+}
+.animation-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.animation-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.animation-enter-active {
+  will-change: transform;
+  transition: all 0.3s ease;
+}
+.animation-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.slide-right-enter-active,
+.slide-left-enter-active,
+.slide-right-leave-active,
+.slide-left-leave-active {
+  box-shadow: -20px 0 20px 0px rgba(0, 0, 0, 0.1);
+  will-change: transform;
+  transition: all 0.3s ease-out;
+  position: absolute;
+}
+
+.slide-right-enter-from {
+  opacity: 0;
+  transform: translateX(-50%);
+}
+.slide-right-leave-to {
+  z-index: 100;
+  transform: translateX(102%);
+}
+
+.slide-right-leave-from {
+  box-shadow: -20px 0 20px 0px rgba(0, 0, 0, 0.1);
+}
+.slide-left-enter-from {
+  z-index: 100;
+  transform: translateX(100%);
+  box-shadow: -20px 0 20px 0px rgba(0, 0, 0, 0.1);
+}
+.slide-left-leave-to {
+  opacity: 0.4;
+  transform: translateX(-50%);
+}

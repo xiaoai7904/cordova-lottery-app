@@ -1,0 +1,72 @@
+{
+  "name": "cordova-lottery-app",
+  "version": "0.2.8",
+  "description": "如意助手",
+  "productName": "如意助手",
+  "author": "major <major@gmail.com>",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.ts,.vue ./",
+    "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
+    "test": "echo \"No test specified\" && exit 0",
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "sync:android": "quasar build -m android --skip-pkg",
+    "dev:android": "quasar dev -m cordova -T android",
+    "zipalign": "zipalign -f -v 4 ./src-cordova/platforms/android/app/build/outputs/apk/debug/eed_release_0.1.6_build.apk ./src-cordova/platforms/android/app/build/outputs/apk/debug/eed_release_0.1.6_align.apk",
+    "apksinger": "cd ./src-cordova && apksigner sign --ks my-release-key.keystore --ks-key-alias  apk --v1-signing-enabled true --v2-signing-enabled true ./platforms/android/app/build/outputs/apk/debug/eed_release_0.1.6_align.apk",
+    "build:android": "cd ./src-cordova && cordova build android --keystore=my-release-key.keystore --alias=apk --storePassword=xiaoai123 --password=xiaoai123",
+    "build:android:release": "cd ./src-cordova && cordova build android --release --prod -- --packageType=apk",
+    "build:zipalign:release": "zipalign -f -v 4 ./src-cordova/platforms/android/app/build/outputs/apk/release/eed_release_0.2.8_unsigned.apk ./src-cordova/platforms/android/app/build/outputs/apk/release/eed_release_0.2.8.apk",
+    "build:apksinger:release": "cd ./src-cordova && apksigner sign --ks my-release-key.keystore --ks-key-alias  apk --v1-signing-enabled true --v2-signing-enabled true ./platforms/android/app/build/outputs/apk/release/eed_release_0.2.8.apk"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.0.0",
+    "axios": "^1.2.1",
+    "big.js": "^6.2.1",
+    "core-js": "^3.6.5",
+    "dayjs": "^1.11.8",
+    "js-md5": "^0.7.3",
+    "lodash-es": "^4.17.21",
+    "pinia": "^2.0.11",
+    "qrcode-vue3": "^1.6.8",
+    "quasar": "^2.6.0",
+    "vant": "^4.6.8",
+    "vconsole": "^3.15.1",
+    "vue": "^3.0.0",
+    "vue-i18n": "^9.2.2",
+    "vue-router": "^4.0.0"
+  },
+  "devDependencies": {
+    "@quasar/app-webpack": "^3.0.0",
+    "@types/big.js": "^6.1.6",
+    "@types/lodash-es": "^4.17.7",
+    "@types/node": "^12.20.21",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
+    "@vue/babel-plugin-transform-vue-jsx": "^1.4.0",
+    "@vueuse/core": "^10.2.1",
+    "autoprefixer": "^10.4.15",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "postcss-pxtorem": "^6.0.0",
+    "prettier": "^2.5.1"
+  },
+  "browserslist": [
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 12.22.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}
