@@ -33,13 +33,13 @@ const footer = ref([
     path: '/',
   },
   {
-    name: RouterNameEnum.ORDERS,
+    // name: RouterNameEnum.ORDERS,
     icon: `img:${require('./assets/order.svg')}`,
     activeIcon: `img:${require('./assets/orderActive.svg')}`,
     path: '/orders',
   },
   {
-    name: RouterNameEnum.SHARE,
+    // name: RouterNameEnum.SHARE,
     icon: `img:${require('./assets/share.svg')}`,
     activeIcon: `img:${require('./assets/shareActive.svg')}`,
     path: '/share',
@@ -60,7 +60,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .footer {
   width: 100%;
-  height: 0.7rem;
+  height: 70px;
   display: flex;
   justify-content: space-between;
   position: fixed;
@@ -72,7 +72,7 @@ onMounted(() => {
     width: 100%;
 
     .q-tab {
-      font-size: 0.12rem;
+      font-size: 12px;
       color: rgba(0, 0, 0, 0.4);
       font-family: inter-medium;
     }
@@ -83,8 +83,8 @@ onMounted(() => {
       }
 
       :deep(svg) {
-        width: 0.24rem;
-        height: 0.24rem;
+        width: 24px;
+        height: 24px;
 
         path {
           fill: rgba(0, 0, 0, 0.4);
@@ -94,55 +94,8 @@ onMounted(() => {
     }
 
     :deep(.q-tab__label) {
-      font-size: 0.12rem;
+      font-size: 12px;
     }
   }
-
-  // &>div {
-  //   flex: 1;
-  //   text-align: center;
-  //   display: flex;
-  //   flex-direction: column;
-  //   align-items: center;
-  //   justify-content: center;
-
-  //   >section {
-  //     position: relative;
-  //   }
-
-  //   .icon {
-  //     :deep(svg) {
-  //       width: 0.24rem;
-  //       height: 0.24rem;
-
-  //       path {
-  //         fill: rgba(0, 0, 0, 0.4);
-  //         fill-opacity: 1;
-  //       }
-  //     }
-  //   }
-
-  //   .name {
-  //     font-size: 0.12rem;
-  //     color: rgba(0, 0, 0, 0.4);
-  //     font-family: inter-regular;
-  //   }
-
-  //   &.routerActive {
-
-  //     .name {
-  //       color: $primary;
-  //       font-family: inter-medium;
-  //     }
-
-  //     .icon {
-  //       :deep(svg) {
-  //         path {
-  //           fill: $primary;
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
 }
 </style>

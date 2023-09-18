@@ -13,10 +13,10 @@
         <img :src="homeInfo.customer?.avatar">
       </div>
     </q-page-sticky> -->
-    <div id="customer" v-if="!isHiddenCustomer" class="customer-avatar">
+    <!-- <div id="customer" v-if="!isHiddenCustomer" class="customer-avatar">
       <div v-touch-pan.mouse.prevent="moveFab" @click="gotoCustomer" />
       <img :src="homeInfo.customer?.avatar">
-    </div>
+    </div> -->
   </div>
   <!-- <q-page-sticky v-if="!isHiddenCustomer" position="bottom-right" :offset="fabPos">
       <div class="customer-avatar">
@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import MainFooter from '../layouts/Footer/MainFooter.vue';
 import { useRouterAnimate, useUser, useInAppBrowser } from 'src/hook';
@@ -68,38 +68,38 @@ router.beforeEach((to: any, from: any) => {
   return true;
 });
 
-const isHiddenCustomer = computed(() => ['/Login', '/Register', '/forgetPassword', '/share'].includes(route.path))
+// const isHiddenCustomer = computed(() => ['/Login', '/Register', '/forgetPassword', '/share'].includes(route.path))
 router.afterEach(() => {
   // to and from are both route objects.
   needAnimate.value = false;
 });
 
-const gotoCustomer = () => {
-  if (homeInfo.value.customer?.customerNo) {
-    open(homeInfo.value.customer?.customerNo)
-  }
-}
+// const gotoCustomer = () => {
+//   if (homeInfo.value.customer?.customerNo) {
+//     open(homeInfo.value.customer?.customerNo)
+//   }
+// }
 
-const fabPos = ref([18, 150])
-const draggingFab = ref(false)
-const moveFab = (ev: any) => {
-  draggingFab.value = ev.isFirst !== true && ev.isFinal !== true
-  const $$customer = document.getElementById('customer');
-  fabPos.value = [
-    fabPos.value[0] - ev.delta.x,
-    fabPos.value[1] - ev.delta.y
-  ]
-  if (fabPos.value[0] <= 0) {
-    fabPos.value[0] = 0
-  }
-  if (fabPos.value[1] <= 0) {
-    fabPos.value[1] = 0
-  }
-  if ($$customer) {
-    $$customer.style.right = fabPos.value[0] + 'px'
-    $$customer.style.bottom = fabPos.value[1] + 'px'
-  }
-}
+// const fabPos = ref([18, 150])
+// const draggingFab = ref(false)
+// const moveFab = (ev: any) => {
+//   draggingFab.value = ev.isFirst !== true && ev.isFinal !== true
+//   const $$customer = document.getElementById('customer');
+//   fabPos.value = [
+//     fabPos.value[0] - ev.delta.x,
+//     fabPos.value[1] - ev.delta.y
+//   ]
+//   if (fabPos.value[0] <= 0) {
+//     fabPos.value[0] = 0
+//   }
+//   if (fabPos.value[1] <= 0) {
+//     fabPos.value[1] = 0
+//   }
+//   if ($$customer) {
+//     $$customer.style.right = fabPos.value[0] + 'px'
+//     $$customer.style.bottom = fabPos.value[1] + 'px'
+//   }
+// }
 
 onMounted(() => {
   getHomeInfo()
@@ -114,33 +114,33 @@ onMounted(() => {
   }
 }
 
-.customer-avatar {
-  width: 0.72rem;
-  height: 0.73rem;
-  position: fixed;
-  bottom: 0.8rem;
-  right: 0.1rem;
-  z-index: 100;
+// .customer-avatar {
+//   width: 0.72rem;
+//   height: 0.73rem;
+//   position: fixed;
+//   bottom: 0.8rem;
+//   right: 0.1rem;
+//   z-index: 100;
 
-  >div {
-    background: transparent;
-    width: 0.72rem;
-    height: 0.73rem;
-    position: absolute;
-    inherits: 0;
-    z-index: 2;
-  }
+//   >div {
+//     background: transparent;
+//     width: 0.72rem;
+//     height: 0.73rem;
+//     position: absolute;
+//     inherits: 0;
+//     z-index: 2;
+//   }
 
-  img {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    inherits: 0;
-    z-index: 1;
-  }
-}
+//   img {
+//     width: 100%;
+//     height: 100%;
+//     position: absolute;
+//     inherits: 0;
+//     z-index: 1;
+//   }
+// }
 
 .paddingBottom {
-  padding-bottom: 0.62rem;
+  padding-bottom: 62px;
 }
 </style>

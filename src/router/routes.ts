@@ -14,26 +14,26 @@ const routes: RouteRecordRaw[] = [
           isFooter: true,
         },
       },
-      {
-        path: '/orders',
-        name: RouterNameEnum.ORDERS,
-        component: () => import('src/pages/index/IndexPage.vue'),
-        meta: {
-          title: '订单',
-          depth: 1,
-          isFooter: true,
-        },
-      },
-      {
-        path: '/share',
-        name: RouterNameEnum.SHARE,
-        component: () => import('src/pages/index/IndexPage.vue'),
-        meta: {
-          title: '分享',
-          depth: 1,
-          isFooter: true,
-        },
-      },
+      // {
+      //   path: '/orders',
+      //   name: RouterNameEnum.HOME,
+      //   component: () => import('src/pages/index/IndexPage.vue'),
+      //   meta: {
+      //     title: '订单',
+      //     depth: 1,
+      //     isFooter: true,
+      //   },
+      // },
+      // {
+      //   path: '/share',
+      //   name: RouterNameEnum.HOME,
+      //   component: () => import('src/pages/index/IndexPage.vue'),
+      //   meta: {
+      //     title: '分享',
+      //     depth: 1,
+      //     isFooter: true,
+      //   },
+      // },
     ],
   },
   {
