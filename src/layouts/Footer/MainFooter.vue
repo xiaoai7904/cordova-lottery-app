@@ -1,8 +1,18 @@
 <template>
   <div class="footer">
-    <q-tabs v-model="routerActive" active-class="routerActive" indicator-color="transparent">
-      <q-tab v-for="(item, key) in footer" :key="key" :name="item.path"
-        :icon="routerActive === item.path ? item.activeIcon : item.icon" :label="item.name" @click="handleClick(item)">
+    <q-tabs
+      v-model="routerActive"
+      active-class="routerActive"
+      indicator-color="transparent"
+    >
+      <q-tab
+        v-for="(item, key) in footer"
+        :key="key"
+        :name="item.path"
+        :icon="routerActive === item.path ? item.activeIcon : item.icon"
+        :label="item.name"
+        @click="handleClick(item)"
+      >
       </q-tab>
     </q-tabs>
   </div>
@@ -10,9 +20,9 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { RouterNameEnum, XA_SSE_UPDATE } from 'src/common';
+import { XA_SSE_UPDATE } from 'src/common';
 import { useRoute, useRouter } from 'vue-router';
-import { useGlobalStore } from 'src/stores/global-store'
+import { useGlobalStore } from 'src/stores/global-store';
 
 interface Ifooter {
   name: string;
@@ -63,10 +73,10 @@ const handleClick = (item: Ifooter) => {
 
 onMounted(() => {
   window.xaCustomEvent.on(XA_SSE_UPDATE, (value: boolean) => {
-    console.log('XA_SSE_UPDATE Eevnt', value)
-    globalStore.update(value)
+    console.log('XA_SSE_UPDATE Eevnt', value);
+    globalStore.update(value);
   });
-})
+});
 </script>
 <style scoped lang="scss">
 .footer {
@@ -94,7 +104,6 @@ onMounted(() => {
       :deep(.q-tab__label) {
         color: $primary;
       }
-
     }
 
     :deep(.q-tab__icon) {

@@ -7,7 +7,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: RouterNameEnum.HOME,
-        component: () => import('src/pages/index/indexPage.vue'),
+        component: () => import('src/pages/home/IndexPage.vue'),
         meta: {
           title: '首页',
           depth: 1,

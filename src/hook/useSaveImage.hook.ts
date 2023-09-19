@@ -103,56 +103,56 @@ export function useSaveImage() {
         .replace('data:image/png;base64,', '')
         .replace('data:image/jpg;base64,', '');
       // 创建文件系统
-      window.resolveLocalFileSystemURL(
-        cordova.file.externalRootDirectory,
-        function (directoryEntry: any) {
-          // 在根目录下创建一个名为 "Pictures" 的目录
-          directoryEntry.getDirectory(
-            'Pictures',
-            { create: true, exclusive: false },
-            function (picturesDir: any) {
-              // 生成一个唯一的文件名
-              const fileName = 'eed_image' + Date.now() + '.png';
+      // window.resolveLocalFileSystemURL(
+      //   cordova.file.externalRootDirectory,
+      //   function (directoryEntry: any) {
+      //     // 在根目录下创建一个名为 "Pictures" 的目录
+      //     directoryEntry.getDirectory(
+      //       'Pictures',
+      //       { create: true, exclusive: false },
+      //       function (picturesDir: any) {
+      //         // 生成一个唯一的文件名
+      //         const fileName = 'eed_image' + Date.now() + '.png';
 
-              // 在 "Pictures" 目录下创建一个名为 fileName 的文件
-              picturesDir.getFile(
-                fileName,
-                { create: true, exclusive: false },
-                function (fileEntry: any) {
-                  // 获取文件的绝对路径
-                  const filePath = fileEntry.toURL();
-                  // 将 base64 数据写入到文件中
-                  writeFile(
-                    filePath,
-                    imageData,
-                    function () {
-                      successNotify('Picture saved successfully');
-                      console.log('图片保存成功！文件路径：' + filePath);
-                      resolve(filePath);
-                    },
-                    function (error: any) {
-                      console.log('图片保存失败：', error, filePath);
-                      reject(error);
-                    }
-                  );
-                },
-                function (e: any) {
-                  console.log('发生错误2', e);
-                  reject(e);
-                }
-              );
-            },
-            function (e: any) {
-              console.log('发生错误3', e);
-              reject(e);
-            }
-          );
-        },
-        function (e: any) {
-          console.log('发生错误1', e);
-          reject(e);
-        }
-      );
+      //         // 在 "Pictures" 目录下创建一个名为 fileName 的文件
+      //         picturesDir.getFile(
+      //           fileName,
+      //           { create: true, exclusive: false },
+      //           function (fileEntry: any) {
+      //             // 获取文件的绝对路径
+      //             const filePath = fileEntry.toURL();
+      //             // 将 base64 数据写入到文件中
+      //             writeFile(
+      //               filePath,
+      //               imageData,
+      //               function () {
+      //                 successNotify('Picture saved successfully');
+      //                 console.log('图片保存成功！文件路径：' + filePath);
+      //                 resolve(filePath);
+      //               },
+      //               function (error: any) {
+      //                 console.log('图片保存失败：', error, filePath);
+      //                 reject(error);
+      //               }
+      //             );
+      //           },
+      //           function (e: any) {
+      //             console.log('发生错误2', e);
+      //             reject(e);
+      //           }
+      //         );
+      //       },
+      //       function (e: any) {
+      //         console.log('发生错误3', e);
+      //         reject(e);
+      //       }
+      //     );
+      //   },
+      //   function (e: any) {
+      //     console.log('发生错误1', e);
+      //     reject(e);
+      //   }
+      // );
 
       // 写入文件的辅助函数
       function writeFile(

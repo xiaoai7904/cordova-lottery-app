@@ -1,8 +1,15 @@
 <template>
   <!-- <q-layout view="lhh LpR lff" container style="height: 100vh"> -->
   <div class="app-router">
-    <router-view class="view" :class="{ paddingBottom: route.meta.isFooter }" v-slot="{ Component }">
-      <transition :name="(route.meta.transitionName as string)" :mode="transitionMode">
+    <router-view
+      class="view"
+      :class="{ paddingBottom: route.meta.isFooter }"
+      v-slot="{ Component }"
+    >
+      <transition
+        :name="(route.meta.transitionName as string)"
+        :mode="transitionMode"
+      >
         <component :is="Component" />
       </transition>
     </router-view>
@@ -37,8 +44,8 @@ const router = useRouter();
 const route = useRoute();
 const needAnimate = useRouterAnimate();
 const transitionMode = ref<any>('out-in');
-const { homeInfo, getHomeInfo } = useUser();
-const { open } = useInAppBrowser()
+const { getHomeInfo } = useUser();
+// const { open } = useInAppBrowser();
 
 router.beforeEach((to: any, from: any) => {
   // 这里通过router中设置的页面深度depth来判断动画的方向，这样不会收到刷新和浏览器前进后退的影响而导致动画执行错误
@@ -102,8 +109,8 @@ router.afterEach(() => {
 // }
 
 onMounted(() => {
-  getHomeInfo()
-})
+  getHomeInfo();
+});
 </script>
 <style lang="scss" scoped>
 .q-btn--fab {

@@ -21,7 +21,8 @@
     "cordova-plugin-filepath": "^1.6.0",
     "cordova-plugin-inappbrowser": "^5.0.0",
     "cordova-plugin-sms": "^1.0.5",
-    "cordova-plugin-statusbar": "^3.0.0"
+    "cordova-plugin-statusbar": "^3.0.0",
+    "ios": "^0.0.1"
   },
   "cordova": {
     "platforms": [
