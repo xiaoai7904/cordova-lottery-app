@@ -22,6 +22,12 @@ export enum RouterNameEnum {
   MY = 'my',
   // 跟单
   ORDER = 'order',
+  // banner详情
+  SLIDER = 'slider',
+  // 商店详情
+  SHOP = 'shop',
+  // 用户详情
+  USER_DETAIL = 'userDetail',
 }
 
 // 语言标识

@@ -1,9 +1,13 @@
 <template>
   <!-- <q-layout view="lhh LpR lff" container style="height: 100vh"> -->
   <div class="app-router">
+    <!-- <Headers v-if="route.meta.isHeader" /> -->
     <router-view
       class="view"
-      :class="{ paddingBottom: route.meta.isFooter }"
+      :class="{
+        paddingBottom: route.meta.isFooter,
+        // paddingTop: route.meta.isHeader,
+      }"
       v-slot="{ Component }"
     >
       <transition
@@ -148,6 +152,9 @@ onMounted(() => {
 // }
 
 .paddingBottom {
-  padding-bottom: 62px;
+  padding-bottom: 108px;
+}
+.paddingTop {
+  padding-top: 44px;
 }
 </style>

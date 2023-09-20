@@ -54,6 +54,33 @@ const routes: RouteRecordRaw[] = [
           isFooter: true,
         },
       },
+      {
+        path: '/sliderInfo',
+        name: RouterNameEnum.SLIDER,
+        component: () => import('src/pages/sliderInfo/sliderInfo.vue'),
+        meta: {
+          title: '',
+          depth: 1,
+        },
+      },
+      {
+        path: '/shopDetail',
+        name: RouterNameEnum.SHOP,
+        component: () => import('src/pages/shopDetail/shopDetail.vue'),
+        meta: {
+          title: '',
+          depth: 1,
+        },
+      },
+      {
+        path: '/userDetail',
+        name: RouterNameEnum.USER_DETAIL,
+        component: () => import('src/pages/userDetail/userDetail.vue'),
+        meta: {
+          title: '',
+          depth: 1,
+        },
+      },
       // {
       //   path: '/share',
       //   name: RouterNameEnum.HOME,

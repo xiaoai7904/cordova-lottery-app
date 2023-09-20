@@ -7,22 +7,24 @@
         :autoplay="3000"
         indicator-color="white"
       >
-        <van-swipe-item
+        <van-swipe-item @click="() => router.push('/sliderInfo')"
           ><img
             src="http://xcpicture.oss-cn-shanghai.aliyuncs.com/app/news/banner/2023/06/26/155233.png"
         /></van-swipe-item>
-        <van-swipe-item
+        <van-swipe-item @click="() => router.push('/sliderInfo')"
           ><img
             src="http://xcpicture.oss-cn-shanghai.aliyuncs.com/app/news/banner/2023/06/26/154727.png"
         /></van-swipe-item>
-        <van-swipe-item
+        <van-swipe-item @click="() => router.push('/sliderInfo')"
           ><img
             src="http://xcpicture.oss-cn-shanghai.aliyuncs.com/app/news/banner/2023/06/08/160954.png"
         /></van-swipe-item>
       </van-swipe>
       <div class="notice_view">
         店铺资质环境展示
-        <div class="detail_btn"><span>详情</span></div>
+        <div class="detail_btn" @click="() => router.push('/shopDetail')">
+          <span>详情</span>
+        </div>
       </div>
       <!--nav-->
       <div class="nav">
@@ -53,8 +55,10 @@
 // import { Swipe, SwipeItem } from 'vant';
 import { reactify } from '@vueuse/core';
 import { defineComponent, reactive } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 export default defineComponent({
   setup() {
+    const router = useRouter();
     const model = reactive({
       topList: [
         {
@@ -67,7 +71,7 @@ export default defineComponent({
         { name: '出手就赢', img: require('./assets/4.png'), money: '54775.2' },
       ],
     });
-    return { model };
+    return { model, router };
   },
 });
 </script>
