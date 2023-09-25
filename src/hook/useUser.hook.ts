@@ -1,6 +1,16 @@
 import { reactive, computed } from 'vue';
 import {
   GetUserInfoRequest,
+  UpdateUserAvatarRequest,
+  UpdateUserLoginPasswordRequest,
+  UserIdentityInfoRequest,
+  SaveUserIdentityInfoRequest,
+  UserBankInfoRequest,
+  SaveUserBankRequest,
+  GetMyFocusRequest,
+  GetMyFanRequest,
+  CancelFousRequest,
+  CustomerListRequest,
   XA_TOKEN,
   HomeInfoType,
   UserInfoType,
@@ -13,10 +23,6 @@ import { useLocalStorage } from 'src/hook';
 const userStore = reactive({
   loading: false,
   userInfo: {} as UserInfoType,
-  homeInfo: {} as HomeInfoType,
-  historyOrderList: [] as HistoryOrderItem[],
-  payCardInfo: {} as PayCardInfoType,
-  inviteInfo: {} as InviteInfoType,
 });
 
 /**

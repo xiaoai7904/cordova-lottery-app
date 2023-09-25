@@ -28,6 +28,14 @@ export enum RouterNameEnum {
   SHOP = 'shop',
   // 用户详情
   USER_DETAIL = 'userDetail',
+  // 设置
+  SETTING = 'setting',
+  // 登录密码
+  LOGINPASSWORD = 'loginPassword',
+  // 银行卡
+  BANK = 'bank',
+  // 添加银行卡
+  ADDBANK = 'addBank',
 }
 
 // 语言标识

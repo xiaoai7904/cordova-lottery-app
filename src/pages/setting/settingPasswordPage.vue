@@ -1,10 +1,34 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
     <div class="forget-password">
-        <MainHeader title="忘记密码" />
+        <MainHeader title="登录密码更改" />
         <div class="forget-password-content">
             <div>
                 <q-form ref="myForm" @submit="onSubmit" class="q-gutter-y-md column">
+                    <div class="forget-password-content-item">
+                        <h2>用户名</h2>
+                        <q-input placeholder="请输入用户名" v-model="registerStore.forgetPassword.password" outlined lazy-rules
+                            :rules="[(val) => (val && val.length > 0) || '请输入用户名']" />
+                    </div>
+
+                    <div class="forget-password-content-item">
+                        <h2>旧密码</h2>
+                        <q-input type="password" placeholder="请输入旧密码" v-model="registerStore.forgetPassword.password"
+                            outlined lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入旧密码']" />
+                    </div>
+
+                    <div class="forget-password-content-item">
+                        <h2>新密码</h2>
+                        <q-input type="password" placeholder="请输入新密码" v-model="registerStore.forgetPassword.password"
+                            outlined lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入新密码']" />
+                    </div>
+
+                    <div class="forget-password-content-item">
+                        <h2>确认密码</h2>
+                        <q-input type="password" placeholder="请输入新密码" v-model="registerStore.forgetPassword.password"
+                            outlined lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入新密码']" />
+                    </div>
+
                     <div class="forget-password-content-item">
                         <h2>手机号</h2>
                         <q-input placeholder="请输入手机号" v-model="registerStore.forgetPassword.phone" outlined :maxlength="11"
@@ -28,11 +52,7 @@
                         </q-input>
                     </div>
 
-                    <div class="forget-password-content-item">
-                        <h2>新密码</h2>
-                        <q-input type="password" placeholder="请输入新密码" v-model="registerStore.forgetPassword.password"
-                            outlined lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入新密码']" />
-                    </div>
+
 
                     <q-btn label="提 交" type="submit" color="primary" />
                 </q-form>
@@ -78,7 +98,7 @@ export default defineComponent({
 
         >div {
             width: 100%;
-            border-radius: 12px;
+            // border-radius: 12px;
             background-color: #fff;
             // box-shadow: 0px 0px 10px 0px rgba(109, 93, 244, 0.1);
             padding: 20px 16px;

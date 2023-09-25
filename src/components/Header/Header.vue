@@ -5,7 +5,9 @@
     </div>
     <span>{{ props.title }}</span>
     <slot name="title"></slot>
-    <div class="right"><slot name="right"></slot></div>
+    <div class="right">
+      <slot name="right"></slot>
+    </div>
   </div>
 </template>
 
@@ -37,6 +39,7 @@ export default defineComponent({
 .headerBg {
   background: none !important;
 }
+
 .headers {
   width: 100%;
   height: 44px;
@@ -50,10 +53,14 @@ export default defineComponent({
   left: 0;
   font-size: 16px;
   font-weight: 600;
+  z-index: 20;
+  box-shadow: 0 2px 8px #f2f3f5;
+
   .left {
     position: absolute;
     left: 13px;
   }
+
   .right {
     position: absolute;
     right: 3px;
