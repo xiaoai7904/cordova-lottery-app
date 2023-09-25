@@ -59,7 +59,7 @@
         <div class="l-header">
           <img :src="require('./assets/1.png')" />
           <div class="info">
-            <div class="left">
+            <div class="left" @click="() => router.push('/userOrder')">
               <div class="top">以鹿为马</div>
               <div class="bottom">09-21 21:30截止</div>
             </div>

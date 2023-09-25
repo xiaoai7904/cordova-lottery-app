@@ -75,7 +75,16 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/userDetail',
         name: RouterNameEnum.USER_DETAIL,
-        component: () => import('src/pages/userDetail/userDetail.vue'),
+        component: () => import('src/pages/user/userDetail/userDetail.vue'),
+        meta: {
+          title: '',
+          depth: 1,
+        },
+      },
+      {
+        path: '/userOrder',
+        name: RouterNameEnum.USER_ORDER,
+        component: () => import('src/pages/user/userOrder/userOrder.vue'),
         meta: {
           title: '',
           depth: 1,

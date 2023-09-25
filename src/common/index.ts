@@ -28,6 +28,8 @@ export enum RouterNameEnum {
   SHOP = 'shop',
   // 用户详情
   USER_DETAIL = 'userDetail',
+  // 用户下单详情
+  USER_ORDER = 'userOrder',
 }
 
 // 语言标识

@@ -37,7 +37,12 @@
       </div>
     </div>
     <div class="gods_box">
-      <div class="item" v-for="(item, i) in model.topList" :key="i">
+      <div
+        class="item"
+        v-for="(item, i) in model.topList"
+        :key="i"
+        @click="() => router.push('/userOrder')"
+      >
         <span>{{ i + 1 }}</span>
         <img :src="item.img" />
         <span class="name">{{ item.name }}</span>
