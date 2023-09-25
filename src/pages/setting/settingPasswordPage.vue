@@ -5,27 +5,27 @@
         <div class="forget-password-content">
             <div>
                 <q-form ref="myForm" @submit="onSubmit" class="q-gutter-y-md column">
-                    <div class="forget-password-content-item">
+                    <!-- <div class="forget-password-content-item">
                         <h2>用户名</h2>
                         <q-input placeholder="请输入用户名" v-model="registerStore.forgetPassword.password" outlined lazy-rules
                             :rules="[(val) => (val && val.length > 0) || '请输入用户名']" />
-                    </div>
+                    </div> -->
 
                     <div class="forget-password-content-item">
                         <h2>旧密码</h2>
-                        <q-input type="password" placeholder="请输入旧密码" v-model="registerStore.forgetPassword.password"
-                            outlined lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入旧密码']" />
+                        <q-input type="password" placeholder="请输入旧密码" v-model="userStore.loginPassword.oldPassword" outlined
+                            lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入旧密码']" />
                     </div>
 
                     <div class="forget-password-content-item">
                         <h2>新密码</h2>
-                        <q-input type="password" placeholder="请输入新密码" v-model="registerStore.forgetPassword.password"
-                            outlined lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入新密码']" />
+                        <q-input type="password" placeholder="请输入新密码" v-model="userStore.loginPassword.newPassword" outlined
+                            lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入新密码']" />
                     </div>
 
                     <div class="forget-password-content-item">
                         <h2>确认密码</h2>
-                        <q-input type="password" placeholder="请输入新密码" v-model="registerStore.forgetPassword.password"
+                        <q-input type="password" placeholder="请输入新密码" v-model="userStore.loginPassword.newPassword1"
                             outlined lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入新密码']" />
                     </div>
 
@@ -64,16 +64,17 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import MainHeader from 'src/layouts/Header/MainHeader.vue';
-import { useRegister, useCountDown, useNotify } from 'src/hook'
+import { useRegister, useCountDown, useNotify, useUser } from 'src/hook'
 
 export default defineComponent({
     components: { MainHeader },
     setup() {
+        const { userStore, updateLoginPassword } = useUser()
         const { count, start } = useCountDown();
         const { errorNotify } = useNotify()
-        const { registerStore, sendCode, forgetPassword } = useRegister()
+        const { registerStore, sendCode } = useRegister()
         const onSubmit = async () => {
-            await forgetPassword()
+            await updateLoginPassword()
         }
 
         const sendSmsCode = async () => {
@@ -86,7 +87,7 @@ export default defineComponent({
             start(60);
         }
 
-        return { registerStore, count, start, sendSmsCode, onSubmit }
+        return { registerStore, count, start, sendSmsCode, onSubmit, userStore }
     }
 })
 </script>
