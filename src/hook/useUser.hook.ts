@@ -12,11 +12,7 @@ import {
   CancelFousRequest,
   CustomerListRequest,
   XA_TOKEN,
-  HomeInfoType,
   UserInfoType,
-  HistoryOrderItem,
-  PayCardInfoType,
-  InviteInfoType,
 } from 'src/common';
 import { useLocalStorage } from 'src/hook';
 
@@ -32,8 +28,7 @@ export function useUser() {
   const { localStore } = useLocalStorage();
   const isLogin = computed(() => !!localStore.get(XA_TOKEN));
   const userInfo = computed(() => userStore.userInfo);
-  const homeInfo = computed<HomeInfoType>(() => userStore.homeInfo);
-  const payCardInfo = computed<PayCardInfoType>(() => userStore.payCardInfo);
+
   /**
    *获取用户信息
    */
@@ -49,8 +44,6 @@ export function useUser() {
     userStore,
     isLogin,
     userInfo,
-    homeInfo,
-    payCardInfo,
     getUserInfo,
   };
 }
