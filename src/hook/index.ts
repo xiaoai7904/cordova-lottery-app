@@ -1,4 +1,3 @@
-export * from './useListenerSms.hook';
 export * from './useRequestAndroidPermissions.hook';
 export * from './useEnv.hook';
 export * from './useLocalStorage.hook';
@@ -10,8 +9,6 @@ export * from './useUser.hook';
 export * from './useLogin.hook';
 export * from './useRegister.hook';
 export * from './useNotify.hook';
-export * from './useOrder.hook';
-export * from './useRecharge.hook';
 export * from './useAndroid.hook';
 export * from './useEvent.hook';
 export * from './useHotUpdateApk.hook';

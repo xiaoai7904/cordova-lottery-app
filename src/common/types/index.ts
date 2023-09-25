@@ -11,20 +11,22 @@ export type ListType<T> = {
 };
 
 export type RegisterType = {
+  // 用户名
+  username: string;
   // 手机号
   phone: string;
   // 验证码
-  smscode: string;
+  code: string;
   // 密码
   password: string;
   // 密码
   password1: string;
   // 邀请码
-  inviteCode: string;
+  shareCode: string;
 };
 
 export type LoginType = {
-  phone: string;
+  username: string;
   password: string;
 };
 

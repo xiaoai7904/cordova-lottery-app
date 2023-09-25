@@ -124,6 +124,46 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/setting',
+    name: RouterNameEnum.SETTING,
+    component: () => import('pages/setting/settingPage.vue'),
+    meta: {
+      title: '设置',
+      depth: 3,
+      isFooter: false,
+    },
+  },
+  {
+    path: '/settingPassword',
+    name: RouterNameEnum.LOGINPASSWORD,
+    component: () => import('pages/setting/settingPasswordPage.vue'),
+    meta: {
+      title: '修改登录密码',
+      depth: 4,
+      isFooter: false,
+    },
+  },
+  {
+    path: '/settingBank',
+    name: RouterNameEnum.BANK,
+    component: () => import('pages/setting/settingBankPage.vue'),
+    meta: {
+      title: '银行卡',
+      depth: 5,
+      isFooter: false,
+    },
+  },
+  {
+    path: '/settingAddBank',
+    name: RouterNameEnum.ADDBANK,
+    component: () => import('pages/setting/settingBankAddPage.vue'),
+    meta: {
+      title: '添加银行卡',
+      depth: 6,
+      isFooter: false,
+    },
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },
