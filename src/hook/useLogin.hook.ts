@@ -16,7 +16,7 @@ export function useLogin() {
   const loginStore = reactive<LoginStoreType>({
     loading: false,
     form: {
-      phone: '',
+      username: '',
       password: '',
     },
   });
@@ -29,11 +29,10 @@ export function useLogin() {
       loginStore.loading = true;
       window.xaCustomEvent.trigger(XA_SSE_CLOSE);
       const data = await LoginRequest<any, LoginResultType>(loginStore.form);
-      setLocalStore(data);
+      localStore.set(XA_TOKEN, data);
       await getUserInfo();
       setTimeout(() => {
         router.push({ name: RouterNameEnum.HOME });
-        window.xaCustomEvent.trigger(XA_SMS_STATUS);
       }, 300);
     } finally {
       loginStore.loading = false;
@@ -53,7 +52,6 @@ export function useLogin() {
   };
 
   const setLocalStore = (data: LoginResultType) => {
-    localStore.set(XA_TOKEN, data.token);
     localStore.set(XA_USERINFO, data);
   };
 

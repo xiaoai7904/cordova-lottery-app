@@ -1,6 +1,8 @@
 <template>
   <div class="register">
     <q-form ref="myForm" @submit="onSubmit" class="q-gutter-y-md column">
+      <q-input placeholder="请输入用户名" v-model="registerStore.form.username" lazy-rules
+        :rules="[(val) => (val && val.length > 0) || '请输入用户名']" />
       <q-input placeholder="请输入手机号" v-model="registerStore.form.phone" :maxlength="11" lazy-rules
         :rules="[(val) => (val && val.length > 0) || '请输入手机号']">
         <template v-slot:prepend>
@@ -9,7 +11,7 @@
             transition-hide="scale" style="width: 40px" /> -->
         </template>
       </q-input>
-      <q-input placeholder="验证码" v-model="registerStore.form.smscode" :maxlength="6" lazy-rules
+      <q-input placeholder="验证码" v-model="registerStore.form.code" :maxlength="6" lazy-rules
         :rules="[(val) => (val && val.length > 0) || '请输入验证码']">
         <template v-slot:append>
           <div :class="{ send: true, disbale: count }" @click.stop="sendSmsCode">

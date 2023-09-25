@@ -1,11 +1,6 @@
 import { reactive, computed } from 'vue';
 import {
-  HomeInfoRequest,
   GetUserInfoRequest,
-  CardInfoRequest,
-  CardAddRequest,
-  CardEditRequest,
-  InviteRequest,
   XA_TOKEN,
   HomeInfoType,
   UserInfoType,
@@ -38,66 +33,10 @@ export function useUser() {
    */
   const getUserInfo = async () => {
     try {
+      if (!isLogin.value) return;
       const data = await GetUserInfoRequest<object, UserInfoType>();
       userStore.userInfo = { ...data };
     } catch (error) {}
-  };
-
-  /**
-   *获取首页信息
-   */
-  const getHomeInfo = async () => {
-    try {
-      const data = await HomeInfoRequest<object, HomeInfoType>();
-      userStore.homeInfo = { ...data };
-    } catch (error) {}
-  };
-
-  /**
-   *获取收款信息
-   */
-  const getPayCardInfo = async () => {
-    try {
-      const data = await CardInfoRequest<object, PayCardInfoType>();
-      userStore.payCardInfo = { ...data };
-    } catch (error) {}
-  };
-
-  /**
-   *修改或者新增收款信息
-   */
-  const updatePayCardInfo = async (param = {}) => {
-    try {
-      userStore.loading = true;
-      if (userStore.payCardInfo?.accName) {
-        await CardEditRequest<object, PayCardInfoType>({
-          ...userStore.payCardInfo,
-          ...param,
-        });
-      } else {
-        await CardAddRequest<object, PayCardInfoType>(param);
-      }
-      return Promise.resolve();
-    } catch (error) {
-      return Promise.reject(error);
-    } finally {
-      userStore.loading = false;
-    }
-  };
-
-  /**
-   *获取推广信息
-   */
-  const getInviteInfo = async () => {
-    try {
-      if (Object.keys(userStore.inviteInfo).length) return;
-      userStore.loading = true;
-      const data = await InviteRequest<object, InviteInfoType>();
-      userStore.inviteInfo = { ...data };
-    } catch (error) {
-    } finally {
-      userStore.loading = false;
-    }
   };
 
   return {
@@ -107,9 +46,5 @@ export function useUser() {
     homeInfo,
     payCardInfo,
     getUserInfo,
-    getHomeInfo,
-    getPayCardInfo,
-    updatePayCardInfo,
-    getInviteInfo,
   };
 }
