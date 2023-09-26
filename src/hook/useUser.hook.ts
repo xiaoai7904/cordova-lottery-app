@@ -35,6 +35,9 @@ export function useUser() {
   const { localStore } = useLocalStorage();
   const isLogin = computed(() => !!localStore.get(XA_TOKEN));
   const userInfo = computed(() => userStore.userInfo);
+  const customerService = computed(
+    () => privateUserStore.customerList?.[0] ?? {}
+  );
 
   const privateUserStore = reactive({
     bankLoading: false,
@@ -266,6 +269,7 @@ export function useUser() {
     privateUserStore,
     isLogin,
     userInfo,
+    customerService,
     getUserInfo,
     updateLoginPassword,
     getUserBindBankList,
