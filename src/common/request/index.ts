@@ -172,3 +172,85 @@ export function CancelFousRequest<T, R>(params = {} as T) {
 export function CustomerListRequest<T, R>(params = {} as T) {
   return api.get<T, R>('/api/common/customerList', { data: params });
 }
+
+/**
+ * 账号明细
+ * @param params
+ * @returns
+ */
+export function FinanceListRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/finance/list', params);
+}
+
+/**
+ * 充值明细
+ * @param params
+ * @returns
+ */
+export function RechargeListRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/finance/rechareList', params);
+}
+
+/**
+ * 提现明细
+ * @param params
+ * @returns
+ */
+export function WithdrawListRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/finance/withdrawList', params);
+}
+
+/**
+ * 我的订单/我的跟单
+ * 1投注,2跟单
+ * @param params
+ * @returns
+ */
+export function OrderListRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/order/list', params);
+}
+
+/**
+ * 我的发单
+ * @param params
+ * @returns
+ */
+export function FollowListRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/order/followList', params);
+}
+
+/**
+ * 消息列表
+ * @param params
+ * @returns
+ */
+export function MessageListRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/message/list', params);
+}
+
+/**
+ * 消息详情
+ * @param params
+ * @returns
+ */
+export function MessageDetailsRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/message/detail', params);
+}
+
+/**
+ * 咨询列表
+ * @param params
+ * @returns
+ */
+export function AdvisoryListRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/message/advisoryList', params);
+}
+
+/**
+ * 咨询详情
+ * @param params
+ * @returns
+ */
+export function AdvisoryDetailsRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/message/advisoryDetail', params);
+}
