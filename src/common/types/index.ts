@@ -99,109 +99,76 @@ export type RegisterStoreType = {
 };
 
 export type UserInfoType = {
-  userId: string;
-  phone: string;
-  balance: number;
-  vip: number;
-};
-
-export enum RechargeTypeEnum {
-  USDT = 'USDT',
-  INR = 'INR',
-}
-
-export type HistoryOrderItem = {
+  // 头像
+  avatar: string;
+  // 余额
+  balance: string;
+  freezen: string;
   id: number;
-  type: RechargeTypeEnum;
-  cash: number;
-};
-export type InviteInfoType = {
   // 邀请码
   inviteCode: string;
-  // 推广页URL
-  inviteUrl: string;
-};
-export type PayCardInfoType = {
-  // 持卡人姓名
-  accName: string;
-  // 银行账户号
-  accNo: string;
-  // ifsc编号
-  ifsc: string;
-  // upi收款账号
-  upi: string;
-  // 上传图片之后返回的图片名称
-  qrUrl: string;
+  // 登录时间
+  loginTime: string;
+  // 父级id
+  parentId: number;
+  // 手机号
+  phone: string;
+  // 用户名
+  username: string;
 };
 
-export type RechargeUsdtAddessType = {
-  // 钱包id
-  walletId: string;
-  // 钱包地址
-  walletAddr: string;
-  // 二维码地址
-  qrImage: string;
-};
-
-export type SubmitRechargeType = {
-  // 钱包id
-  walletId: string;
-  // 金额
-  amount: number;
-  // hash
-  transactionId: string;
-  // 接受时间
-  recevieTime: string;
-};
-
-export type InrRechargeItemType = {
-  pOrderId: string;
-  amount: number;
-  price: number;
-  expireTime: number;
-};
-
-export type OrderItemType = {
-  // 订单号
-  pOrderId: string;
-  // utr
-  utr: string;
-  // 金额
-  amount: string;
-  // 过期时间
-  expireTime: string;
-  //  1:processing 2:completed 3:checking
-  state: string;
-};
-
-export type RechargeInrDetailsType = {
-  // 订单号
-  pOrderId: string;
-  // 金额 app用户需要支付金额
-  amount: string;
-  // 收益 可不展示
-  price: string;
-  // 收款人名称
-  accountName: string;
-  // 收款账号
-  accountNo: string;
-  // ifsc账号
-  ifsc: string;
-  // 超时时间 单位:秒
-  expireTime: string;
-};
-
-export type RechargeRecordItemType = {
+export type BankItemType = {
   id: string;
-  // 充值类型 1 USDT 2 INR
-  type: string;
-  // 充值金额
-  cash: string;
+  uid: string;
+  // 开户行
+  openingBank: string;
+  // 支行名称
+  branchName: string;
+  // 银行卡号
+  cardNumber: string;
+  // 所在省份
+  province: string;
+  // 所在城市
+  city: string;
+  createTime: string;
+  updateTime: string;
 };
 
-export type InviteRecordItemType = {
-  childUserPhone: string;
-  amount: number;
+export type CertificationInfoType = {
+  uid: string;
+  // 真实姓名
+  realName: string;
+  // 身份号码
+  idCard: string;
+  // 手机号
+  phone: string;
+};
+
+export type AddCertificationInfoType = {
+  uid?: string;
+  // 真实姓名
+  realName: string;
+  // 身份号码
+  idCard: string;
+  // 手机号
+  phone: string;
+  image1: string;
+  image2: string;
+};
+
+export type MyFocusItemType = {
+  uid: string;
+  // 用户昵称
+  nikeName: string;
+  // 盈亏率
   profit: number;
-  createTime: string;
+  // 中奖金额
+  winAmount: number;
+};
+
+export type CustomItemType = {
+  id: number;
+  code: string;
+  account: string;
+  updateTime: string;
 };

@@ -6,18 +6,19 @@
                 <van-cell title="头像" is-link center>
                     <template #value>
                         <van-uploader>
-                            <img src="https://picsum.photos/80" alt="" />
+                            <img :src="userInfo.avatar" alt="avatar" />
                         </van-uploader>
                     </template>
                 </van-cell>
-                <van-cell title="用户名" value="内容" />
+                <van-cell title="用户名" :value="userInfo.username" />
                 <van-cell title="登录密码" is-link value="修改密码" @click="gotoByPath('/settingPassword')" />
             </van-cell-group>
             <van-cell-group>
                 <van-cell title="银行卡管理" is-link @click="gotoByPath('/settingBank')" />
             </van-cell-group>
             <div class="setting-btn">
-                <van-button type="primary" block color="linear-gradient(127deg,#fff120,#fcdf6b)">退出登录</van-button>
+                <van-button type="primary" block color="linear-gradient(127deg,#fff120,#fcdf6b)"
+                    @click="logout">退出登录</van-button>
             </div>
         </div>
     </div>
@@ -25,11 +26,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { gotoByPath } from 'src/hook'
+import { gotoByPath, useUser, useLogin } from 'src/hook';
+
 export default defineComponent({
     components: {},
     setup() {
-        return { gotoByPath }
+        const { userInfo } = useUser()
+        const { logout } = useLogin()
+        return { gotoByPath, logout, userInfo }
     }
 })
 </script>

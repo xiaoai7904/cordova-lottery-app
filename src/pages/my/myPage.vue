@@ -1,9 +1,9 @@
 <template>
   <div class="mine">
     <div class="user-box">
-      <div class="head"><img :src="require('./assets/head.png')" /></div>
+      <div class="head"><img :src="userInfo.avatar" /></div>
       <div class="middle">
-        <div class="names">Seal</div>
+        <div class="names">{{ userInfo.username }}</div>
         <span class="gz">1<span>关注</span></span>
         <span class="gz">10<span>粉丝</span></span>
       </div>
@@ -13,7 +13,7 @@
     <div class="my-box">
       <div class="card">
         <div class="bannlce">
-          <span>0</span>
+          <span>{{ userInfo.balance }}</span>
           余额（元）
         </div>
         <div class="cz-btn btn">充值</div>
@@ -28,7 +28,7 @@
     <div class="tab-box">
       <div class="info">
         <div class="left">
-          <span>客服QQ：2250129495</span>
+          <span>客服{{ customerService.code }}：{{ customerService.account }}</span>
           <div>充值/投注/奖金/提现</div>
         </div>
         <div class="right">复制</div>
@@ -51,11 +51,20 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { gotoByPath } from 'src/hook'
+import { gotoByPath, useUser } from 'src/hook'
+import { onMounted } from 'vue';
 export default defineComponent({
   setup() {
+    const { userInfo, privateUserStore, customerService, getCustomList } = useUser()
+
+    onMounted(() => {
+      getCustomList()
+    })
     return {
-      gotoByPath
+      gotoByPath,
+      userInfo,
+      privateUserStore,
+      customerService
     }
   }
 });

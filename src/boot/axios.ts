@@ -1,6 +1,6 @@
 import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { XA_TOKEN } from 'src/common';
+import { XA_TOKEN, XA_LOGIN_EXPIRED } from 'src/common';
 import { LoadingBar } from 'quasar';
 import { useLocalStorage, useNotify } from 'src/hook';
 
@@ -29,7 +29,7 @@ api.interceptors.request.use(
 
     const token = localStore.get(XA_TOKEN);
     if (token) {
-      config.headers['Bearer'] = ` ${token}`;
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
   },
@@ -50,11 +50,11 @@ api.interceptors.response.use(
     ) {
       return Promise.resolve(response.data.data);
     }
-    // if (response.data && response.data.errorCode === 1012) {
-    //   localStore.remove(XA_TOKEN);
-    //   window.xaCustomEvent.trigger(XA_LOGIN_EXPIRED);
-    //   return Promise.reject(response);
-    // }
+    if (response.data && response.data.code === 401) {
+      localStore.remove(XA_TOKEN);
+      window.xaCustomEvent.trigger(XA_LOGIN_EXPIRED);
+      return Promise.reject(response);
+    }
 
     if (
       response.data &&

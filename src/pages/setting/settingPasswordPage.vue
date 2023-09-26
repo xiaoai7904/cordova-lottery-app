@@ -13,19 +13,19 @@
 
                     <div class="forget-password-content-item">
                         <h2>旧密码</h2>
-                        <q-input type="password" placeholder="请输入旧密码" v-model="userStore.loginPassword.oldPassword" outlined
-                            lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入旧密码']" />
+                        <q-input type="password" placeholder="请输入旧密码" v-model="privateUserStore.loginPassword.oldPassword"
+                            outlined lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入旧密码']" />
                     </div>
 
                     <div class="forget-password-content-item">
                         <h2>新密码</h2>
-                        <q-input type="password" placeholder="请输入新密码" v-model="userStore.loginPassword.newPassword" outlined
-                            lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入新密码']" />
+                        <q-input type="password" placeholder="请输入新密码" v-model="privateUserStore.loginPassword.newPassword"
+                            outlined lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入新密码']" />
                     </div>
 
                     <div class="forget-password-content-item">
                         <h2>确认密码</h2>
-                        <q-input type="password" placeholder="请输入新密码" v-model="userStore.loginPassword.newPassword1"
+                        <q-input type="password" placeholder="请输入新密码" v-model="privateUserStore.loginPassword.newPassword1"
                             outlined lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入新密码']" />
                     </div>
 
@@ -69,7 +69,7 @@ import { useRegister, useCountDown, useNotify, useUser } from 'src/hook'
 export default defineComponent({
     components: { MainHeader },
     setup() {
-        const { userStore, updateLoginPassword } = useUser()
+        const { userStore, privateUserStore, updateLoginPassword } = useUser()
         const { count, start } = useCountDown();
         const { errorNotify } = useNotify()
         const { registerStore, sendCode } = useRegister()
@@ -87,7 +87,7 @@ export default defineComponent({
             start(60);
         }
 
-        return { registerStore, count, start, sendSmsCode, onSubmit, userStore }
+        return { registerStore, privateUserStore, count, start, sendSmsCode, onSubmit, userStore }
     }
 })
 </script>
