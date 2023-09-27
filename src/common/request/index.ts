@@ -1,5 +1,10 @@
 import { api } from 'src/boot/axios';
 
+export const uploadApi = '/api/common/upload';
+
+export function UploadRequest<T, R>(params = {} as T, config: any) {
+  return api.post<T, R>(uploadApi, params, config);
+}
 /**
  * 登录
  * @param params { "phone": "string","password": "string" }
@@ -56,14 +61,14 @@ export function SendCodeRequest<T, R>(params = {} as T) {
   return api.post<T, R>('/api/sendcode', params);
 }
 
-/**
- * 上传图片
- * @param params {}
- * @returns Promise<any>
- */
-export function UploadRequest<T, R>(params = {} as T) {
-  return api.post<T, R>('/upload', params);
-}
+// /**
+//  * 上传图片
+//  * @param params {}
+//  * @returns Promise<any>
+//  */
+// export function UploadRequest<T, R>(params = {} as T) {
+//   return api.post<T, R>('/upload', params);
+// }
 
 /**
  * 用户信息
@@ -125,7 +130,7 @@ export function SaveUserIdentityInfoRequest<T, R>(params = {} as T) {
  * @returns
  */
 export function UserBankInfoRequest<T, R>(params = {} as T) {
-  return api.post<T, R>('/api/user/getBankList', params);
+  return api.get<T, R>('/api/user/getBankList', { data: params });
 }
 
 /**

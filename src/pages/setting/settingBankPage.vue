@@ -2,13 +2,21 @@
     <div class="setting">
         <Headers title="我的银行卡" />
         <div class="setting-content">
-            <div class="setting-content-add flex-center" @click="gotoByPath('/settingAddBank')">
-                <van-icon name="plus" size="16" />
-                <span>添加银行卡</span>
+            <div v-if="privateUserStore.bankLoading">
+                <van-skeleton title :row="3" />
+                <van-skeleton title :row="3" />
             </div>
 
-            <div class="setting-content-item">
+            <div v-else>
+                <div class="setting-content-item" v-for="item in privateUserStore.bankList" :key="item.id">
+                    {{ item.id }}
+                </div>
+            </div>
 
+            <div v-if="!privateUserStore.bankLoading" class="setting-content-add flex-center"
+                @click="gotoByPath('/settingAddBank')">
+                <van-icon name="plus" size="16" />
+                <span>添加银行卡</span>
             </div>
         </div>
     </div>
@@ -16,15 +24,27 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { gotoByPath } from 'src/hook'
+import { gotoByPath, useUser } from 'src/hook'
+import { onMounted } from 'vue';
+
 export default defineComponent({
     components: {},
     setup() {
-        return { gotoByPath }
+        const { privateUserStore, getUserBindBankList } = useUser();
+
+        onMounted(() => {
+            getUserBindBankList()
+        })
+
+        return { gotoByPath, privateUserStore }
     }
 })
 </script>
-
+<style>
+:root {
+    --van-skeleton-paragraph-background: #fff !important;
+}
+</style>
 <style scoped lang="scss">
 .setting {
     background-color: #efeff4;
@@ -32,6 +52,10 @@ export default defineComponent({
 
     &-content {
         padding: 64px 15px 15px 15px;
+
+        .van-skeleton {
+            margin-bottom: 20px;
+        }
 
         &-add {
             border: 1px dashed #c3c3c3;

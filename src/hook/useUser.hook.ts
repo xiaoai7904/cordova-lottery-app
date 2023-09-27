@@ -57,6 +57,7 @@ export function useUser() {
       city: '',
       phone: '',
       code: '',
+      password: '',
     },
     certificationInfo: {
       // 真实姓名

@@ -5,9 +5,9 @@
             <van-cell-group>
                 <van-cell title="头像" is-link center>
                     <template #value>
-                        <van-uploader>
+                        <Uploader>
                             <img :src="userInfo.avatar" alt="avatar" />
-                        </van-uploader>
+                        </Uploader>
                     </template>
                 </van-cell>
                 <van-cell title="用户名" :value="userInfo.username" />
@@ -27,12 +27,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { gotoByPath, useUser, useLogin } from 'src/hook';
-
+import Uploader from 'src/components/Upload/Upload.vue'
 export default defineComponent({
-    components: {},
+    components: { Uploader },
     setup() {
         const { userInfo } = useUser()
         const { logout } = useLogin()
+
         return { gotoByPath, logout, userInfo }
     }
 })
