@@ -56,7 +56,7 @@ export default defineComponent({
   font-size: 16px;
   font-weight: 600;
   z-index: 20;
-  box-shadow: 0 2px 8px #f2f3f5;
+  // box-shadow: 0 2px 8px #f2f3f5;
 
   .left {
     position: absolute;

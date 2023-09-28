@@ -9,7 +9,8 @@
 
             <div v-else>
                 <div class="setting-content-item" v-for="item in privateUserStore.bankList" :key="item.id">
-                    {{ item.id }}
+                    <h2>{{ item.branchName }}</h2>
+                    <h1>{{ item.cardNumber }}</h1>
                 </div>
             </div>
 
@@ -47,7 +48,7 @@ export default defineComponent({
 </style>
 <style scoped lang="scss">
 .setting {
-    background-color: #efeff4;
+    background-color: #f8f8f8;
     min-height: 100vh;
 
     &-content {
@@ -68,7 +69,21 @@ export default defineComponent({
             }
         }
 
-        &-item {}
+        &-item {
+            background-color: #fff;
+            margin-bottom: 15px;
+            padding: 20px 15px;
+            border-radius: 8px;
+
+            h1 {
+                font-size: 18px;
+            }
+
+            h2 {
+                margin-bottom: 15px;
+                font-size: 16px;
+            }
+        }
     }
 
     &-btn {

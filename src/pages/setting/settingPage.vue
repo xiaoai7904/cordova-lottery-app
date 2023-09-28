@@ -5,7 +5,7 @@
             <van-cell-group>
                 <van-cell title="头像" is-link center>
                     <template #value>
-                        <Uploader>
+                        <Uploader @success="uploadSuccess">
                             <img :src="userInfo.avatar" alt="avatar" />
                         </Uploader>
                     </template>
@@ -26,15 +26,22 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { gotoByPath, useUser, useLogin } from 'src/hook';
+import { gotoByPath, useUser, useLogin, useNotify } from 'src/hook';
 import Uploader from 'src/components/Upload/Upload.vue'
 export default defineComponent({
     components: { Uploader },
     setup() {
-        const { userInfo } = useUser()
+        const { successNotify } = useNotify();
+        const { userInfo, updateUserAvatar } = useUser()
         const { logout } = useLogin()
-
-        return { gotoByPath, logout, userInfo }
+        const uploadSuccess = (data: any) => {
+            console.log(data)
+            updateUserAvatar({
+                avatar: data.fileName
+            })
+            successNotify('头像更新成功')
+        }
+        return { gotoByPath, logout, uploadSuccess, userInfo }
     }
 })
 </script>

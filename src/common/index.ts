@@ -36,6 +36,8 @@ export enum RouterNameEnum {
   BANK = 'bank',
   // 添加银行卡
   ADDBANK = 'addBank',
+  // 实名认证
+  REALNAME = 'realName',
 }
 
 // 语言标识

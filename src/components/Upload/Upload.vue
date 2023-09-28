@@ -13,7 +13,8 @@ import { showToast } from 'vant';
 import { UploadRequest } from 'src/common'
 
 export default defineComponent({
-    setup() {
+    emits: ['success'],
+    setup(props, { emit }) {
         const onOversize = () => {
             showToast('文件大小不能超过 2M');
         }
@@ -25,16 +26,17 @@ export default defineComponent({
             return true;
         }
 
-        const afterRead = (file: any) => {
+        const afterRead = async (file: any) => {
             console.log(file);
             const formdata = new FormData();
             formdata.append('file', file.file);
 
-            UploadRequest(formdata, {
+            const uploadResult = await UploadRequest(formdata, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             })
+            emit('success', uploadResult)
         }
 
         return { onOversize, beforeRead, afterRead }

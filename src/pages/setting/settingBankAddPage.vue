@@ -94,42 +94,6 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
-.setting {
-    background-color: #efeff4;
-    min-height: 100vh;
-
-    &-content {
-        padding: 64px 15px 15px 15px;
-
-        &-add {
-            border: 1px dashed #c3c3c3;
-            height: 100px;
-            border-radius: 8px;
-
-            >span {
-                font-size: 16px;
-                margin-left: 5px;
-            }
-        }
-
-        &-item {}
-    }
-
-    &-btn {
-        padding: 30px;
-
-        .van-button {
-            height: 48px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            color: $title !important;
-        }
-    }
-}
-</style>
-
 <style lang="scss" scoped>
 .setting {
     background-color: #fff;

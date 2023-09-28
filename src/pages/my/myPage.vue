@@ -35,7 +35,7 @@
       </div>
       <div class="title">其他服务</div>
       <div class="nav">
-        <div>
+        <div @click="gotoByPath('/realName')">
           <span>实名认证</span>
         </div>
         <div>

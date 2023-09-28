@@ -165,6 +165,7 @@ export function useUser() {
     try {
       const data = await UserIdentityInfoRequest<any, CertificationInfoType>();
       privateUserStore.certificationInfo = { ...data };
+      return Promise.resolve(data);
     } catch (error) {
     } finally {
     }

@@ -164,6 +164,16 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/realName',
+    name: RouterNameEnum.REALNAME,
+    component: () => import('pages/realName/realNamePage.vue'),
+    meta: {
+      title: '实名认证',
+      depth: 3,
+      isFooter: false,
+    },
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },
