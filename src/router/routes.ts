@@ -90,6 +90,24 @@ const routes: RouteRecordRaw[] = [
           depth: 1,
         },
       },
+      {
+        path: '/footBall',
+        name: RouterNameEnum.FOOTBALL,
+        component: () => import('src/pages/eventBall/footBall.vue'),
+        meta: {
+          title: '赛事-足球',
+          depth: 1,
+        },
+      },
+      {
+        path: '/basketball',
+        name: RouterNameEnum.BASKETBALL,
+        component: () => import('src/pages/eventBall/basketball.vue'),
+        meta: {
+          title: '赛事-篮球',
+          depth: 1,
+        },
+      },
       // {
       //   path: '/share',
       //   name: RouterNameEnum.HOME,
@@ -129,6 +147,46 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: '忘记密码',
       depth: 3,
+      isFooter: false,
+    },
+  },
+  {
+    path: '/setting',
+    name: RouterNameEnum.SETTING,
+    component: () => import('pages/setting/settingPage.vue'),
+    meta: {
+      title: '设置',
+      depth: 3,
+      isFooter: false,
+    },
+  },
+  {
+    path: '/settingPassword',
+    name: RouterNameEnum.LOGINPASSWORD,
+    component: () => import('pages/setting/settingPasswordPage.vue'),
+    meta: {
+      title: '修改登录密码',
+      depth: 4,
+      isFooter: false,
+    },
+  },
+  {
+    path: '/settingBank',
+    name: RouterNameEnum.BANK,
+    component: () => import('pages/setting/settingBankPage.vue'),
+    meta: {
+      title: '银行卡',
+      depth: 5,
+      isFooter: false,
+    },
+  },
+  {
+    path: '/settingAddBank',
+    name: RouterNameEnum.ADDBANK,
+    component: () => import('pages/setting/settingBankAddPage.vue'),
+    meta: {
+      title: '添加银行卡',
+      depth: 6,
       isFooter: false,
     },
   },

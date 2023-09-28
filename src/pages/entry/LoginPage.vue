@@ -1,14 +1,14 @@
 <template>
   <div class="login">
     <q-form ref="myForm" @submit="onSubmit" class="q-gutter-y-md column">
-      <q-input placeholder="请输入手机号" v-model="loginStore.form.phone" :maxlength="11" lazy-rules
+      <!-- <q-input placeholder="请输入手机号" v-model="loginStore.form.phone" :maxlength="11" lazy-rules
         :rules="[(val) => (val && val.length > 0) || '请输入手机号']">
         <template v-slot:prepend>
           <span class="inter-bold login-sms">+86</span>
-          <!-- <q-select behavior="menu" v-model="formbase.areacode" :options="arealist" transition-show="scale"
-            transition-hide="scale" style="width: 40px" /> -->
         </template>
-      </q-input>
+      </q-input> -->
+      <q-input placeholder="请输入用户名" v-model="loginStore.form.username" lazy-rules
+        :rules="[(val) => (val && val.length > 0) || '请输入用户名']" />
       <q-input type="password" placeholder="请输入密码" v-model="loginStore.form.password" lazy-rules
         :rules="[(val) => (val && val.length > 0) || '请输入密码']" />
       <q-btn label="登 录" type="submit" color="primary" />

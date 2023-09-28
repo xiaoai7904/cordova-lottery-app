@@ -4,7 +4,7 @@ import { XA_TOKEN } from 'src/common';
 import { LoadingBar } from 'quasar';
 import { useLocalStorage, useNotify } from 'src/hook';
 
-export const BASE_URL = '';
+export const BASE_URL = 'http://103.54.118.3:8802';
 
 const { localStore } = useLocalStorage();
 const { errorNotify } = useNotify();
@@ -29,7 +29,7 @@ api.interceptors.request.use(
 
     const token = localStore.get(XA_TOKEN);
     if (token) {
-      config.headers['X-API-TOKEN'] = `${token}`;
+      config.headers['Bearer'] = ` ${token}`;
     }
     return config;
   },
@@ -46,7 +46,7 @@ api.interceptors.response.use(
     if (
       response.status === 200 &&
       response.data &&
-      response.data.errorCode === 0
+      response.data.code === 200
     ) {
       return Promise.resolve(response.data.data);
     }
@@ -58,10 +58,10 @@ api.interceptors.response.use(
 
     if (
       response.data &&
-      response.data.errorCode &&
-      !codes.includes(response.data.errorCode)
+      response.data.code &&
+      !codes.includes(response.data.code)
     ) {
-      errorNotify(response.data.errorMsg);
+      errorNotify(response.data.msg);
       // Notify.create({
       //   message: response.data.errorMsg,
       //   timeout: 1000,

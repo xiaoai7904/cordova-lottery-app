@@ -28,10 +28,10 @@
       </div>
       <!--nav-->
       <div class="nav">
-        <div class="item">
+        <div class="item" @click="() => router.push('/football')">
           <img :src="require('./assets/cz1.png')" /><span>竞彩足球</span>
         </div>
-        <div class="item">
+        <div class="item" @click="() => router.push('/basketball')">
           <img :src="require('./assets/cz2.png')" /><span>竞彩篮球</span>
         </div>
       </div>

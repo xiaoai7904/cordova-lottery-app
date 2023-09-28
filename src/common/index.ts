@@ -30,6 +30,18 @@ export enum RouterNameEnum {
   USER_DETAIL = 'userDetail',
   // 用户下单详情
   USER_ORDER = 'userOrder',
+  // 设置
+  SETTING = 'setting',
+  // 登录密码
+  LOGINPASSWORD = 'loginPassword',
+  // 银行卡
+  BANK = 'bank',
+  // 添加银行卡
+  ADDBANK = 'addBank',
+  // 赛事-足球
+  FOOTBALL = 'footBall',
+  // 赛事-篮球
+  BASKETBALL = 'basketball',
 }
 
 // 语言标识

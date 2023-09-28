@@ -2,18 +2,11 @@
   <!-- <q-layout view="lhh LpR lff" container style="height: 100vh"> -->
   <div class="app-router">
     <!-- <Headers v-if="route.meta.isHeader" /> -->
-    <router-view
-      class="view"
-      :class="{
-        paddingBottom: route.meta.isFooter,
-        // paddingTop: route.meta.isHeader,
-      }"
-      v-slot="{ Component }"
-    >
-      <transition
-        :name="(route.meta.transitionName as string)"
-        :mode="transitionMode"
-      >
+    <router-view class="view" :class="{
+      paddingBottom: route.meta.isFooter,
+      // paddingTop: route.meta.isHeader,
+    }" v-slot="{ Component }">
+      <transition :name="(route.meta.transitionName as string)" :mode="transitionMode">
         <component :is="Component" />
       </transition>
     </router-view>
@@ -48,7 +41,6 @@ const router = useRouter();
 const route = useRoute();
 const needAnimate = useRouterAnimate();
 const transitionMode = ref<any>('out-in');
-const { getHomeInfo } = useUser();
 // const { open } = useInAppBrowser();
 
 router.beforeEach((to: any, from: any) => {
@@ -112,9 +104,6 @@ router.afterEach(() => {
 //   }
 // }
 
-onMounted(() => {
-  getHomeInfo();
-});
 </script>
 <style lang="scss" scoped>
 .q-btn--fab {
@@ -154,6 +143,7 @@ onMounted(() => {
 .paddingBottom {
   padding-bottom: 108px;
 }
+
 .paddingTop {
   padding-top: 44px;
 }

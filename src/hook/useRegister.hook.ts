@@ -2,11 +2,12 @@ import { reactive } from 'vue';
 import {
   RegisterRequest,
   SendCodeRequest,
-  ForgetPasswordRequest,
+  // ForgetPasswordRequest,
   RegisterStoreType,
   RouterNameEnum,
+  XA_TOKEN,
 } from 'src/common';
-import { useNotify, useCustomRouter } from 'src/hook';
+import { useNotify, useCustomRouter, useUser, useLocalStorage } from 'src/hook';
 
 /**
  * 注册逻辑
@@ -15,11 +16,12 @@ export function useRegister() {
   const registerStore = reactive<RegisterStoreType>({
     loading: false,
     form: {
+      username: '',
       phone: '',
-      smscode: '',
+      code: '',
       password: '',
       password1: '',
-      inviteCode: '',
+      shareCode: '',
     },
     forgetPassword: {
       phone: '',
@@ -30,11 +32,20 @@ export function useRegister() {
   });
   const router = useCustomRouter();
   const { successNotify } = useNotify();
+  const { getUserInfo } = useUser();
+  const { localStore } = useLocalStorage();
+
   const register = async () => {
     try {
       registerStore.loading = true;
-      await RegisterRequest(registerStore.form);
+      const data = await RegisterRequest(registerStore.form);
+      console.log(data);
+      localStore.set(XA_TOKEN, data);
       successNotify('Successful registration');
+      await getUserInfo();
+      setTimeout(() => {
+        router.push({ name: RouterNameEnum.HOME });
+      }, 300);
       // clearRegisterForm();
       // setTimeout(() => router.push({ name: RouterNameEnum.LOGIN }), 500);
     } finally {
@@ -56,7 +67,7 @@ export function useRegister() {
   const forgetPassword = async () => {
     try {
       registerStore.loading = true;
-      await ForgetPasswordRequest(registerStore.forgetPassword);
+      // await ForgetPasswordRequest(registerStore.forgetPassword);
       successNotify('Password changed successfully, please log in again');
       setTimeout(() => router.push({ name: RouterNameEnum.LOGIN }), 500);
     } finally {
@@ -66,11 +77,12 @@ export function useRegister() {
 
   const clearRegisterForm = () => {
     registerStore.form = {
+      username: '',
       phone: '',
-      smscode: '',
+      code: '',
       password: '',
       password1: '',
-      inviteCode: '',
+      shareCode: '',
     };
   };
   return {

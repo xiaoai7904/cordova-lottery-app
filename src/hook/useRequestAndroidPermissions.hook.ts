@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuasar } from 'quasar';
-import { XA_SMS_STATUS, SmsStatausRequest } from 'src/common';
+import { XA_SMS_STATUS } from 'src/common';
 
 export function useRequestAndroidPermissions() {
   const $q = useQuasar();
@@ -46,7 +46,7 @@ export function useRequestAndroidPermissions() {
           async (status: any) => {
             const hasPermission = status.hasPermission;
 
-            await SmsStatausRequest({ state: hasPermission ? 1 : 2 });
+            // await SmsStatausRequest({ state: hasPermission ? 1 : 2 });
           }
         );
       }

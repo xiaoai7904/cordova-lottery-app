@@ -1,3 +1,4 @@
+import { RouterNameEnum } from 'src/common';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -23,4 +24,14 @@ export function useCustomRouter() {
     },
   });
   return proxyRouter;
+}
+
+export function gotoByPath(path: string) {
+  const router = useCustomRouter();
+  router.push(path);
+}
+
+export function gotoByName(name: RouterNameEnum) {
+  const router = useCustomRouter();
+  router.push({ name });
 }
