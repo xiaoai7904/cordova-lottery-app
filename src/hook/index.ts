@@ -14,3 +14,4 @@ export * from './useEvent.hook';
 export * from './useHotUpdateApk.hook';
 export * from './useSaveImage.hook';
 export * from './useInAppBrowser.hook';
+export * from './useRecord.hook';
