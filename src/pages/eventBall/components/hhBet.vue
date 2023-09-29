@@ -14,7 +14,9 @@
           </div>
           <!--投注项-->
           <div class="bet-item">
-            <div class="item active">胜 <span>2.00</span></div>
+            <div class="item active" :class="'hasdan'">
+              胜 <span>2.00</span>
+            </div>
             <div class="item">平 <span>2.00</span></div>
             <div class="item">负 <span>2.00</span></div>
             <div class="item">让胜 <span>2.00</span></div>
@@ -189,6 +191,18 @@ export default defineComponent({
             border-radius: 6px;
             color: #2e2f30;
             font-size: 12px;
+          }
+          .hasdan {
+            &::before {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 22px;
+              height: 18px;
+              background: url('../assets/dan.png') no-repeat 50%;
+              background-size: 22px 18px;
+            }
           }
         }
         .number-box {

@@ -30,9 +30,33 @@
       <span>4场</span>
     </div>
     <div class="content-expand">
+      <!--胜平负[让]-->
+      <template v-for="item in 4" :key="item">
+        <SpfhBet v-if="model.currEvent == '1'"></SpfhBet>
+      </template>
       <!--混合投注-->
       <template v-for="item in 4" :key="item">
-        <HhBet v-if="model.currEvent == 2"></HhBet>
+        <HhBet v-if="model.currEvent == '2'"></HhBet>
+      </template>
+      <!--猜比分-->
+      <template v-for="item in 4" :key="item">
+        <CbfBet v-if="model.currEvent == '3'"></CbfBet>
+      </template>
+      <!--进球数-->
+      <template v-for="item in 4" :key="item">
+        <JqsBet v-if="model.currEvent == '4'"></JqsBet>
+      </template>
+      <!--进球数-->
+      <template v-for="item in 4" :key="item">
+        <BqcBet v-if="model.currEvent == '5'"></BqcBet>
+      </template>
+      <!--2选1-->
+      <template v-for="item in 4" :key="item">
+        <Choose2Bet v-if="model.currEvent == '6'"></Choose2Bet>
+      </template>
+      <!--一场致胜-->
+      <template v-for="item in 4" :key="item">
+        <YczsBet v-if="model.currEvent == '7'"></YczsBet>
       </template>
     </div>
     <PlayerPopup
@@ -55,8 +79,24 @@ import { useRouter } from 'vue-router';
 import PlayerPopup from './components/playerPopup.vue';
 import FilterPopup from './components/filerPopup.vue';
 import HhBet from './components/hhBet.vue';
+import SpfhBet from './components/spfBet.vue';
+import CbfBet from './components/cbfBet.vue';
+import JqsBet from './components/jqsBet.vue';
+import BqcBet from './components/bqcBet.vue';
+import Choose2Bet from './components/choose2Bet.vue';
+import YczsBet from './components/yczsBet.vue';
 export default defineComponent({
-  components: { PlayerPopup, FilterPopup, HhBet },
+  components: {
+    PlayerPopup,
+    FilterPopup,
+    HhBet,
+    SpfhBet,
+    CbfBet,
+    JqsBet,
+    BqcBet,
+    Choose2Bet,
+    YczsBet,
+  },
   setup() {
     const router = useRouter();
     const model = reactive({
