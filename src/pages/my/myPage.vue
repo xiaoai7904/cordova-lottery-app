@@ -31,7 +31,7 @@
           <span>客服{{ customerService.code }}：{{ customerService.account }}</span>
           <div>充值/投注/奖金/提现</div>
         </div>
-        <div class="right">复制</div>
+        <div class="right" @click="handleCopy(customerService.account)">复制</div>
       </div>
       <div class="title">其他服务</div>
       <div class="nav">
@@ -51,12 +51,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { gotoByPath, useUser } from 'src/hook'
+import { gotoByPath, useUser, useCopy } from 'src/hook'
 import { onMounted } from 'vue';
+
 export default defineComponent({
   setup() {
     const { userInfo, privateUserStore, customerService, getCustomList } = useUser()
-
+    const { handleCopy } = useCopy()
     onMounted(() => {
       getCustomList()
     })
@@ -64,7 +65,8 @@ export default defineComponent({
       gotoByPath,
       userInfo,
       privateUserStore,
-      customerService
+      customerService,
+      handleCopy
     }
   }
 });

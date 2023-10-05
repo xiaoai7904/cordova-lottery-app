@@ -182,3 +182,8 @@ body {
   opacity: 0.4;
   transform: translateX(-50%);
 }
+
+.van-toast--success {
+  width: 150px !important;
+  padding: 0 !important;
+}
