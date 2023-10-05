@@ -125,7 +125,7 @@ export function SaveUserIdentityInfoRequest<T, R>(params = {} as T) {
  * @returns
  */
 export function UserBankInfoRequest<T, R>(params = {} as T) {
-  return api.post<T, R>('/api/user/getBankList', params);
+  return api.get<T, R>('/api/user/getBankList', { data: params });
 }
 
 /**
