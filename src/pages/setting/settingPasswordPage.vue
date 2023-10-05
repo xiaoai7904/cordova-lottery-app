@@ -2,7 +2,7 @@
 <template>
     <div class="forget-password">
         <MainHeader title="登录密码更改" />
-        <div class="forget-password-content">
+        <div class="forget-password-content form-content">
             <div>
                 <q-form ref="myForm" @submit="onSubmit" class="q-gutter-y-md column">
                     <!-- <div class="forget-password-content-item">
@@ -11,25 +11,25 @@
                             :rules="[(val) => (val && val.length > 0) || '请输入用户名']" />
                     </div> -->
 
-                    <div class="forget-password-content-item">
+                    <div class="forget-password-content-item form-content-item">
                         <h2>旧密码</h2>
                         <q-input type="password" placeholder="请输入旧密码" v-model="privateUserStore.loginPassword.oldPassword"
                             outlined lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入旧密码']" />
                     </div>
 
-                    <div class="forget-password-content-item">
+                    <div class="forget-password-content-item form-content-item">
                         <h2>新密码</h2>
                         <q-input type="password" placeholder="请输入新密码" v-model="privateUserStore.loginPassword.newPassword"
                             outlined lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入新密码']" />
                     </div>
 
-                    <div class="forget-password-content-item">
+                    <div class="forget-password-content-item form-content-item">
                         <h2>确认密码</h2>
                         <q-input type="password" placeholder="请输入新密码" v-model="privateUserStore.loginPassword.newPassword1"
                             outlined lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入新密码']" />
                     </div>
 
-                    <div class="forget-password-content-item">
+                    <div class="forget-password-content-item form-content-item">
                         <h2>手机号</h2>
                         <q-input placeholder="请输入手机号" v-model="registerStore.forgetPassword.phone" outlined :maxlength="11"
                             lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入手机号']">
@@ -40,7 +40,7 @@
                         </q-input>
                     </div>
 
-                    <div class="forget-password-content-item">
+                    <div class="forget-password-content-item form-content-item">
                         <h2>验证码</h2>
                         <q-input placeholder="请输入验证码" v-model="registerStore.forgetPassword.smscode" outlined :maxlength="6"
                             lazy-rules :rules="[(val) => (val && val.length > 0) || '请输入验证码']">
