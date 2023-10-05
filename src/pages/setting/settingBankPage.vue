@@ -9,7 +9,7 @@
 
             <div v-else>
                 <div class="setting-content-item" v-for="item in privateUserStore.bankList" :key="item.id">
-                    <h2>{{ item.branchName }}</h2>
+                    <h2>{{ item.openingBank }}（<span>{{ item.branchName }}</span>）</h2>
                     <h1>{{ item.cardNumber }}</h1>
                 </div>
             </div>

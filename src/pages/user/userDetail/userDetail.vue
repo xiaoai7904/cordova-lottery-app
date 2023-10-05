@@ -52,11 +52,7 @@
             </div>
             <div class="rq">
               <span>人气</span>
-              <div
-                class="start"
-                v-for="(item, i) in item.people"
-                :key="i"
-              ></div>
+              <div class="start" v-for="(item, i) in item.people" :key="i"></div>
             </div>
             <div class="time">{{ item.time }}截止</div>
           </div>
@@ -77,7 +73,7 @@ export default defineComponent({
       { label: '中', value: 1 },
       { label: '未', value: 0 },
     ];
-    const list = [
+    const list: any = [
       {
         name: '竞猜足球(2串1)',
         status: 0,
@@ -121,12 +117,12 @@ export default defineComponent({
         time: '09-19 05:30',
       },
     ];
-    const status = {
+    const status: any = {
       0: '',
       1: 'no',
       2: 'yes',
     };
-    const prize = {
+    const prize: any = {
       0: '待开奖',
       1: '未中奖',
     };
@@ -139,34 +135,41 @@ export default defineComponent({
   background: #f6f6f6;
   // padding: 0 20px;
   padding-top: 44px;
+
   .head_box {
     margin: 0 auto;
     width: 100%;
+
     .user_box {
       display: flex;
       align-items: center;
       height: 95px;
       color: #48484b;
+
       img {
         margin-left: 34px;
         width: 58px;
         height: 58px;
         border-radius: 20px;
       }
+
       .info {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         margin-left: 15px;
         height: 58px;
+
         .top {
           font-size: 19px;
           font-weight: 500;
           color: rgba(0, 0, 0, 0.85);
         }
+
         .bottom {
           font-size: 12px;
           color: rgba(0, 0, 0, 0.5);
+
           span {
             margin-right: 5px;
             font-size: 14px;
@@ -174,6 +177,7 @@ export default defineComponent({
           }
         }
       }
+
       .follow {
         margin-left: auto;
         margin-right: 15px;
@@ -189,6 +193,7 @@ export default defineComponent({
       }
     }
   }
+
   .c_box {
     margin: 0 auto 15px;
     width: 346px;
@@ -196,10 +201,12 @@ export default defineComponent({
     background-size: 346px 159px;
     border-radius: 8px;
     box-shadow: 0 5px 9px 0 rgba(239, 236, 236, 0.71);
+
     .top {
       display: flex;
       padding: 20px 0;
       width: 100%;
+
       .item {
         flex: 1;
         position: relative;
@@ -207,12 +214,14 @@ export default defineComponent({
         font-size: 16px;
         font-weight: 400;
         text-align: center;
+
         div {
           font-size: 12px;
           color: hsla(0, 0%, 100%, 0.85);
           margin-top: 8px;
         }
       }
+
       .item1 {
         &::before {
           content: '';
@@ -223,6 +232,7 @@ export default defineComponent({
           background-color: #e0e0e0;
           left: 0;
         }
+
         &::after {
           content: '';
           position: absolute;
@@ -234,31 +244,38 @@ export default defineComponent({
         }
       }
     }
+
     .bottom {
       display: flex;
       align-items: center;
       padding: 15px 18px;
       width: 100%;
+
       span {
         color: #fff;
         font-size: 14px;
         font-weight: 500;
         width: 115px;
       }
+
       .ball-box {
         flex: 1;
         display: flex;
+
         .item {
           display: flex;
         }
+
         .yes {
           color: #fff;
           background-color: #f73;
         }
+
         .no {
           color: rgba(0, 0, 0, 0.85);
           background-color: #fff;
         }
+
         .ball {
           display: flex;
           justify-content: center;
@@ -269,6 +286,7 @@ export default defineComponent({
           font-size: 10px;
           font-weight: 500;
         }
+
         .arrow {
           width: 20px;
           height: 30px;
@@ -278,9 +296,11 @@ export default defineComponent({
       }
     }
   }
+
   .box {
     margin: 0 auto 20px;
     width: 100%;
+
     .sub-box {
       display: flex;
       flex-direction: column;
@@ -290,12 +310,14 @@ export default defineComponent({
       border-radius: 8px;
       background-color: #fff;
       box-shadow: 0 2px 13px 0 hsla(0, 0%, 91.8%, 0.64);
+
       .title {
         margin-top: 10px;
         color: #1d2632;
         font-size: 16px;
         font-weight: 500;
       }
+
       .item {
         display: flex;
         flex-direction: column;
@@ -304,25 +326,30 @@ export default defineComponent({
         width: 325px;
         height: 86px;
         border-bottom: 1px solid #efeff4;
+
         .top {
           color: #1d2632;
           font-size: 14px;
         }
+
         .bottom {
           display: flex;
           margin-top: 7px;
           color: #878484;
           font-size: 12px;
+
           .no {
             background: url('./assets/no.png') no-repeat 50%;
             background-size: 54px 54px;
           }
+
           .yes {
             color: #f73 !important;
             font-size: 14px;
             background: url('./assets/yes.png') no-repeat 50%;
             background-size: 54px 54px;
           }
+
           .win-box {
             display: flex;
             justify-content: center;
@@ -338,15 +365,19 @@ export default defineComponent({
             word-break: keep-all;
             white-space: nowrap;
           }
+
           .money {
             color: #878484;
             font-size: 12px;
           }
+
           .rq {
             margin-left: 20px;
+
             span {
               margin-right: 5px;
             }
+
             .start {
               display: inline-block;
               margin-right: 2px;
@@ -356,6 +387,7 @@ export default defineComponent({
               background-size: 10px 10px;
             }
           }
+
           .time {
             margin-left: auto;
             color: #878484;

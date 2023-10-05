@@ -28,16 +28,21 @@
       </div>
       <!--nav-->
       <div class="nav">
-        <div class="item">
+        <div class="item" @click="() => router.push('/football')">
           <img :src="require('./assets/cz1.png')" /><span>竞彩足球</span>
         </div>
-        <div class="item">
+        <div class="item" @click="() => router.push('/basketball')">
           <img :src="require('./assets/cz2.png')" /><span>竞彩篮球</span>
         </div>
       </div>
     </div>
     <div class="gods_box">
-      <div class="item" v-for="(item, i) in model.topList" :key="i">
+      <div
+        class="item"
+        v-for="(item, i) in model.topList"
+        :key="i"
+        @click="() => router.push('/userOrder')"
+      >
         <span>{{ i + 1 }}</span>
         <img :src="item.img" />
         <span class="name">{{ item.name }}</span>

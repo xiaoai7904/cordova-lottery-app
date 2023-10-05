@@ -75,9 +75,36 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/userDetail',
         name: RouterNameEnum.USER_DETAIL,
-        component: () => import('src/pages/userDetail/userDetail.vue'),
+        component: () => import('src/pages/user/userDetail/userDetail.vue'),
         meta: {
           title: '',
+          depth: 1,
+        },
+      },
+      {
+        path: '/userOrder',
+        name: RouterNameEnum.USER_ORDER,
+        component: () => import('src/pages/user/userOrder/userOrder.vue'),
+        meta: {
+          title: '',
+          depth: 1,
+        },
+      },
+      {
+        path: '/footBall',
+        name: RouterNameEnum.FOOTBALL,
+        component: () => import('src/pages/eventBall/footBall.vue'),
+        meta: {
+          title: '赛事-足球',
+          depth: 1,
+        },
+      },
+      {
+        path: '/basketball',
+        name: RouterNameEnum.BASKETBALL,
+        component: () => import('src/pages/eventBall/basketball.vue'),
+        meta: {
+          title: '赛事-篮球',
           depth: 1,
         },
       },

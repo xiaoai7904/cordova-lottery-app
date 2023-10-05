@@ -48,7 +48,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .setting {
-    background-color: #efeff4;
+    background-color: #f8f8f8;
     min-height: 100vh;
 
     &-content {

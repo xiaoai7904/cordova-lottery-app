@@ -28,6 +28,8 @@ export enum RouterNameEnum {
   SHOP = 'shop',
   // 用户详情
   USER_DETAIL = 'userDetail',
+  // 用户下单详情
+  USER_ORDER = 'userOrder',
   // 设置
   SETTING = 'setting',
   // 登录密码
@@ -38,6 +40,10 @@ export enum RouterNameEnum {
   ADDBANK = 'addBank',
   // 实名认证
   REALNAME = 'realName',
+  // 赛事-足球
+  FOOTBALL = 'footBall',
+  // 赛事-篮球
+  BASKETBALL = 'basketball',
 }
 
 // 语言标识
