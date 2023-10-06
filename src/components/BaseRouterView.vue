@@ -1,6 +1,6 @@
 <template>
   <!-- <q-layout view="lhh LpR lff" container style="height: 100vh"> -->
-  <div class="app-router">
+  <div :class="route.meta.isFooter ? 'app-rpouter-footer app-router' : 'app-router'">
     <!-- <Headers v-if="route.meta.isHeader" /> -->
     <router-view class="view" :class="{
       paddingBottom: route.meta.isFooter,
@@ -106,6 +106,11 @@ router.afterEach(() => {
 
 </script>
 <style lang="scss" scoped>
+.app-rpouter-footer {
+  background: #fffef5 url('../css/common/body.png') no-repeat top;
+  background-size: 390px 1048px;
+}
+
 .q-btn--fab {
   background: transparent !important;
 

@@ -15,51 +15,58 @@ export function useRecord() {
   const privateRecordStore = reactive({
     loading: false,
     accountDetails: {
-      pageIndex: 1,
+      pageNum: 1,
       total: 10,
-      pages: 1,
+      pageSize: 1,
+      pages: 0,
       list: [] as any[],
       isLoadEnd: false,
     },
     recharge: {
-      pageIndex: 1,
+      pageNum: 1,
       total: 10,
-      pages: 1,
+      pageSize: 1,
+      pages: 0,
       list: [] as any[],
       isLoadEnd: false,
     },
     withdraw: {
-      pageIndex: 1,
+      pageNum: 1,
       total: 10,
-      pages: 1,
+      pageSize: 1,
+      pages: 0,
       list: [] as any[],
       isLoadEnd: false,
     },
     order: {
-      pageIndex: 1,
+      pageNum: 1,
       total: 10,
-      pages: 1,
+      pageSize: 1,
+      pages: 0,
       list: [] as any[],
       isLoadEnd: false,
     },
     follow: {
-      pageIndex: 1,
+      pageNum: 1,
       total: 10,
-      pages: 1,
+      pageSize: 1,
+      pages: 0,
       list: [] as any[],
       isLoadEnd: false,
     },
     message: {
-      pageIndex: 1,
+      pageNum: 1,
       total: 10,
-      pages: 1,
+      pageSize: 1,
+      pages: 0,
       list: [] as any[],
       isLoadEnd: false,
     },
     advisory: {
-      pageIndex: 1,
+      pageNum: 1,
       total: 10,
-      pages: 1,
+      pageSize: 1,
+      pages: 0,
       list: [] as any[],
       isLoadEnd: false,
     },
@@ -72,11 +79,11 @@ export function useRecord() {
     try {
       privateRecordStore.loading = true;
       const data = await FinanceListRequest<any, any>({
-        current: privateRecordStore.accountDetails.pageIndex,
+        pageNum: privateRecordStore.accountDetails.pageNum,
         ...params,
       });
 
-      if (privateRecordStore.accountDetails.pageIndex === 1) {
+      if (privateRecordStore.accountDetails.pageNum === 1) {
         privateRecordStore.accountDetails.list = [...data.records];
       } else {
         privateRecordStore.accountDetails.list = [
@@ -88,6 +95,7 @@ export function useRecord() {
       privateRecordStore.accountDetails.total = data.total;
       privateRecordStore.accountDetails.isLoadEnd =
         privateRecordStore.accountDetails.list.length >= data.total;
+      privateRecordStore.accountDetails.pageSize = data.pageSize;
       privateRecordStore.accountDetails.pages = data.pages;
     } finally {
       privateRecordStore.loading = false;
@@ -101,11 +109,11 @@ export function useRecord() {
     try {
       privateRecordStore.loading = true;
       const data = await RechargeListRequest<any, any>({
-        current: privateRecordStore.recharge.pageIndex,
+        pageNum: privateRecordStore.recharge.pageNum,
         ...params,
       });
 
-      if (privateRecordStore.recharge.pageIndex === 1) {
+      if (privateRecordStore.recharge.pageNum === 1) {
         privateRecordStore.recharge.list = [...data.records];
       } else {
         privateRecordStore.recharge.list = [
@@ -117,6 +125,7 @@ export function useRecord() {
       privateRecordStore.recharge.total = data.total;
       privateRecordStore.recharge.isLoadEnd =
         privateRecordStore.recharge.list.length >= data.total;
+      privateRecordStore.recharge.pageSize = data.pageSize;
       privateRecordStore.recharge.pages = data.pages;
     } finally {
       privateRecordStore.loading = false;
@@ -130,11 +139,11 @@ export function useRecord() {
     try {
       privateRecordStore.loading = true;
       const data = await WithdrawListRequest<any, any>({
-        current: privateRecordStore.withdraw.pageIndex,
+        pageNum: privateRecordStore.withdraw.pageNum,
         ...params,
       });
 
-      if (privateRecordStore.withdraw.pageIndex === 1) {
+      if (privateRecordStore.withdraw.pageNum === 1) {
         privateRecordStore.withdraw.list = [...data.records];
       } else {
         privateRecordStore.withdraw.list = [
@@ -146,6 +155,7 @@ export function useRecord() {
       privateRecordStore.withdraw.total = data.total;
       privateRecordStore.withdraw.isLoadEnd =
         privateRecordStore.withdraw.list.length >= data.total;
+      privateRecordStore.withdraw.pageSize = data.pageSize;
       privateRecordStore.withdraw.pages = data.pages;
     } finally {
       privateRecordStore.loading = false;
@@ -159,11 +169,11 @@ export function useRecord() {
     try {
       privateRecordStore.loading = true;
       const data = await WithdrawListRequest<any, any>({
-        current: privateRecordStore.order.pageIndex,
+        pageNum: privateRecordStore.order.pageNum,
         ...params,
       });
 
-      if (privateRecordStore.order.pageIndex === 1) {
+      if (privateRecordStore.order.pageNum === 1) {
         privateRecordStore.order.list = [...data.records];
       } else {
         privateRecordStore.order.list = [
@@ -175,6 +185,7 @@ export function useRecord() {
       privateRecordStore.order.total = data.total;
       privateRecordStore.order.isLoadEnd =
         privateRecordStore.order.list.length >= data.total;
+      privateRecordStore.order.pageSize = data.pageSize;
       privateRecordStore.order.pages = data.pages;
     } finally {
       privateRecordStore.loading = false;
@@ -188,11 +199,11 @@ export function useRecord() {
     try {
       privateRecordStore.loading = true;
       const data = await FollowListRequest<any, any>({
-        current: privateRecordStore.follow.pageIndex,
+        pageNum: privateRecordStore.follow.pageNum,
         ...params,
       });
 
-      if (privateRecordStore.follow.pageIndex === 1) {
+      if (privateRecordStore.follow.pageNum === 1) {
         privateRecordStore.follow.list = [...data.records];
       } else {
         privateRecordStore.follow.list = [
@@ -204,6 +215,7 @@ export function useRecord() {
       privateRecordStore.follow.total = data.total;
       privateRecordStore.follow.isLoadEnd =
         privateRecordStore.follow.list.length >= data.total;
+      privateRecordStore.follow.pageSize = data.pageSize;
       privateRecordStore.follow.pages = data.pages;
     } finally {
       privateRecordStore.loading = false;
@@ -217,11 +229,11 @@ export function useRecord() {
     try {
       privateRecordStore.loading = true;
       const data = await MessageListRequest<any, any>({
-        current: privateRecordStore.message.pageIndex,
+        pageNum: privateRecordStore.message.pageNum,
         ...params,
       });
 
-      if (privateRecordStore.message.pageIndex === 1) {
+      if (privateRecordStore.message.pageNum === 1) {
         privateRecordStore.message.list = [...data.records];
       } else {
         privateRecordStore.message.list = [
@@ -233,6 +245,7 @@ export function useRecord() {
       privateRecordStore.message.total = data.total;
       privateRecordStore.message.isLoadEnd =
         privateRecordStore.message.list.length >= data.total;
+      privateRecordStore.message.pageSize = data.pageSize;
       privateRecordStore.message.pages = data.pages;
     } finally {
       privateRecordStore.loading = false;
@@ -246,11 +259,11 @@ export function useRecord() {
     try {
       privateRecordStore.loading = true;
       const data = await AdvisoryListRequest<any, any>({
-        current: privateRecordStore.advisory.pageIndex,
+        pageNum: privateRecordStore.advisory.pageNum,
         ...params,
       });
 
-      if (privateRecordStore.advisory.pageIndex === 1) {
+      if (privateRecordStore.advisory.pageNum === 1) {
         privateRecordStore.advisory.list = [...data.records];
       } else {
         privateRecordStore.advisory.list = [
@@ -262,12 +275,36 @@ export function useRecord() {
       privateRecordStore.advisory.total = data.total;
       privateRecordStore.advisory.isLoadEnd =
         privateRecordStore.advisory.list.length >= data.total;
+      privateRecordStore.advisory.pageSize = data.pageSize;
       privateRecordStore.advisory.pages = data.pages;
     } finally {
       privateRecordStore.loading = false;
     }
   };
 
+  const loadAccountDetailsList = (index?: number) => {
+    if (index) {
+      privateRecordStore.accountDetails.pageNum = index;
+    } else {
+      privateRecordStore.accountDetails.pageNum++;
+    }
+  };
+
+  const loadRechargeList = (index?: number) => {
+    if (index) {
+      privateRecordStore.recharge.pageNum = index;
+    } else {
+      privateRecordStore.recharge.pageNum++;
+    }
+  };
+
+  const loadWithdrawList = (index?: number) => {
+    if (index) {
+      privateRecordStore.withdraw.pageNum = index;
+    } else {
+      privateRecordStore.withdraw.pageNum++;
+    }
+  };
   return {
     privateRecordStore,
     getAccountDetailsList,
@@ -277,5 +314,8 @@ export function useRecord() {
     getOrderList,
     getMessageList,
     getAdvisoryList,
+    loadAccountDetailsList,
+    loadRechargeList,
+    loadWithdrawList,
   };
 }

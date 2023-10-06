@@ -201,6 +201,16 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/accoutDetails',
+    name: RouterNameEnum.ACCOUNTDETAILS,
+    component: () => import('pages/accountDetails/accountDetailsPage.vue'),
+    meta: {
+      title: '账户明细',
+      depth: 3,
+      isFooter: false,
+    },
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },

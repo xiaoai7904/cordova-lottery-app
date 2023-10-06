@@ -44,6 +44,8 @@ export enum RouterNameEnum {
   FOOTBALL = 'footBall',
   // 赛事-篮球
   BASKETBALL = 'basketball',
+  // 账户明细
+  ACCOUNTDETAILS = 'accountDetails',
 }
 
 // 语言标识

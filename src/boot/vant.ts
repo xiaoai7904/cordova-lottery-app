@@ -12,6 +12,8 @@ import {
   CellGroup,
   Uploader,
   Skeleton,
+  PullRefresh,
+  Image,
 } from 'vant';
 import 'vant/lib/index.css';
 import Header from '../../src/components/Header/Header.vue';
@@ -28,6 +30,8 @@ export default boot(({ app }) => {
   app.use(CellGroup);
   app.use(Uploader);
   app.use(Skeleton);
+  app.use(PullRefresh);
+  app.use(Image);
 
   app.component('Headers', Header);
 });

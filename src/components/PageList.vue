@@ -1,7 +1,7 @@
 <template>
     <q-pull-to-refresh @refresh="refresh" :scroll-target="scrollTarget" :disable="true">
         <p v-if="isEmpty && !pageListStore.loading" class="row justify-center items-center q-my-md inter-medium"
-            style="min-height: 20vh;font-size: 0.8rem;">
+            style="min-height: 20vh;font-size: 2.5rem;">
             <svg viewBox="0 0 1567 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1897" width="1em"
                 height="1em">
                 <path
@@ -51,7 +51,7 @@
         </q-infinite-scroll>
         <div v-if="isShowAllLoadText && !isEmpty && !pageListStore.loading"
             class="row justify-center q-my-md inter-medium load-text">
-            All data loaded
+            暂无更多数据
         </div>
     </q-pull-to-refresh>
 </template>
@@ -74,7 +74,7 @@ const emit = defineEmits(['load'])
 const props = withDefaults(defineProps<Props>(), {
     scrollTarget: 'body',
     pageList: () => ([]),
-    pageInfo: () => ({ pageIndex: 1, total: 10, isLoadEnd: false }),
+    pageInfo: () => ({ pageNum: 1, total: 10, isLoadEnd: false }),
     requestApi: () => Promise.resolve(),
     requestParams: {} as any,
     pullRefreshDisable: false,
@@ -129,8 +129,9 @@ const refresh = async (done: any) => {
 
 const onLoad = async (index: any, done: any) => {
     try {
+        console.log(index, props.pageInfo, props.pageList)
         if (props.pageInfo.isLoadEnd) {
-            console.log('loadMoreItems pageIndex', props.pageInfo.pageIndex)
+            console.log('loadMoreItems pageIndex', props.pageInfo.pageNum)
             console.log('loadMoreItems pages', pages.value)
             done(true)
             return;

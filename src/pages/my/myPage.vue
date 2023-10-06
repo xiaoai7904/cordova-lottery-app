@@ -21,7 +21,7 @@
       </div>
       <div class="title">我的彩店</div>
       <div class="nav">
-        <div class="item mx"><span>账户明细</span></div>
+        <div class="item mx" @click="gotoByPath('/accoutDetails')"><span>账户明细</span></div>
         <div class="item jl"><span>购彩记录</span></div>
       </div>
     </div>
