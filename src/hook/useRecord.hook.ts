@@ -21,6 +21,8 @@ export function useRecord() {
       pages: 0,
       list: [] as any[],
       isLoadEnd: false,
+      beginTime: '',
+      endTime: '',
     },
     recharge: {
       pageNum: 1,
@@ -29,6 +31,8 @@ export function useRecord() {
       pages: 0,
       list: [] as any[],
       isLoadEnd: false,
+      beginTime: '',
+      endTime: '',
     },
     withdraw: {
       pageNum: 1,
@@ -37,6 +41,8 @@ export function useRecord() {
       pages: 0,
       list: [] as any[],
       isLoadEnd: false,
+      beginTime: '',
+      endTime: '',
     },
     order: {
       pageNum: 1,
@@ -45,6 +51,8 @@ export function useRecord() {
       pages: 0,
       list: [] as any[],
       isLoadEnd: false,
+      beginTime: '',
+      endTime: '',
     },
     follow: {
       pageNum: 1,
@@ -53,6 +61,8 @@ export function useRecord() {
       pages: 0,
       list: [] as any[],
       isLoadEnd: false,
+      beginTime: '',
+      endTime: '',
     },
     message: {
       pageNum: 1,
@@ -61,6 +71,8 @@ export function useRecord() {
       pages: 0,
       list: [] as any[],
       isLoadEnd: false,
+      beginTime: '',
+      endTime: '',
     },
     advisory: {
       pageNum: 1,
@@ -69,6 +81,8 @@ export function useRecord() {
       pages: 0,
       list: [] as any[],
       isLoadEnd: false,
+      beginTime: '',
+      endTime: '',
     },
   });
 
@@ -78,10 +92,20 @@ export function useRecord() {
   const getAccountDetailsList = async (params = {}) => {
     try {
       privateRecordStore.loading = true;
-      const data = await FinanceListRequest<any, any>({
-        pageNum: privateRecordStore.accountDetails.pageNum,
-        ...params,
-      });
+      const data = await FinanceListRequest<any, any>(
+        Object.assign(
+          {
+            pageNum: privateRecordStore.accountDetails.pageNum,
+            ...params,
+          },
+          privateRecordStore.accountDetails.beginTime
+            ? {
+                beginTime: privateRecordStore.accountDetails.beginTime,
+                endTime: privateRecordStore.accountDetails.endTime,
+              }
+            : {}
+        )
+      );
 
       if (privateRecordStore.accountDetails.pageNum === 1) {
         privateRecordStore.accountDetails.list = [...data.records];
@@ -108,10 +132,20 @@ export function useRecord() {
   const getRechargeList = async (params = {}) => {
     try {
       privateRecordStore.loading = true;
-      const data = await RechargeListRequest<any, any>({
-        pageNum: privateRecordStore.recharge.pageNum,
-        ...params,
-      });
+      const data = await RechargeListRequest<any, any>(
+        Object.assign(
+          {
+            pageNum: privateRecordStore.recharge.pageNum,
+            ...params,
+          },
+          privateRecordStore.recharge.beginTime
+            ? {
+                beginTime: privateRecordStore.recharge.beginTime,
+                endTime: privateRecordStore.recharge.endTime,
+              }
+            : {}
+        )
+      );
 
       if (privateRecordStore.recharge.pageNum === 1) {
         privateRecordStore.recharge.list = [...data.records];
@@ -138,10 +172,20 @@ export function useRecord() {
   const getWithdrawList = async (params = {}) => {
     try {
       privateRecordStore.loading = true;
-      const data = await WithdrawListRequest<any, any>({
-        pageNum: privateRecordStore.withdraw.pageNum,
-        ...params,
-      });
+      const data = await WithdrawListRequest<any, any>(
+        Object.assign(
+          {
+            pageNum: privateRecordStore.withdraw.pageNum,
+            ...params,
+          },
+          privateRecordStore.withdraw.beginTime
+            ? {
+                beginTime: privateRecordStore.withdraw.beginTime,
+                endTime: privateRecordStore.withdraw.endTime,
+              }
+            : {}
+        )
+      );
 
       if (privateRecordStore.withdraw.pageNum === 1) {
         privateRecordStore.withdraw.list = [...data.records];
@@ -168,10 +212,20 @@ export function useRecord() {
   const getOrderList = async (params = {}) => {
     try {
       privateRecordStore.loading = true;
-      const data = await WithdrawListRequest<any, any>({
-        pageNum: privateRecordStore.order.pageNum,
-        ...params,
-      });
+      const data = await WithdrawListRequest<any, any>(
+        Object.assign(
+          {
+            pageNum: privateRecordStore.order.pageNum,
+            ...params,
+          },
+          privateRecordStore.order.beginTime
+            ? {
+                beginTime: privateRecordStore.order.beginTime,
+                endTime: privateRecordStore.order.endTime,
+              }
+            : {}
+        )
+      );
 
       if (privateRecordStore.order.pageNum === 1) {
         privateRecordStore.order.list = [...data.records];
@@ -198,10 +252,20 @@ export function useRecord() {
   const getFollowList = async (params = {}) => {
     try {
       privateRecordStore.loading = true;
-      const data = await FollowListRequest<any, any>({
-        pageNum: privateRecordStore.follow.pageNum,
-        ...params,
-      });
+      const data = await FollowListRequest<any, any>(
+        Object.assign(
+          {
+            pageNum: privateRecordStore.follow.pageNum,
+            ...params,
+          },
+          privateRecordStore.follow.beginTime
+            ? {
+                beginTime: privateRecordStore.follow.beginTime,
+                endTime: privateRecordStore.follow.endTime,
+              }
+            : {}
+        )
+      );
 
       if (privateRecordStore.follow.pageNum === 1) {
         privateRecordStore.follow.list = [...data.records];
@@ -228,10 +292,20 @@ export function useRecord() {
   const getMessageList = async (params = {}) => {
     try {
       privateRecordStore.loading = true;
-      const data = await MessageListRequest<any, any>({
-        pageNum: privateRecordStore.message.pageNum,
-        ...params,
-      });
+      const data = await MessageListRequest<any, any>(
+        Object.assign(
+          {
+            pageNum: privateRecordStore.message.pageNum,
+            ...params,
+          },
+          privateRecordStore.message.beginTime
+            ? {
+                beginTime: privateRecordStore.message.beginTime,
+                endTime: privateRecordStore.message.endTime,
+              }
+            : {}
+        )
+      );
 
       if (privateRecordStore.message.pageNum === 1) {
         privateRecordStore.message.list = [...data.records];
@@ -258,10 +332,20 @@ export function useRecord() {
   const getAdvisoryList = async (params = {}) => {
     try {
       privateRecordStore.loading = true;
-      const data = await AdvisoryListRequest<any, any>({
-        pageNum: privateRecordStore.advisory.pageNum,
-        ...params,
-      });
+      const data = await AdvisoryListRequest<any, any>(
+        Object.assign(
+          {
+            pageNum: privateRecordStore.advisory.pageNum,
+            ...params,
+          },
+          privateRecordStore.advisory.beginTime
+            ? {
+                beginTime: privateRecordStore.advisory.beginTime,
+                endTime: privateRecordStore.advisory.endTime,
+              }
+            : {}
+        )
+      );
 
       if (privateRecordStore.advisory.pageNum === 1) {
         privateRecordStore.advisory.list = [...data.records];

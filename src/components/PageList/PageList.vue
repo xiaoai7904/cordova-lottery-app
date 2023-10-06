@@ -131,12 +131,15 @@ export default defineComponent({
 .empty-image {
   padding: 80px 20px 0 20px;
   flex-direction: column;
-  font-size: 24px;
 
   .nut-image,
   .van-image {
     width: 100px;
     height: 100%;
+  }
+
+  >svg {
+    font-size: 90px;
   }
 
   >p {

@@ -14,6 +14,7 @@ import {
   Skeleton,
   PullRefresh,
   Image,
+  ActionSheet,
 } from 'vant';
 import 'vant/lib/index.css';
 import Header from '../../src/components/Header/Header.vue';
@@ -32,6 +33,7 @@ export default boot(({ app }) => {
   app.use(Skeleton);
   app.use(PullRefresh);
   app.use(Image);
+  app.use(ActionSheet);
 
   app.component('Headers', Header);
 });
