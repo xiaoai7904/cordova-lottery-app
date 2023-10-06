@@ -4,8 +4,8 @@
       <div class="head"><img :src="userInfo.avatar" /></div>
       <div class="middle">
         <div class="names">{{ userInfo.username }}</div>
-        <span class="gz">1<span>关注</span></span>
-        <span class="gz">10<span>粉丝</span></span>
+        <span class="gz" @click="gotoByPath('/myFocus')">1<span>关注</span></span>
+        <span class="gz" @click="gotoByPath('/myFan')">10<span>粉丝</span></span>
       </div>
       <div class="shop"></div>
       <div class="kefu"></div>

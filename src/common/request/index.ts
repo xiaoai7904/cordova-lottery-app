@@ -148,7 +148,7 @@ export function SaveUserBankRequest<T, R>(params = {} as T) {
  * @returns
  */
 export function GetMyFocusRequest<T, R>(params = {} as T) {
-  return api.get<T, R>('/api/user/getMyFocus', { data: params });
+  return api.post<T, R>('/api/user/getMyFocus', params);
 }
 
 /**
@@ -157,7 +157,7 @@ export function GetMyFocusRequest<T, R>(params = {} as T) {
  * @returns
  */
 export function GetMyFanRequest<T, R>(params = {} as T) {
-  return api.get<T, R>('/api/user/getMyFan', { data: params });
+  return api.post<T, R>('/api/user/getMyFan', params);
 }
 
 /**
@@ -166,7 +166,7 @@ export function GetMyFanRequest<T, R>(params = {} as T) {
  * @returns
  */
 export function CancelFousRequest<T, R>(params = {} as T) {
-  return api.get<T, R>('/api/user/cancelFocus', { data: params });
+  return api.post<T, R>('/api/user/cancelFocus', params);
 }
 
 /**

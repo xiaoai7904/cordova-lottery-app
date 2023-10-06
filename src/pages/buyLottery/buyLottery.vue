@@ -130,7 +130,6 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useRecord } from 'src/hook';
-import PageList from 'src/components/PageList/PageList.vue';
 import TimeFilter from 'src/components/TimeFilter/TimeFilter.vue';
 
 import { watch } from 'vue';
@@ -153,7 +152,7 @@ const withdrawStatusMap: Record<number, string> = {
 }
 
 export default defineComponent({
-    components: { PageList, TimeFilter },
+    components: { TimeFilter },
     setup() {
         const pageListRef0 = ref<PageListRefType | null>(null);
         const pageListRef1 = ref<PageListRefType | null>(null);

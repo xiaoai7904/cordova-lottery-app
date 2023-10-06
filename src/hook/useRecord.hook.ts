@@ -1,3 +1,4 @@
+import { showLoadingToast, showSuccessToast } from 'vant';
 import {
   FinanceListRequest,
   RechargeListRequest,
@@ -8,7 +9,11 @@ import {
   MessageDetailsRequest,
   AdvisoryListRequest,
   AdvisoryDetailsRequest,
+  GetMyFocusRequest,
+  GetMyFanRequest,
+  CancelFousRequest,
 } from 'src/common';
+import type { MyFocusItemType } from 'src/common';
 import { reactive } from 'vue';
 
 export function useRecord() {
@@ -80,6 +85,26 @@ export function useRecord() {
       pageSize: 1,
       pages: 0,
       list: [] as any[],
+      isLoadEnd: false,
+      beginTime: '',
+      endTime: '',
+    },
+    myfocus: {
+      pageNum: 1,
+      total: 10,
+      pageSize: 1,
+      pages: 0,
+      list: [] as MyFocusItemType[],
+      isLoadEnd: false,
+      beginTime: '',
+      endTime: '',
+    },
+    myFan: {
+      pageNum: 1,
+      total: 10,
+      pageSize: 1,
+      pages: 0,
+      list: [] as MyFocusItemType[],
       isLoadEnd: false,
       beginTime: '',
       endTime: '',
@@ -366,6 +391,101 @@ export function useRecord() {
     }
   };
 
+  /**
+   * 取消关注
+   * @returns {}
+   */
+  const cancelFocus = async (params = {}) => {
+    try {
+      showLoadingToast('取消中...');
+      await CancelFousRequest<any, any>(params);
+      showSuccessToast('取消成功');
+      return Promise.resolve();
+    } catch (error) {}
+  };
+
+  /**
+   * 我的关注列表
+   * @param params {}
+   */
+  const getMyFocusList = async (params = {}) => {
+    try {
+      privateRecordStore.loading = true;
+      const data = await GetMyFocusRequest<any, any>(
+        Object.assign(
+          {
+            pageNum: privateRecordStore.myfocus.pageNum,
+            ...params,
+          },
+          privateRecordStore.myfocus.beginTime
+            ? {
+                beginTime: privateRecordStore.myfocus.beginTime,
+                endTime: privateRecordStore.myfocus.endTime,
+              }
+            : {}
+        )
+      );
+
+      if (privateRecordStore.myfocus.pageNum === 1) {
+        privateRecordStore.myfocus.list = [{} as any, {} as any, {} as any]; //[...data.records];
+      } else {
+        privateRecordStore.myfocus.list = [
+          ...privateRecordStore.myfocus.list,
+          ...data.records,
+        ];
+      }
+
+      privateRecordStore.myfocus.total = data.total;
+      privateRecordStore.myfocus.isLoadEnd =
+        privateRecordStore.myfocus.list.length >= data.total;
+      privateRecordStore.myfocus.pageSize = data.pageSize;
+      privateRecordStore.myfocus.pages = data.pages;
+    } finally {
+      privateRecordStore.loading = false;
+    }
+  };
+
+  /**
+   * 我的粉丝列表
+   * @param params {}
+   */
+  const getMyFanList = async (params = {}) => {
+    try {
+      privateRecordStore.loading = true;
+      const data = await GetMyFanRequest<any, any>(
+        Object.assign(
+          {
+            pageNum: privateRecordStore.myFan.pageNum,
+            ...params,
+          },
+          privateRecordStore.myFan.beginTime
+            ? {
+                beginTime: privateRecordStore.myFan.beginTime,
+                endTime: privateRecordStore.myFan.endTime,
+              }
+            : {}
+        )
+      );
+
+      if (privateRecordStore.myFan.pageNum === 1) {
+        privateRecordStore.myFan.list = [...data.records];
+      } else {
+        privateRecordStore.myFan.list = [
+          ...privateRecordStore.myFan.list,
+          ...data.records,
+        ];
+      }
+
+      privateRecordStore.myFan.total = data.total;
+      privateRecordStore.myFan.isLoadEnd =
+        privateRecordStore.myFan.list.length >= data.total;
+      privateRecordStore.myFan.pageSize = data.pageSize;
+      privateRecordStore.myFan.pages = data.pages;
+    } finally {
+      privateRecordStore.loading = false;
+    }
+  };
+
   return {
     privateRecordStore,
     getAccountDetailsList,
@@ -375,5 +495,8 @@ export function useRecord() {
     getOrderList,
     getMessageList,
     getAdvisoryList,
+    getMyFocusList,
+    getMyFanList,
+    cancelFocus,
   };
 }

@@ -221,6 +221,26 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/myFocus',
+    name: RouterNameEnum.MYFOCUS,
+    component: () => import('pages/myFocus/myFocusPage.vue'),
+    meta: {
+      title: '我的关注',
+      depth: 3,
+      isFooter: false,
+    },
+  },
+  {
+    path: '/myFan',
+    name: RouterNameEnum.MYFAN,
+    component: () => import('pages/myFan/myFanPage.vue'),
+    meta: {
+      title: '我粉丝',
+      depth: 3,
+      isFooter: false,
+    },
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },

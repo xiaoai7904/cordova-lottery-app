@@ -8,9 +8,6 @@ import {
   SaveUserIdentityInfoRequest,
   UserBankInfoRequest,
   SaveUserBankRequest,
-  GetMyFocusRequest,
-  GetMyFanRequest,
-  CancelFousRequest,
   CustomerListRequest,
   XA_TOKEN,
   UserInfoType,
@@ -76,20 +73,6 @@ export function useUser() {
       phone: '',
       image1: '',
       image2: '',
-    },
-    myfocus: {
-      pageIndex: 1,
-      total: 10,
-      pages: 1,
-      list: [] as MyFocusItemType[],
-      isLoadEnd: false,
-    },
-    myFan: {
-      pageIndex: 1,
-      total: 10,
-      pages: 1,
-      list: [] as MyFocusItemType[],
-      isLoadEnd: false,
     },
     customerList: [] as CustomItemType[],
   });
@@ -185,78 +168,6 @@ export function useUser() {
   };
 
   /**
-   * 取消关注
-   * @returns {}
-   */
-  const cancelFocus = async () => {
-    try {
-      await CancelFousRequest<any, any>();
-      showSuccessToast('取消成功');
-      return Promise.resolve();
-    } catch (error) {}
-  };
-
-  /**
-   * 我的关注列表
-   * @param params {}
-   */
-  const getMyFocusList = async (params = {}) => {
-    try {
-      privateUserStore.flowLoading = true;
-      const data = await GetMyFocusRequest<any, any>({
-        current: privateUserStore.myfocus.pageIndex,
-        ...params,
-      });
-
-      if (privateUserStore.myfocus.pageIndex === 1) {
-        privateUserStore.myfocus.list = [...data.records];
-      } else {
-        privateUserStore.myfocus.list = [
-          ...privateUserStore.myfocus.list,
-          ...data.records,
-        ];
-      }
-
-      privateUserStore.myfocus.total = data.total;
-      privateUserStore.myfocus.isLoadEnd =
-        privateUserStore.myfocus.list.length >= data.total;
-      privateUserStore.myfocus.pages = data.pages;
-    } finally {
-      privateUserStore.flowLoading = false;
-    }
-  };
-
-  /**
-   * 我的粉丝列表
-   * @param params {}
-   */
-  const getMyFanList = async (params = {}) => {
-    try {
-      privateUserStore.flowLoading = true;
-      const data = await GetMyFanRequest<any, any>({
-        current: privateUserStore.myFan.pageIndex,
-        ...params,
-      });
-
-      if (privateUserStore.myFan.pageIndex === 1) {
-        privateUserStore.myFan.list = [...data.records];
-      } else {
-        privateUserStore.myFan.list = [
-          ...privateUserStore.myFan.list,
-          ...data.records,
-        ];
-      }
-
-      privateUserStore.myFan.total = data.total;
-      privateUserStore.myFan.isLoadEnd =
-        privateUserStore.myFan.list.length >= data.total;
-      privateUserStore.myFan.pages = data.pages;
-    } finally {
-      privateUserStore.flowLoading = false;
-    }
-  };
-
-  /**
    * 客服信息
    */
   const getCustomList = async () => {
@@ -278,9 +189,6 @@ export function useUser() {
     addUserBank,
     getCertificationInfo,
     addCertificationInfo,
-    getMyFocusList,
-    getMyFanList,
-    cancelFocus,
     getCustomList,
     updateUserAvatar,
   };

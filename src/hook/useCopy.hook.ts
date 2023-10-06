@@ -9,7 +9,7 @@ export function useCopy() {
   const handleCopy = (text: string) => {
     if ($q.cordova) {
       (cordova.plugins as any).clipboard.copy(text);
-      successNotify('Copy Success');
+      successNotify('复制成功');
       return;
     }
 
@@ -17,7 +17,7 @@ export function useCopy() {
       return;
     }
     copy(text);
-    successNotify('Copy Success');
+    successNotify('复制成功');
   };
 
   // 获取 粘贴板 内容

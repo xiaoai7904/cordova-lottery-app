@@ -48,6 +48,10 @@ export enum RouterNameEnum {
   ACCOUNTDETAILS = 'accountDetails',
   // 购彩记录
   BUYLOTTERY = 'buyLottery',
+  // 我的关注
+  MYFOCUS = 'myFocus',
+  // 我的粉丝
+  MYFAN = 'myFan',
 }
 
 // 语言标识

@@ -17,7 +17,9 @@ import {
   ActionSheet,
 } from 'vant';
 import 'vant/lib/index.css';
-import Header from '../../src/components/Header/Header.vue';
+import Header from 'src/components/Header/Header.vue';
+import PageList from 'src/components/PageList/PageList.vue';
+
 export default boot(({ app }) => {
   app.use(Swipe);
   app.use(SwipeItem);
@@ -36,4 +38,5 @@ export default boot(({ app }) => {
   app.use(ActionSheet);
 
   app.component('Headers', Header);
+  app.component('PageList', PageList);
 });
