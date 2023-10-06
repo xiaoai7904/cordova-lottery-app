@@ -45,13 +45,14 @@ export default defineComponent({
   name: 'PageListView',
   props: {
     contentStyle: { type: Object, default: () => ({ minHeight: '30vh' }) },
-    requestApi: Function as PropType<() => any>,
+    requestApi: Function as PropType<(params?: object) => any>,
     list: { type: Array as PropType<any[]>, default: () => [] },
     current: { type: Number as PropType<number>, default: 1 },
     total: { type: Number as PropType<number>, default: 0 },
     pages: { type: Number as PropType<number>, default: 0 },
     empty: { type: String as PropType<string>, default: 'default' },
     isInit: { type: Boolean as PropType<boolean>, default: false },
+    requestParams: { type: Object, default: () => ({}) },
   },
   emits: ['update:current'],
   setup(props, { emit, slots, expose }) {
@@ -68,7 +69,7 @@ export default defineComponent({
       try {
         state.httpLoading = true;
         if (props.requestApi) {
-          await props.requestApi();
+          await props.requestApi(props.requestParams);
           state.httpLoading = false;
           if (state.refreshLoading) {
             state.refreshLoading = false;

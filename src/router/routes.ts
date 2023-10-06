@@ -211,6 +211,16 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/buyLottery',
+    name: RouterNameEnum.BUYLOTTERY,
+    component: () => import('pages/buyLottery/buyLottery.vue'),
+    meta: {
+      title: '购彩记录',
+      depth: 3,
+      isFooter: false,
+    },
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },

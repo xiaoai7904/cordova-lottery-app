@@ -212,7 +212,7 @@ export function useRecord() {
   const getOrderList = async (params = {}) => {
     try {
       privateRecordStore.loading = true;
-      const data = await WithdrawListRequest<any, any>(
+      const data = await OrderListRequest<any, any>(
         Object.assign(
           {
             pageNum: privateRecordStore.order.pageNum,
@@ -366,29 +366,6 @@ export function useRecord() {
     }
   };
 
-  const loadAccountDetailsList = (index?: number) => {
-    if (index) {
-      privateRecordStore.accountDetails.pageNum = index;
-    } else {
-      privateRecordStore.accountDetails.pageNum++;
-    }
-  };
-
-  const loadRechargeList = (index?: number) => {
-    if (index) {
-      privateRecordStore.recharge.pageNum = index;
-    } else {
-      privateRecordStore.recharge.pageNum++;
-    }
-  };
-
-  const loadWithdrawList = (index?: number) => {
-    if (index) {
-      privateRecordStore.withdraw.pageNum = index;
-    } else {
-      privateRecordStore.withdraw.pageNum++;
-    }
-  };
   return {
     privateRecordStore,
     getAccountDetailsList,
@@ -398,8 +375,5 @@ export function useRecord() {
     getOrderList,
     getMessageList,
     getAdvisoryList,
-    loadAccountDetailsList,
-    loadRechargeList,
-    loadWithdrawList,
   };
 }

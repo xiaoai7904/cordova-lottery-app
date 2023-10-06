@@ -46,6 +46,8 @@ export enum RouterNameEnum {
   BASKETBALL = 'basketball',
   // 账户明细
   ACCOUNTDETAILS = 'accountDetails',
+  // 购彩记录
+  BUYLOTTERY = 'buyLottery',
 }
 
 // 语言标识
