@@ -52,6 +52,8 @@ export enum RouterNameEnum {
   MYFOCUS = 'myFocus',
   // 我的粉丝
   MYFAN = 'myFan',
+  // 充值
+  RECHARGE = 'recharge',
 }
 
 // 语言标识

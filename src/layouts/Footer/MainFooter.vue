@@ -1,18 +1,8 @@
 <template>
   <div class="footer">
-    <q-tabs
-      v-model="routerActive"
-      active-class="routerActive"
-      indicator-color="transparent"
-    >
-      <q-tab
-        v-for="(item, key) in footer"
-        :key="key"
-        :name="item.path"
-        :icon="routerActive === item.path ? item.activeIcon : item.icon"
-        :label="item.name"
-        @click="handleClick(item)"
-      >
+    <q-tabs v-model="routerActive" active-class="routerActive" indicator-color="transparent">
+      <q-tab v-for="(item, key) in footer" :key="key" :name="item.path"
+        :icon="routerActive === item.path ? item.activeIcon : item.icon" :label="item.name" @click="handleClick(item)">
       </q-tab>
     </q-tabs>
   </div>
@@ -82,12 +72,14 @@ onMounted(() => {
 .footer {
   width: 100%;
   height: 120px;
+  max-width: 375px;
   display: flex;
   justify-content: space-between;
   position: fixed;
   bottom: 0;
   background: white;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   background: url('./assets/tabbar_bg.png') no-repeat;
   background-size: 100% 100%;
 

@@ -241,6 +241,16 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/recharge',
+    name: RouterNameEnum.RECHARGE,
+    component: () => import('pages/recharge/RechargePage.vue'),
+    meta: {
+      title: '充值',
+      depth: 3,
+      isFooter: false,
+    },
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },

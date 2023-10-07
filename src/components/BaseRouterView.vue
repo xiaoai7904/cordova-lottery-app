@@ -108,7 +108,7 @@ router.afterEach(() => {
 <style lang="scss" scoped>
 .app-rpouter-footer {
   background: #fffef5 url('../css/common/body.png') no-repeat top;
-  background-size: 390px 1048px;
+  background-size: 390px 100%;
 }
 
 .q-btn--fab {

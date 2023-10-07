@@ -16,7 +16,7 @@
           <span>{{ userInfo.balance }}</span>
           余额（元）
         </div>
-        <div class="cz-btn btn">充值</div>
+        <div class="cz-btn btn" @click="gotoByPath('/recharge')">充值</div>
         <div class="tx-btn btn">提现</div>
       </div>
       <div class="title">我的彩店</div>

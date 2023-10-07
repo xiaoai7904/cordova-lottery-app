@@ -1,0 +1,117 @@
+<template>
+  <div class="recharge">
+    <Headers title="充值" transparent />
+    <div class="recharge-content">
+      <div>
+        <div>
+          <h2 class="title">金额</h2>
+          <q-input v-model="rechargeAmount" placeholder="请输入充值金额" lazy-rules
+            :rules="[(val) => (val && val.length > 0) || '请输入充值金额']" />
+        </div>
+        <div class="row wrap justify-between items-center content-center q-gutter-sm amount-list">
+          <div v-for="item in rechargeAmountList" :key="item" class="row justify-center items-center amount-item "
+            @click="rechargeAmount = item">
+            {{ item }}元
+          </div>
+        </div>
+        <div class="tips">
+          <h2>充值说明</h2>
+          <p class="red">1、未满18岁未成年人禁止充值与投注。</p>
+          <p>2、充值金额以奇数(1-3-5-7-9)结尾，将享受优先到账。</p>
+          <p>3、已发起的支付必须完成支付，否则10分钟内不允许再次发起请求。</p>
+          <p>4、充值金额全部用于充入店主彩票机内进行出票，非整百金额可享优先到账，大额支付请联系店主。</p>
+        </div>
+      </div>
+
+      <div class="btn row justify-center">
+        <q-btn label="充值" type="submit" color="primary" />
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from 'vue';
+
+export default defineComponent({
+  setup() {
+    const rechargeAmountList = ref([13, 26, 75, 243, 416, 638, 1091, 4991]);
+    const rechargeAmount = ref('');
+
+    return { rechargeAmountList, rechargeAmount }
+  }
+})
+</script>
+
+<style scoped lang="scss">
+.recharge {
+  background: #fffef5 url('../../css/common/body.png') no-repeat top;
+  background-size: 390px 100%;
+  min-height: 100vh;
+
+  &-content {
+
+    padding: 44px 15px 15px 15px;
+
+    >div:first-child {
+      background: #fff;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 4px 0 hsla(0, 0%, 91.8%, .5);
+    }
+
+    .title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .amount-item {
+      border-radius: 5px;
+      background: #fff;
+      color: #77838d;
+      font-size: 14px;
+      width: 60px;
+      height: 35px;
+      border: 0.5px solid rgba(119, 131, 141, .5);
+
+    }
+
+    .amount-list {
+      margin: 0 0 15px 0;
+    }
+
+    .tips {
+      font-size: 14px;
+
+      >h2 {
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
+      .red {
+        color: #f73 !important;
+      }
+
+      p {
+        font-size: 12px;
+        color: #77838d;
+        margin-bottom: 5px;
+        line-height: 1.5em;
+      }
+    }
+
+    .btn {
+      width: 100%;
+      padding: 20px 0;
+
+      .q-btn {
+        width: 85%;
+        height: 48px;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+    }
+  }
+}
+</style>
