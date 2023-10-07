@@ -118,7 +118,8 @@ export default defineComponent({
     }
 
     .send {
-      font-size: 14px;
+      font-size: 15px;
+      color: #f73;
     }
 
     .send-code {
@@ -127,6 +128,18 @@ export default defineComponent({
       padding: 0 15px;
       box-shadow: 0 2px 4px 0 hsla(0, 0%, 91.8%, .5);
       margin-top: 20px;
+
+      :deep(.q-field--standard) {
+        .q-field__control:before {
+          border-bottom: 0
+        }
+      }
+
+      :deep(.q-field__native) {
+        // font-size: 18px;
+        color: grey;
+        // font-weight: 900;
+      }
     }
 
     .btn {
@@ -148,14 +161,8 @@ export default defineComponent({
 
     :deep(.q-field__native) {
       // font-size: 18px;
-      color: #f73;
+      color: grey;
       font-weight: 900;
-    }
-
-    :deep(.q-field--standard) {
-      .q-field__control:before {
-        border-bottom: 0
-      }
     }
   }
 }
