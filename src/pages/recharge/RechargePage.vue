@@ -5,12 +5,11 @@
       <div>
         <div>
           <h2 class="title">金额</h2>
-          <q-input v-model="rechargeAmount" placeholder="请输入充值金额" lazy-rules
-            :rules="[(val) => (val && val.length > 0) || '请输入充值金额']" />
+          <q-input v-model="rechargeAmount" placeholder="请输入充值金额" />
         </div>
         <div class="row wrap justify-between items-center content-center q-gutter-sm amount-list">
-          <div v-for="item in rechargeAmountList" :key="item" class="row justify-center items-center amount-item "
-            @click="rechargeAmount = item">
+          <div v-for="item in  rechargeAmountList " :key="item" class="row justify-center items-center amount-item"
+            :class="{ 'check': checkAmount === item }" @click="selectAmount(item)">
             {{ item }}元
           </div>
         </div>
@@ -24,7 +23,7 @@
       </div>
 
       <div class="btn row justify-center">
-        <q-btn label="充值" type="submit" color="primary" />
+        <q-btn label="充 值" type="submit" color="primary" :disabled="!rechargeAmount" />
       </div>
     </div>
 
@@ -38,8 +37,12 @@ export default defineComponent({
   setup() {
     const rechargeAmountList = ref([13, 26, 75, 243, 416, 638, 1091, 4991]);
     const rechargeAmount = ref('');
-
-    return { rechargeAmountList, rechargeAmount }
+    const checkAmount = ref('');
+    const selectAmount = (item: any) => {
+      checkAmount.value = item;
+      rechargeAmount.value = item
+    }
+    return { rechargeAmountList, rechargeAmount, checkAmount, selectAmount }
   }
 })
 </script>
@@ -78,7 +81,7 @@ export default defineComponent({
     }
 
     .amount-list {
-      margin: 0 0 15px 0;
+      margin: 10px 0 15px 0;
     }
 
     .tips {
@@ -109,8 +112,24 @@ export default defineComponent({
         width: 85%;
         height: 48px;
         border-radius: 8px;
-        font-size: 14px;
+        font-size: 16px;
+        font-weight: 500;
       }
+    }
+
+    .check {
+      color: #f73;
+      border-color: #f73;
+    }
+
+    :deep(.q-field__control) {
+      height: 50px;
+    }
+
+    :deep(.q-field__native) {
+      font-size: 18px;
+      color: #f73;
+      font-weight: 900;
     }
   }
 }

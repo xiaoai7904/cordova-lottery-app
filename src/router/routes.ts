@@ -251,6 +251,16 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/withdraw',
+    name: RouterNameEnum.WITHDRAW,
+    component: () => import('pages/withdraw/withdrawPage.vue'),
+    meta: {
+      title: '提现',
+      depth: 3,
+      isFooter: false,
+    },
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },

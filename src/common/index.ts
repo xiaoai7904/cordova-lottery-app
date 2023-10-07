@@ -54,6 +54,8 @@ export enum RouterNameEnum {
   MYFAN = 'myFan',
   // 充值
   RECHARGE = 'recharge',
+  // 提现
+  WITHDRAW = 'witdraw',
 }
 
 // 语言标识
