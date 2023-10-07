@@ -15,7 +15,8 @@
               <q-input v-model="amount" placeholder="请输入提现金额" />
             </div>
             <div class="all">
-              <p>余额¥ <span>{{ userInfo.balance || 0 }}</span>&nbsp;&nbsp;<span class="red">全部提款</span></p>
+              <p>余额¥ <span>{{ userInfo.balance || 0 }}</span>&nbsp;&nbsp;<span class="red"
+                  @click="withdrawAll">全部提款</span></p>
             </div>
           </div>
         </div>
@@ -44,7 +45,7 @@ import { defineComponent, ref } from 'vue';
 import { useUser, useCountDown } from 'src/hook';
 export default defineComponent({
   setup() {
-    const amount = ref('');
+    const amount = ref<any>('');
     const code = ref();
 
     const { userInfo } = useUser();
@@ -55,7 +56,11 @@ export default defineComponent({
       start(60);
     }
 
-    return { amount, userInfo, count, code, sendSmsCode }
+    const withdrawAll = () => {
+      amount.value = userInfo.value.balance || 0
+    }
+
+    return { amount, userInfo, count, code, sendSmsCode, withdrawAll }
   }
 })
 </script>

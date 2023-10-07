@@ -15,3 +15,5 @@ export * from './useHotUpdateApk.hook';
 export * from './useSaveImage.hook';
 export * from './useInAppBrowser.hook';
 export * from './useRecord.hook';
+export * from './useHome.hook';
+export * from './useMatch.hook';

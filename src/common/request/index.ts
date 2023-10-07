@@ -259,3 +259,30 @@ export function AdvisoryListRequest<T, R>(params = {} as T) {
 export function AdvisoryDetailsRequest<T, R>(params = {} as T) {
   return api.post<T, R>('/api/message/advisoryDetail', params);
 }
+
+/**
+ * 首页红榜
+ * @param params {}
+ * @returns
+ */
+export function HomeRedListRequest<T, R>(params = {} as T) {
+  return api.get<T, R>('/api/home/redList', { data: params });
+}
+
+/**
+ * 篮球比分
+ * @param params
+ * @returns
+ */
+export function BasketballRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/match/basketballList', params);
+}
+
+/**
+ * 足球比分
+ * @param params
+ * @returns
+ */
+export function FootballRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/match/footballList', params);
+}
