@@ -12,6 +12,7 @@ import {
   GetMyFocusRequest,
   GetMyFanRequest,
   CancelFousRequest,
+  HotUserListRequest,
 } from 'src/common';
 import type { MyFocusItemType } from 'src/common';
 import { reactive } from 'vue';
@@ -108,6 +109,9 @@ export function useRecord() {
       isLoadEnd: false,
       beginTime: '',
       endTime: '',
+    },
+    hotUser: {
+      list: [] as any[],
     },
   });
 
@@ -486,6 +490,20 @@ export function useRecord() {
     }
   };
 
+  /**
+   * 热门用户
+   * @param params {}
+   */
+  const getHotUserList = async (params = {}) => {
+    try {
+      privateRecordStore.loading = true;
+      const data: any = await HotUserListRequest<any, any>(params);
+      privateRecordStore.hotUser.list = [...data.data];
+    } finally {
+      privateRecordStore.loading = false;
+    }
+  };
+
   return {
     privateRecordStore,
     getAccountDetailsList,
@@ -498,5 +516,6 @@ export function useRecord() {
     getMyFocusList,
     getMyFanList,
     cancelFocus,
+    getHotUserList,
   };
 }

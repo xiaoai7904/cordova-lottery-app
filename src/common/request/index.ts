@@ -286,3 +286,48 @@ export function BasketballRequest<T, R>(params = {} as T) {
 export function FootballRequest<T, R>(params = {} as T) {
   return api.post<T, R>('/api/match/footballList', params);
 }
+
+/**
+ * 热门用户
+ * @param params
+ * @returns
+ */
+export function HotUserListRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/followOrder/userList', params);
+}
+
+/**
+ * 用户跟单详情
+ * @param params {}
+ * @returns
+ */
+export function FollowOrderUserDetailsRequest<T, R>(id = '' as T) {
+  return api.get<T, R>('/api/followOrder/userDetail/' + id);
+}
+
+/**
+ * 跟单列表
+ * @param params {}
+ * @returns
+ */
+export function FollowOrderListRequest<T, R>(params = {} as T) {
+  return api.get<T, R>('/api/followOrder/followList', { data: params });
+}
+
+/**
+ * 跟单详情
+ * @param params {}
+ * @returns
+ */
+export function FollowOrderDetailsRequest<T, R>(id = '' as T) {
+  return api.get<T, R>('/api/followOrder/followDetail/' + id);
+}
+
+/**
+ * 加入跟单
+ * @param params {}
+ * @returns
+ */
+export function AddFollowOrderRequest<T, R>(params = {} as T) {
+  return api.get<T, R>('/api/followOrder/addFollowOrder', { data: params });
+}
