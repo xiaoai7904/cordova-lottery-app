@@ -13,6 +13,10 @@ import {
   GetMyFanRequest,
   CancelFousRequest,
   HotUserListRequest,
+  FollowOrderListRequest,
+  FollowOrderUserDetailsRequest,
+  FollowOrderDetailsRequest,
+  AddFollowOrderRequest,
 } from 'src/common';
 import type { MyFocusItemType } from 'src/common';
 import { reactive } from 'vue';
@@ -112,6 +116,18 @@ export function useRecord() {
     },
     hotUser: {
       list: [] as any[],
+      details: {} as any,
+    },
+    followOrder: {
+      pageNum: 1,
+      total: 10,
+      pageSize: 1,
+      pages: 0,
+      list: [] as any[],
+      isLoadEnd: false,
+      beginTime: '',
+      endTime: '',
+      details: {} as any,
     },
   });
 
@@ -504,6 +520,88 @@ export function useRecord() {
     }
   };
 
+  /**
+   * 用户跟单详情
+   * @param params {}
+   */
+  const getHotUserDetails = async (id: string) => {
+    try {
+      privateRecordStore.loading = true;
+      const data: any = await FollowOrderUserDetailsRequest<any, any>(id);
+      privateRecordStore.hotUser.details = { ...data.data };
+    } finally {
+      privateRecordStore.loading = false;
+    }
+  };
+
+  /**
+   * 跟单列表
+   * @param params {}
+   */
+  const getFollowOrderList = async (params = {}) => {
+    try {
+      privateRecordStore.loading = true;
+      const data = await FollowOrderListRequest<any, any>(
+        Object.assign(
+          {
+            pageNum: privateRecordStore.followOrder.pageNum,
+            ...params,
+          },
+          privateRecordStore.followOrder.beginTime
+            ? {
+                beginTime: privateRecordStore.followOrder.beginTime,
+                endTime: privateRecordStore.followOrder.endTime,
+              }
+            : {}
+        )
+      );
+
+      if (privateRecordStore.followOrder.pageNum === 1) {
+        privateRecordStore.followOrder.list = [...data.records];
+      } else {
+        privateRecordStore.followOrder.list = [
+          ...privateRecordStore.followOrder.list,
+          ...data.records,
+        ];
+      }
+
+      privateRecordStore.followOrder.total = data.total;
+      privateRecordStore.followOrder.isLoadEnd =
+        privateRecordStore.followOrder.list.length >= data.total;
+      privateRecordStore.followOrder.pageSize = data.pageSize;
+      privateRecordStore.followOrder.pages = data.pages;
+    } finally {
+      privateRecordStore.loading = false;
+    }
+  };
+
+  /**
+   * 用户跟单详情
+   * @param params {}
+   */
+  const getFollowOrderDetails = async (id: string) => {
+    try {
+      privateRecordStore.loading = true;
+      const data: any = await FollowOrderDetailsRequest<any, any>(id);
+      privateRecordStore.followOrder.details = { ...data.data };
+    } finally {
+      privateRecordStore.loading = false;
+    }
+  };
+
+  /**
+   * 加入跟单
+   * @returns {}
+   */
+  const addFollowOrder = async (params = {}) => {
+    try {
+      showLoadingToast('操作中...');
+      await AddFollowOrderRequest<any, any>(params);
+      showSuccessToast('跟单成功');
+      return Promise.resolve();
+    } catch (error) {}
+  };
+
   return {
     privateRecordStore,
     getAccountDetailsList,
@@ -517,5 +615,9 @@ export function useRecord() {
     getMyFanList,
     cancelFocus,
     getHotUserList,
+    getHotUserDetails,
+    getFollowOrderList,
+    getFollowOrderDetails,
+    addFollowOrder,
   };
 }
