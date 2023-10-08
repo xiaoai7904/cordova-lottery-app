@@ -1,7 +1,7 @@
 import { GridItem } from 'vant';
 <template>
   <div class="lotteryDraw">
-    <div style="width: 100%; background: #fff">
+    <div style="width: 100%">
       <van-tabs v-model:active="model.active">
         <van-tab title="足球" :name="1">
           <div>
@@ -231,7 +231,7 @@ export default defineComponent({
     height: 83px;
     color: #aaa;
     font-size: 12px;
-    border-radius: 16prx;
+    border-radius: 8px;
     background-color: #fff;
 
     .top {
@@ -309,6 +309,11 @@ export default defineComponent({
     width: 29px;
     height: 3px;
     background: linear-gradient(63deg, #fff120, #fcdf6b);
+
+    .van-tabs__wrap {
+      background-color: #fff;
+      border-radius: 0 0 15px 15px;
+    }
   }
 }
 </style>

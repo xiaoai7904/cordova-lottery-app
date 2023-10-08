@@ -161,6 +161,15 @@ export function GetMyFanRequest<T, R>(params = {} as T) {
 }
 
 /**
+ * 关注
+ * @param params {}
+ * @returns
+ */
+export function AddFousRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/user/addFocus', params);
+}
+
+/**
  * 取消关注
  * @param params {}
  * @returns

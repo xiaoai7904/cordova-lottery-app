@@ -12,7 +12,7 @@ export function useHome() {
     try {
       privateHomeStore.loading = true;
       const data: any = await HomeRedListRequest();
-      privateHomeStore.redList = [...data.data];
+      privateHomeStore.redList = [...data];
     } catch (error) {
     } finally {
       privateHomeStore.loading = false;

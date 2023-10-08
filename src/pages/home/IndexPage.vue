@@ -27,13 +27,19 @@
         </div>
       </div>
     </div>
-    <div class="gods_box">
-      <div class="item" v-for="(item, i) in model.topList" :key="i" @click="() => router.push('/userOrder')">
+
+    <div class="skeleton" v-if="privateHomeStore.loading">
+      <van-skeleton title :row="3" />
+      <van-skeleton title :row="3" />
+    </div>
+
+    <div v-else class="gods_box">
+      <div class="item" v-for="(item, i) in privateHomeStore.redList" :key="i" @click="() => router.push('/userOrder')">
         <span>{{ i + 1 }}</span>
-        <img :src="item.img" />
-        <span class="name">{{ item.name }}</span>
+        <img :src="item.avatar" />
+        <span class="name">{{ item.nikeName }}</span>
         <span class="money">
-          {{ item.money }}
+          {{ item.bonus }}
           <span>元</span>
         </span>
       </div>
@@ -49,25 +55,13 @@ export default defineComponent({
   setup() {
     const router = useCustomRouter();
     const { privateHomeStore, getHomeRedList, getHomeBannerList } = useHome();
-    const model = reactive({
-      topList: [
-        {
-          name: '中国第一彩团',
-          img: require('./assets/1.png'),
-          money: '23609.6',
-        },
-        { name: '梦都足球', img: require('./assets/2.png'), money: '29910.92' },
-        { name: '博哥玩球', img: require('./assets/3.png'), money: '8664' },
-        { name: '出手就赢', img: require('./assets/4.png'), money: '54775.2' },
-      ],
-    });
 
     onMounted(() => {
       getHomeRedList()
       getHomeBannerList();
     })
 
-    return { model, router, privateHomeStore };
+    return { router, privateHomeStore };
   },
 });
 </script>
@@ -169,7 +163,7 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     margin: 15px auto;
     padding: 85px 0 22px 0;
     width: 380px;
@@ -212,6 +206,20 @@ export default defineComponent({
           font-weight: 400;
         }
       }
+    }
+  }
+
+  .skeleton {
+    padding: 20px 0;
+    margin: 15px auto;
+    padding: 120px 0 22px 0;
+    width: 380px;
+    height: 446px;
+    background: url('./assets/top.png') no-repeat;
+    background-size: 380px 446px;
+
+    .van-skeleton {
+      margin-bottom: 10px;
     }
   }
 }

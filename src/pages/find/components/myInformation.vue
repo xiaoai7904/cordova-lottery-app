@@ -1,22 +1,35 @@
 <template>
   <div class="myInformation">
-    <div class="item" v-for="item in 10" :key="item">
-      <div class="item-box">
-        <div class="top">
-          <i>足球</i>
-          <span>9月19日竞彩足球解析:中国期待开门红 巴黎后场压力大</span>
+    <PageList ref="pageListRef1" isInit :requestApi="getAdvisoryList" :list="privateRecordStore.advisory.list"
+      :total="privateRecordStore.advisory.total" :pages=privateRecordStore.advisory.pages
+      v-model:current="privateRecordStore.advisory.pageNum" v-slot="slotProps">
+      <div class="item" v-for="item in slotProps.list" :key="item">
+        <div class="item-box">
+          <div class="top">
+            <i>{{ item.type === 1 ? '足球' : '篮球' }}</i>
+            <span>{{ item.title }}</span>
+          </div>
+          <img :src="require('../assets/eye.png')" />
+          <div class="text1">70</div>
+          <div class="text2">{{ '--' }}</div>
         </div>
-        <img :src="require('../assets/eye.png')" />
-        <div class="text1">70</div>
-        <div class="text2">2023-09-19 09:23</div>
       </div>
-    </div>
+    </PageList>
+
+
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-export default defineComponent({});
+import { useRecord } from 'src/hook';
+
+export default defineComponent({
+  setup() {
+    const { privateRecordStore, getAdvisoryList } = useRecord();
+    return { privateRecordStore, getAdvisoryList }
+  }
+});
 </script>
 <style scoped lang="scss">
 .myInformation {
@@ -24,6 +37,7 @@ export default defineComponent({});
   min-height: 100vh;
   overflow: hidden;
   padding-bottom: 108px;
+
   .item {
     position: relative;
     display: flex;
@@ -33,10 +47,12 @@ export default defineComponent({});
     height: 99px;
     border-radius: 6px;
     background-color: #fff;
+
     .item-box {
       flex: 1;
       font-size: 13px;
       color: #c7c7cc;
+
       .top {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -48,6 +64,7 @@ export default defineComponent({});
         font-size: 16px;
         color: #484848;
         line-height: 20px;
+
         i {
           display: inline-block;
           margin-right: 5px;
@@ -62,17 +79,20 @@ export default defineComponent({});
           background-color: rgba(255, 119, 51, 0.15);
         }
       }
+
       img {
         position: absolute;
         bottom: 21px;
         left: 20px;
         width: 12px;
       }
+
       .text1 {
         position: absolute;
         bottom: 18px;
         left: 36px;
       }
+
       .text2 {
         position: absolute;
         bottom: 18px;

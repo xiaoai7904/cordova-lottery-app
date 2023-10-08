@@ -8,7 +8,7 @@
           <div class="top">博哥玩球</div>
           <div class="bottom"><span>783</span>粉丝</div>
         </div>
-        <div class="follow">已关注</div>
+        <div class="follow" @click="follow2cancel">已关注</div>
       </div>
     </div>
     <div class="c_box">
@@ -77,18 +77,18 @@
             <div class="tab_box">
               <table>
                 <th>
-                  <td>场次</td>
-                  <td>对阵</td>
-                  <td>比分</td>
-                  <td>投注</td>
-                  <td>胆</td>
+                <td>场次</td>
+                <td>对阵</td>
+                <td>比分</td>
+                <td>投注</td>
+                <td>胆</td>
                 </th>
                 <tr>
                   <td>
                     <p>周日</p>
                     <p>004</p>
                   </td>
-                  <td >
+                  <td>
                     <div class="tag">大邱</div>
                     <div class="tag">VS</div>
                     <div class="tag">浦项制铁</div>
@@ -108,7 +108,7 @@
                     <p>周日</p>
                     <p>004</p>
                   </td>
-                  <td >
+                  <td>
                     <div class="tag">大邱</div>
                     <div class="tag">VS</div>
                     <div class="tag">浦项制铁</div>
@@ -152,9 +152,15 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
+import { useRoute } from 'vue-router'
+import { useRecord } from 'src/hook'
+import { onMounted } from 'vue';
 export default defineComponent({
   setup() {
+    const { privateRecordStore, getFollowOrderDetails, cancelFocus, addFocus, } = useRecord();
+    const { query } = useRoute()
+    const activeName = ref('a')
     const data = [
       { label: '中', value: 1 },
       { label: '中', value: 1 },
@@ -163,7 +169,17 @@ export default defineComponent({
       { label: '未', value: 0 },
     ];
 
-    return { data, status };
+    const follow2cancel = () => {
+      cancelFocus()
+      addFocus()
+    }
+
+    onMounted(() => {
+      if (query.id) {
+        getFollowOrderDetails(query.id as string)
+      }
+    })
+    return { data, activeName, follow2cancel };
   },
 });
 </script>
@@ -172,34 +188,41 @@ export default defineComponent({
   background: #f6f6f6;
   // padding: 0 20px;
   padding-top: 44px;
+
   .head_box {
     margin: 0 auto;
     width: 100%;
+
     .user_box {
       display: flex;
       align-items: center;
       height: 95px;
       color: #48484b;
+
       img {
         margin-left: 34px;
         width: 58px;
         height: 58px;
         border-radius: 20px;
       }
+
       .info {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         margin-left: 15px;
         height: 58px;
+
         .top {
           font-size: 19px;
           font-weight: 500;
           color: rgba(0, 0, 0, 0.85);
         }
+
         .bottom {
           font-size: 12px;
           color: rgba(0, 0, 0, 0.5);
+
           span {
             margin-right: 5px;
             font-size: 14px;
@@ -207,6 +230,7 @@ export default defineComponent({
           }
         }
       }
+
       .follow {
         margin-left: auto;
         margin-right: 15px;
@@ -222,6 +246,7 @@ export default defineComponent({
       }
     }
   }
+
   .c_box {
     margin: 0 auto 15px;
     width: 346px;
@@ -234,6 +259,7 @@ export default defineComponent({
       display: flex;
       padding: 20px 0;
       width: 100%;
+
       .item {
         flex: 1;
         position: relative;
@@ -241,12 +267,14 @@ export default defineComponent({
         font-size: 16px;
         font-weight: 400;
         text-align: center;
+
         div {
           font-size: 12px;
           color: hsla(0, 0%, 100%, 0.85);
           margin-top: 8px;
         }
       }
+
       .item1 {
         &::before {
           content: '';
@@ -257,6 +285,7 @@ export default defineComponent({
           background-color: #e0e0e0;
           left: 0;
         }
+
         &::after {
           content: '';
           position: absolute;
@@ -268,31 +297,38 @@ export default defineComponent({
         }
       }
     }
+
     .bottom {
       display: flex;
       align-items: center;
       padding: 15px 18px;
       width: 100%;
+
       span {
         color: #fff;
         font-size: 14px;
         font-weight: 500;
         width: 115px;
       }
+
       .ball-box {
         flex: 1;
         display: flex;
+
         .item {
           display: flex;
         }
+
         .yes {
           color: #fff;
           background-color: #f73;
         }
+
         .no {
           color: rgba(0, 0, 0, 0.85);
           background-color: #fff;
         }
+
         .ball {
           display: flex;
           justify-content: center;
@@ -303,6 +339,7 @@ export default defineComponent({
           font-size: 10px;
           font-weight: 500;
         }
+
         .arrow {
           width: 20px;
           height: 30px;
@@ -311,12 +348,14 @@ export default defineComponent({
         }
       }
     }
+
     .game_box {
       display: flex;
       flex-direction: column;
       margin-top: 25px;
       width: 100%;
       background-color: #fff;
+
       .top {
         display: flex;
         align-items: center;
@@ -324,15 +363,18 @@ export default defineComponent({
         padding: 0 15px;
         width: 100%;
         height: 44px;
+
         img {
           width: 44px;
           height: 44px;
         }
+
         span {
           font-size: 15px;
           font-weight: 500;
           color: rgba(0, 0, 0, 0.85);
         }
+
         .right {
           margin-left: auto;
           color: #6d7278;
@@ -340,12 +382,14 @@ export default defineComponent({
           font-weight: 500;
         }
       }
+
       .middle {
         padding: 0 15px;
         color: #7b7d7e;
         font-size: 13px;
         line-height: 16px;
       }
+
       .bottom {
         display: flex;
         justify-content: space-between;
@@ -355,11 +399,13 @@ export default defineComponent({
         height: 57px;
         border-radius: 4px;
         background-color: #fff7ec;
+
         .item:last-child {
           &::before {
             background: none !important;
           }
         }
+
         .item {
           flex: 1;
           color: #1d2632;
@@ -367,6 +413,7 @@ export default defineComponent({
           font-weight: 500;
           text-align: center;
           position: relative;
+
           &::before {
             content: '';
             position: absolute;
@@ -378,6 +425,7 @@ export default defineComponent({
             height: 24px;
             background: #e0e0e0;
           }
+
           div:nth-of-type(2) {
             font-size: 10px;
             color: rgba(0, 0, 0, 0.5);
@@ -387,6 +435,7 @@ export default defineComponent({
       }
     }
   }
+
   .box {
     overflow: hidden;
     margin: 15px auto;
@@ -396,66 +445,86 @@ export default defineComponent({
     background-color: #fff;
     box-shadow: 0 2px 13px 0 hsla(0, 0%, 91.8%, 0.64);
     padding: 0 10px;
+
     .tab_box {
       width: 100%;
       height: 234px;
       background-color: #f6f6f6;
       overflow-y: auto;
+
       .tag {
         color: #f73
       }
+
       table {
         width: 100%;
         font-size: 12px;
         color: #303133;
         margin-top: 3px;
+
         th {
           text-align: center;
           display: flex;
+
           td {
-           flex: 1;
+            flex: 1;
             text-align: center;
             padding: 5px 3px;
           }
         }
+
         tr {
           display: flex;
+
           td {
             flex: 1;
             display: flex;
-            align-items: center;;
+            align-items: center;
+            ;
             text-align: center;
             padding: 5px 3px;
             flex-wrap: wrap;
             justify-content: center;
-            div, p {
+
+            div,
+            p {
               width: 100%;
             }
 
           }
         }
       }
+
       .tab-item {
         width: 100%;
         font-size: 12px;
         display: flex;
         color: #303133;
         margin-top: 3px;
+
         div {
           padding: 5px 3px;
           text-align: center;
         }
+
         div:nth-of-type(1) {
-          width:30%
+          width: 30%
         }
-        div:nth-of-type(2) { width:30%}
-        div:nth-of-type(3) { width:40%}
+
+        div:nth-of-type(2) {
+          width: 30%
+        }
+
+        div:nth-of-type(3) {
+          width: 40%
+        }
       }
     }
 
     :deep(.van-tab--active) {
       color: #f73;
     }
+
     :deep(.van-tabs__line) {
       background: #f73;
       height: 2px;

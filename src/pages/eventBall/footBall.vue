@@ -57,7 +57,6 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
-import { useRouter } from 'vue-router';
 import PlayerPopup from './components/playerPopup.vue';
 import FilterPopup from './components/filerPopup.vue';
 import HhBet from './components/hhBet.vue';
@@ -68,7 +67,7 @@ import BqcBet from './components/bqcBet.vue';
 import Choose2Bet from './components/choose2Bet.vue';
 import YczsBet from './components/yczsBet.vue';
 import { useMatch, useCustomRouter } from 'src/hook';
-import { Utils } from 'src/common'
+import { Utils, MATCH_STATUS } from 'src/common'
 import { onMounted } from 'vue';
 export default defineComponent({
   components: {
@@ -121,7 +120,7 @@ export default defineComponent({
 
     onMounted(() => {
       const [startTime, endTime] = getMatchTime()
-      getFootballScoreList({ beginTime: startTime, endTime: endTime })
+      getFootballScoreList({ beginTime: startTime, endTime: endTime, status: MATCH_STATUS.NOT_START_YET })
     })
 
     return { router, model, getEventName, filterData, handlerSelect };

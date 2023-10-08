@@ -1,45 +1,46 @@
 <template>
   <div class="list-box">
     <div class="l-header">
-      <img :src="require('./assets/1.png')" />
+      <img :src="data.avatar" alt="avatar" />
       <div class="info">
-        <div class="left" @click="() => router.push('/userOrder')">
-          <div class="top">以鹿为马</div>
-          <div class="bottom">09-21 21:30截止</div>
+        <div class="left">
+          <div class="top">{{ data.nikeName }}</div>
+          <div class="bottom">{{ data.cdate }}截止</div>
         </div>
         <div class="right">
-          <div class="top">0%</div>
+          <div class="top">{{ data.winRate }}%</div>
           <div class="bottom">盈利率</div>
         </div>
       </div>
     </div>
     <div class="l-con">
-      <span>[竞猜足球]</span>
+      <span>[竞猜{{ data.betType === 1 ? '足球' : '篮球' }}]</span>
       竞彩比赛精选方案！
     </div>
     <div class="l-footer">
       <div class="tab">
-        <div>-</div>
+        <div>{{ data.followUsers }}</div>
 
         <div class="text">跟单热度</div>
       </div>
       <div class="tab">
-        <div>264元</div>
+        <div>{{ data.tmoney }}元</div>
         <div class="text">自购金额</div>
       </div>
       <div class="tab">
-        <div>-</div>
+        <div>{{ data.rate }}%</div>
         <div class="text">预估回报率</div>
       </div>
-      <div class="btn">跟单</div>
+      <div class="btn" @click="followOrder">跟单</div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue';
-import { defineComponent } from 'vue';
-
+import { PropType, defineComponent } from 'vue';
+import { useCustomRouter } from 'src/hook'
+import { RouterNameEnum } from 'src/common';
+import { data } from 'autoprefixer';
 export default defineComponent({
   props: {
     data: {
@@ -48,7 +49,12 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
-    return {}
+    const router = useCustomRouter()
+    const followOrder = () => {
+      router.push({ name: RouterNameEnum.USERORDER, query: { id: props.data.foId } })
+    }
+
+    return { followOrder }
   },
 })
 </script>

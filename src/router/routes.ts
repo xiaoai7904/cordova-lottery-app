@@ -74,20 +74,20 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: '/userDetail',
-        name: RouterNameEnum.USER_DETAIL,
+        name: RouterNameEnum.USERDETAIL,
         component: () => import('src/pages/user/userDetail/userDetail.vue'),
         meta: {
           title: '',
-          depth: 1,
+          depth: 2,
         },
       },
       {
         path: '/userOrder',
-        name: RouterNameEnum.USER_ORDER,
+        name: RouterNameEnum.USERORDER,
         component: () => import('src/pages/user/userOrder/userOrder.vue'),
         meta: {
           title: '',
-          depth: 1,
+          depth: 2,
         },
       },
       {

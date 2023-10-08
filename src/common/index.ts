@@ -27,9 +27,9 @@ export enum RouterNameEnum {
   // 商店详情
   SHOP = 'shop',
   // 用户详情
-  USER_DETAIL = 'userDetail',
+  USERDETAIL = 'userDetail',
   // 用户下单详情
-  USER_ORDER = 'userOrder',
+  USERORDER = 'userOrder',
   // 设置
   SETTING = 'setting',
   // 登录密码
@@ -81,4 +81,10 @@ export const XA_SMS_STATUS = 'XA_SMS_STATUS';
 export enum ERROR_CODES {
   'INSUFFICIENT_BALANCE' = 1013,
   'UPI_ERROR' = 1014,
+}
+
+export enum MATCH_STATUS {
+  'NOT_START_YET' = 0,
+  'ONGOING' = 1,
+  'END' = 2,
 }

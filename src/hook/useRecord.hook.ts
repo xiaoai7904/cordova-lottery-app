@@ -17,6 +17,7 @@ import {
   FollowOrderUserDetailsRequest,
   FollowOrderDetailsRequest,
   AddFollowOrderRequest,
+  AddFousRequest,
 } from 'src/common';
 import type { MyFocusItemType } from 'src/common';
 import { reactive } from 'vue';
@@ -413,19 +414,6 @@ export function useRecord() {
   };
 
   /**
-   * 取消关注
-   * @returns {}
-   */
-  const cancelFocus = async (params = {}) => {
-    try {
-      showLoadingToast('取消中...');
-      await CancelFousRequest<any, any>(params);
-      showSuccessToast('取消成功');
-      return Promise.resolve();
-    } catch (error) {}
-  };
-
-  /**
    * 我的关注列表
    * @param params {}
    */
@@ -603,6 +591,32 @@ export function useRecord() {
     } catch (error) {}
   };
 
+  /**
+   * 关注
+   * @returns {}
+   */
+  const addFocus = async (params = {}) => {
+    try {
+      showLoadingToast('关注中...');
+      await AddFousRequest<any, any>(params);
+      showSuccessToast('关注成功');
+      return Promise.resolve();
+    } catch (error) {}
+  };
+
+  /**
+   * 取消关注
+   * @returns {}
+   */
+  const cancelFocus = async (params = {}) => {
+    try {
+      showLoadingToast('取消中...');
+      await CancelFousRequest<any, any>(params);
+      showSuccessToast('取消成功');
+      return Promise.resolve();
+    } catch (error) {}
+  };
+
   return {
     privateRecordStore,
     getAccountDetailsList,
@@ -615,6 +629,7 @@ export function useRecord() {
     getMyFocusList,
     getMyFanList,
     cancelFocus,
+    addFocus,
     getHotUserList,
     getHotUserDetails,
     getFollowOrderList,
