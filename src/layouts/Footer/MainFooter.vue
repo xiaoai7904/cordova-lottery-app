@@ -77,10 +77,9 @@ onMounted(() => {
   justify-content: space-between;
   position: fixed;
   bottom: 0;
-  background: white;
   left: 50%;
   transform: translateX(-50%);
-  background: url('./assets/tabbar_bg.png') no-repeat;
+  background: #fff url('./assets/tabbar_bg.png') no-repeat;
   background-size: 100% 100%;
 
   .q-tabs {

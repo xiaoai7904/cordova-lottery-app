@@ -12,6 +12,7 @@ import {
   CellGroup,
   Uploader,
   Skeleton,
+  SkeletonImage,
   PullRefresh,
   Image,
   ActionSheet,
@@ -33,6 +34,7 @@ export default boot(({ app }) => {
   app.use(CellGroup);
   app.use(Uploader);
   app.use(Skeleton);
+  app.use(SkeletonImage);
   app.use(PullRefresh);
   app.use(Image);
   app.use(ActionSheet);

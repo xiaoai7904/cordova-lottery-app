@@ -5,70 +5,42 @@
       v-model:current="privateMatchStore.basketball.pageNum" v-slot="slotProps">
       <div class="ball-box" v-for="(item, index) in slotProps.list" :key="index">
         <div class="a-box">
-          周二301 美职女篮<span class="time">09-20 07:00</span>
+          {{ Utils.getWeek(item.matchTime * 1000) }} {{ item.shortComp }}<span class="time">{{
+            Utils.formatDate(item.matchTime * 1000, 'MM-DD HH:mm') }}</span>
         </div>
         <div class="a-box">
           <div class="left">
             <span class="left-item">
-              <span>神秘人</span>
-              <span>1</span>
+              <span>{{ item.home }}</span>
+              <span>{{ item.homeScore }}</span>
             </span>
             <span class="left-item left-item-secend">
-              <span>自由</span>
-              <span>2</span>
+              <span>{{ item.away }}</span>
+              <span>{{ item.awayScore }}</span>
             </span>
           </div>
-          <span class="active"><span>未开赛</span></span>
+          <span class="active"><span>{{ matchStatus[item.status] }}</span></span>
         </div>
       </div>
     </PageList>
-    <!-- <div class="ball-box">
-      <div class="a-box">
-        周二301 美职女篮<span class="time">09-20 07:00</span>
-      </div>
-      <div class="a-box">
-        <div class="left">
-          <span class="left-item">
-            <span>神秘人</span>
-            <span>1</span>
-          </span>
-          <span class="left-item left-item-secend">
-            <span>自由</span>
-            <span>2</span>
-          </span>
-        </div>
-        <span class="active"><span>未开赛</span></span>
-      </div>
-    </div>
-    <div class="ball-box">
-      <div class="a-box">
-        周二301 美职女篮<span class="time">09-20 07:00</span>
-      </div>
-      <div class="a-box">
-        <div class="left">
-          <span class="left-item">
-            <span>神秘人</span>
-            <span></span>
-          </span>
-          <span class="left-item left-item-secend">
-            <span>自由</span>
-            <span></span>
-          </span>
-        </div>
-        <span class="active"><span>未开赛</span></span>
-      </div>
-    </div> -->
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useMatch } from 'src/hook'
+import { Utils } from 'src/common'
+
 export default defineComponent({
   setup() {
     const { privateMatchStore, getBaketBallScoreList } = useMatch();
-
-    return { privateMatchStore, getBaketBallScoreList };
+    const isIng = (matchTime: number) => (matchTime * 1000) <= Date.now()
+    const matchStatus: any = {
+      0: '未开赛',
+      1: '进行中',
+      2: '已完赛'
+    }
+    return { privateMatchStore, getBaketBallScoreList, Utils, isIng, matchStatus };
   }
 });
 </script>

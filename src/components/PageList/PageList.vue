@@ -3,7 +3,7 @@
     loadingText="加载中">
     <div :style="contentStyle">
       <van-list v-if="!isEmpty" finished-text="- 已加载全部内容 -" :finished="state.finished" :immediate-check="false"
-        :offset="200" v-model:loading="state.httpLoading" onLoad={onLoadList} loadingText="正在加载中...">
+        :offset="200" v-model:loading="state.httpLoading" @load="onLoadList" loadingText="正在加载中...">
         <slot :list="list"></slot>
       </van-list>
       <div v-if="isEmpty && !state.httpLoading" class="empty-image flex-center">
@@ -147,6 +147,12 @@ export default defineComponent({
     font-size: 14px;
     color: var(--color-text-title);
     margin-top: 10px;
+  }
+}
+
+.skeleton-loading {
+  .van-skeleton {
+    margin-bottom: 20px;
   }
 }
 </style>

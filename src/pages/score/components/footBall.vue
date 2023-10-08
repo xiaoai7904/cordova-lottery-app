@@ -5,68 +5,52 @@ import { GridItem } from 'vant';
       <van-tab v-for="(item, i) in model.tabList" :key="i" :title="item.name" :name="item.value">
         <PageList isInit :requestApi="getFootballScoreList" :list="privateMatchStore.football.list"
           :total="privateMatchStore.football.total" :pages=privateMatchStore.football.pages
-          :requestParams="{ status: item.value }" v-model:current="privateMatchStore.football.pageNum" v-slot="slotProps">
+          :requestParams="item.value ? { status: item.value } : {}" v-model:current="privateMatchStore.football.pageNum"
+          v-slot="slotProps">
           <div class="data-item" v-for="(item, i) in slotProps.list" :key="i">
             <div class="base-box">
-              {{ item.week }}
+              {{ Utils.getWeek(item.matchTime * 1000) }}
               <br />
-              <span>
-                <span class="edg">[{{ item.number }}]</span>{{ item.homeName }}</span>
-            </div>
-            <div class="base-box">
-              <span class="edg">{{ item.eventName }}</span><br />
-              <span>
-                <span class="gameTime">4 <a class="time-animate">'</a></span>
-                VS
-                <span class="tag source"> {{ item.tag }}{{ item.result }} </span>
+              <span class="flex-center">
+                <!-- <span class="edg">[{{ item.number }}]</span> -->
+                <span class="es">{{ item.home }}</span>
               </span>
             </div>
             <div class="base-box">
-              <span>{{ item.time }}</span>
+              <span class="edg">{{ item.comp }}</span><br />
+              <span v-if="isIng(item.homeScore)">
+                <span class="gameTime">4 <a class="time-animate">'</a></span>
+                <span>{{ item.homeScore }}:{{ item.awayScore }}</span>
+                <span class="tag source">半{{ item.halfHomeScore }}:{{ item.halfAwayScore }} </span>
+              </span>
+              <span v-else>
+                <span>VS</span>
+              </span>
+            </div>
+            <div class="base-box">
+              <span>{{ Utils.formatDate(item.matchTime * 1000, 'MM-DD HH:mm') }}</span>
               <br />
-              <span>{{ item.awayName }}</span>
+              <span class="es flex-center">{{ item.away }}</span>
             </div>
           </div>
         </PageList>
       </van-tab>
     </van-tabs>
-    <!-- <van-list v-model:loading="model.loading" :finished="model.finished" finished-text="没有更多了" @load="onLoad">
-      <div class="data-item" v-for="(item, i) in model.dataList" :key="i">
-        <div class="base-box">
-          {{ item.week }}
-          <br />
-          <span>
-            <span class="edg">[{{ item.number }}]</span>{{ item.homeName }}</span>
-        </div>
-        <div class="base-box">
-          <span class="edg">{{ item.eventName }}</span><br />
-          <span>
-            <span class="gameTime">4 <a class="time-animate">'</a></span>
-            VS
-            <span class="tag source"> {{ item.tag }}{{ item.result }} </span>
-          </span>
-        </div>
-        <div class="base-box">
-          <span>{{ item.time }}</span>
-          <br />
-          <span>{{ item.awayName }}</span>
-        </div>
-      </div>
-    </van-list> -->
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import { useMatch } from 'src/hook'
+import { Utils } from 'src/common'
 export default defineComponent({
   setup() {
     const model = reactive({
       tabList: [
-        { name: '全部', value: 1 },
-        { name: '未开赛', value: 2 },
-        { name: '进行中', value: 3 },
-        { name: '已完赛', value: 4 },
+        { name: '全部', value: '' },
+        { name: '未开赛', value: 0 },
+        { name: '进行中', value: 1 },
+        { name: '已完赛', value: 2 },
       ],
       active: 1,
       loading: false,
@@ -176,10 +160,15 @@ export default defineComponent({
     });
 
     const { privateMatchStore, getFootballScoreList } = useMatch();
+
+    const isIng = (homeScore: number) => homeScore !== null;
+
     return {
       model,
       privateMatchStore,
-      getFootballScoreList
+      getFootballScoreList,
+      Utils,
+      isIng
     };
   },
 });
@@ -206,6 +195,11 @@ export default defineComponent({
 
   :deep(.van-tabs__content) {
     min-height: calc(100vh - 160px);
+  }
+
+  .es {
+    display: inline-block;
+    max-width: 120px;
   }
 
   .data-item {

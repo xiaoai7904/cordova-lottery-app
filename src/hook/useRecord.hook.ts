@@ -115,6 +115,7 @@ export function useRecord() {
       endTime: '',
     },
     hotUser: {
+      loading: false,
       list: [] as any[],
       details: {} as any,
     },
@@ -512,11 +513,11 @@ export function useRecord() {
    */
   const getHotUserList = async (params = {}) => {
     try {
-      privateRecordStore.loading = true;
+      privateRecordStore.hotUser.loading = true;
       const data: any = await HotUserListRequest<any, any>(params);
-      privateRecordStore.hotUser.list = [...data.data];
+      privateRecordStore.hotUser.list = [...data];
     } finally {
-      privateRecordStore.loading = false;
+      privateRecordStore.hotUser.loading = false;
     }
   };
 

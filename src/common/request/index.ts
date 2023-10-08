@@ -20,7 +20,7 @@ export function LoginRequest<T, R>(params = {} as T) {
  * @returns Promise<any>
  */
 export function LogoutRequest<T, R>(params = {} as T) {
-  return api.get<T, R>('/api/logout', { data: params });
+  return api.get<T, R>('/api/logout', { params });
 }
 
 /**
@@ -76,7 +76,7 @@ export function SendCodeRequest<T, R>(params = {} as T) {
  * @returns Promise<any>
  */
 export function GetUserInfoRequest<T, R>(params = {} as T) {
-  return api.get<T, R>('/api/user/getInfo', { data: params });
+  return api.get<T, R>('/api/user/getInfo', { params });
 }
 
 /**
@@ -85,7 +85,7 @@ export function GetUserInfoRequest<T, R>(params = {} as T) {
  * @returns Promise<any>
  */
 export function AppVersionRequest<T, R>(params = {} as T) {
-  return api.get<T, R>('/tools/app_version', { data: params });
+  return api.get<T, R>('/tools/app_version', { params });
 }
 
 /**
@@ -112,7 +112,7 @@ export function UpdateUserLoginPasswordRequest<T, R>(params = {} as T) {
  * @returns
  */
 export function UserIdentityInfoRequest<T, R>(params = {} as T) {
-  return api.get<T, R>('/api/user/getIdentity', { data: params });
+  return api.get<T, R>('/api/user/getIdentity', { params });
 }
 
 /**
@@ -130,7 +130,7 @@ export function SaveUserIdentityInfoRequest<T, R>(params = {} as T) {
  * @returns
  */
 export function UserBankInfoRequest<T, R>(params = {} as T) {
-  return api.get<T, R>('/api/user/getBankList', { data: params });
+  return api.get<T, R>('/api/user/getBankList', { params });
 }
 
 /**
@@ -175,7 +175,7 @@ export function CancelFousRequest<T, R>(params = {} as T) {
  * @returns
  */
 export function CustomerListRequest<T, R>(params = {} as T) {
-  return api.get<T, R>('/api/common/customerList', { data: params });
+  return api.get<T, R>('/api/common/customerList', { params });
 }
 
 /**
@@ -266,7 +266,7 @@ export function AdvisoryDetailsRequest<T, R>(params = {} as T) {
  * @returns
  */
 export function HomeRedListRequest<T, R>(params = {} as T) {
-  return api.get<T, R>('/api/home/redList', { data: params });
+  return api.get<T, R>('/api/home/redList', { params });
 }
 
 /**
@@ -311,7 +311,7 @@ export function FollowOrderUserDetailsRequest<T, R>(id = '' as T) {
  * @returns
  */
 export function FollowOrderListRequest<T, R>(params = {} as T) {
-  return api.get<T, R>('/api/followOrder/followList', { data: params });
+  return api.post<T, R>('/api/followOrder/followList', params);
 }
 
 /**
@@ -329,5 +329,14 @@ export function FollowOrderDetailsRequest<T, R>(id = '' as T) {
  * @returns
  */
 export function AddFollowOrderRequest<T, R>(params = {} as T) {
-  return api.get<T, R>('/api/followOrder/addFollowOrder', { data: params });
+  return api.get<T, R>('/api/followOrder/addFollowOrder', { params });
+}
+
+/**
+ * banner
+ * @param params {}
+ * @returns
+ */
+export function BannerRequest<T, R>(params = {} as T) {
+  return api.get<T, R>('/api/home/bannerList', { params });
 }

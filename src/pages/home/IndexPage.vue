@@ -2,13 +2,15 @@
   <div class="home">
     <div class="top">
       <van-swipe class="my-swipe" :show-indicators="false" :autoplay="3000" indicator-color="white">
-        <van-swipe-item @click="() => router.push('/sliderInfo')"><img
-            src="http://xcpicture.oss-cn-shanghai.aliyuncs.com/app/news/banner/2023/06/26/155233.png" /></van-swipe-item>
-        <van-swipe-item @click="() => router.push('/sliderInfo')"><img
-            src="http://xcpicture.oss-cn-shanghai.aliyuncs.com/app/news/banner/2023/06/26/154727.png" /></van-swipe-item>
-        <van-swipe-item @click="() => router.push('/sliderInfo')"><img
-            src="http://xcpicture.oss-cn-shanghai.aliyuncs.com/app/news/banner/2023/06/08/160954.png" /></van-swipe-item>
+        <van-swipe-item v-for="(item, index) in privateHomeStore.banner" :key="index">
+          <van-image :src="item.banner">
+            <template v-slot:loading>
+              <van-loading type="spinner" size="20" />
+            </template>
+          </van-image>
+        </van-swipe-item>
       </van-swipe>
+
       <div class="notice_view">
         店铺资质环境展示
         <div class="detail_btn" @click="() => router.push('/shopDetail')">
@@ -46,7 +48,7 @@ import { onMounted } from 'vue';
 export default defineComponent({
   setup() {
     const router = useCustomRouter();
-    const { privateHomeStore, getHomeRedList } = useHome();
+    const { privateHomeStore, getHomeRedList, getHomeBannerList } = useHome();
     const model = reactive({
       topList: [
         {
@@ -62,6 +64,7 @@ export default defineComponent({
 
     onMounted(() => {
       getHomeRedList()
+      getHomeBannerList();
     })
 
     return { model, router, privateHomeStore };
@@ -91,7 +94,7 @@ export default defineComponent({
       height: 148px;
       border-radius: 14px 14px 0 0;
 
-      img {
+      .van-image {
         width: 100%;
         height: 100%;
       }

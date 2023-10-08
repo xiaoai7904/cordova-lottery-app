@@ -97,6 +97,11 @@ export default class Utils {
       userName.length - end
     )}`;
   };
+  static getWeek = (num: number) => {
+    const datas = dayjs(num).day();
+    const week = ['日', '一', '二', '三', '四', '五', '六'];
+    return '周' + week[datas];
+  };
   static formatDate = (dateTime: number, template = 'YYYY-MM-DD HH:mm:ss') => {
     return dayjs(dateTime).format(template);
   };

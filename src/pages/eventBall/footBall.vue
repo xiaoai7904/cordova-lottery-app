@@ -67,6 +67,9 @@ import JqsBet from './components/jqsBet.vue';
 import BqcBet from './components/bqcBet.vue';
 import Choose2Bet from './components/choose2Bet.vue';
 import YczsBet from './components/yczsBet.vue';
+import { useMatch, useCustomRouter } from 'src/hook';
+import { Utils } from 'src/common'
+import { onMounted } from 'vue';
 export default defineComponent({
   components: {
     PlayerPopup,
@@ -80,7 +83,8 @@ export default defineComponent({
     YczsBet,
   },
   setup() {
-    const router = useRouter();
+    const router = useCustomRouter();
+    const { privateMatchStore, getFootballScoreList } = useMatch();
     const model = reactive({
       currEvent: '2',
       showFilter: false, // 是否展示删选栏
@@ -106,6 +110,20 @@ export default defineComponent({
       model.showFilter = false;
       // 列表请求
     };
+
+
+    const getMatchTime = () => {
+      const startTime = Utils.formatDate(new Date().getTime())
+      const endTime = Utils.formatDate(Utils.getDayjs().add(3, 'day').toDate().getTime())
+
+      return [startTime, endTime]
+    }
+
+    onMounted(() => {
+      const [startTime, endTime] = getMatchTime()
+      getFootballScoreList({ beginTime: startTime, endTime: endTime })
+    })
+
     return { router, model, getEventName, filterData, handlerSelect };
   },
 });
