@@ -3,12 +3,8 @@
     <div class="navbar-inner">
       <div class="left">
         <div class="slot-wrap">
-          <div
-            v-for="(item, i) in model.navList"
-            :key="i"
-            :class="model.currIndex == i && 'active'"
-            @click="changeIndex(item, i)"
-          >
+          <div v-for="(item, i) in model.navList" :key="i" :class="model.currIndex == i && 'active'"
+            @click="changeIndex(item, i)">
             {{ item.name }}
           </div>
         </div>
@@ -56,6 +52,8 @@ export default defineComponent({
 </script>
 <style scoped lang="scss">
 .source {
+  background-color: #f6f6f6;
+
   .navbar-inner {
     display: flex;
     justify-content: space-between;
@@ -63,10 +61,12 @@ export default defineComponent({
     align-items: center;
     height: 44px;
     background: #fff;
+
     .left {
       flex: 1;
       display: flex;
       align-items: center;
+
       .slot-wrap {
         display: flex;
         align-items: center;
@@ -75,11 +75,13 @@ export default defineComponent({
         font-size: 18px;
         font-weight: 600;
         color: #fff;
+
         .active {
           color: #2e2f30;
           font-size: 20px;
           font-weight: 600;
         }
+
         div {
           position: relative;
           display: inline-block;
@@ -93,6 +95,7 @@ export default defineComponent({
         }
       }
     }
+
     .right {
       display: inline-block;
       width: 28px;
@@ -104,10 +107,11 @@ export default defineComponent({
       background-size: 18px 18px;
     }
   }
+
   .content {
     overflow: hidden;
     width: 100%;
-    border-radius: 24px 24px 0 0;
+    // border-radius: 24px 24px 0 0;
     -webkit-backdrop-filter: blur(2px);
     backdrop-filter: blur(2px);
     background-color: #fff;
