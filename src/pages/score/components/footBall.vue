@@ -17,7 +17,7 @@ import { GridItem } from 'vant';
               </span>
             </div>
             <div class="base-box">
-              <span class="edg">{{ item.comp }}</span><br />
+              <span class="edg">{{ item.shortComp }}</span><br />
               <span v-if="isIng(item.homeScore)">
                 <span class="gameTime">4 <a class="time-animate">'</a></span>
                 <span>{{ item.homeScore }}:{{ item.awayScore }}</span>
