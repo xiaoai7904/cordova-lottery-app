@@ -52,7 +52,7 @@ export default defineComponent({
         { name: '进行中', value: 1 },
         { name: '已完赛', value: 2 },
       ],
-      active: 1,
+      active: '',
       loading: false,
       finished: false,
       dataList: [

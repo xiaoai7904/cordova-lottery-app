@@ -47,6 +47,7 @@ export function useUser() {
       code: '',
     },
     bank: {
+      name: '',
       openingBank: '',
       branchName: '',
       cardNumber: '',

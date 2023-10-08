@@ -5,14 +5,18 @@
       <div>
         <div class="top row justify-between">
           <h2 class="title">银行卡</h2>
-          <span class="red">修改</span>
+          <span class="red" @click="updateBank">修改</span>
         </div>
         <div>
-          <img class="bank" src="./assets/bank_bg.png" alt="">
+          <!-- <img class="bank" src="./assets/bank_bg.png" alt="" /> -->
+          <div class="bank">
+            <h2>{{ bankInfo.openingBank }}（<span>{{ bankInfo.branchName }}</span>）</h2>
+            <h1>{{ Utils.formatBank(bankInfo.cardNumber || '') }}</h1>
+          </div>
           <div class="op-amount">
             <div>
               <h2 class="title">金额</h2>
-              <q-input v-model="amount" placeholder="请输入提现金额" />
+              <q-input v-model="privateRechargeWithdraw.withdrawParams.amount" placeholder="请输入提现金额" />
             </div>
             <div class="all">
               <p>余额¥ <span>{{ userInfo.balance || 0 }}</span>&nbsp;&nbsp;<span class="red"
@@ -33,24 +37,39 @@
       </div>
 
       <div class="btn row justify-center">
-        <q-btn label="提现" type="submit" color="primary" :disabled="!amount" />
+        <q-btn label="提现" type="submit" color="primary" :disabled="!privateRechargeWithdraw.withdrawParams.amount"
+          :loading="privateRechargeWithdraw.loading" @click="submitWithdraw" />
       </div>
     </div>
+
+    <van-action-sheet v-model:show="bankSelectShow" title="选择银行卡">
+      <div class="bank-content">
+        <van-cell-group>
+          <van-cell v-for="(item, index) in privateUserStore.bankList" :title="item.cardNumber" :value="item.openingBank"
+            :key="index" is-link @click="selectBank(item)" />
+        </van-cell-group>
+      </div>
+    </van-action-sheet>
 
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import { useUser, useCountDown } from 'src/hook';
+import { defineComponent, ref, onMounted } from 'vue';
+import { useUser, useCountDown, useRechargeWithdraw, useNotify } from 'src/hook';
+import { Utils } from 'src/common'
+import { watch } from 'vue';
 export default defineComponent({
   setup() {
     const amount = ref<any>('');
     const code = ref();
+    const bankSelectShow = ref(false);
+    const bankInfo = ref<any>({});
 
-    const { userInfo } = useUser();
+    const { privateUserStore, userInfo, getUserBindBankList } = useUser();
     const { count, start } = useCountDown();
-
+    const { privateRechargeWithdraw, withdraw } = useRechargeWithdraw();
+    const { errorNotify } = useNotify();
     const sendSmsCode = async () => {
       // await sendCode({ phone: registerStore.form.phone })
       start(60);
@@ -60,7 +79,47 @@ export default defineComponent({
       amount.value = userInfo.value.balance || 0
     }
 
-    return { amount, userInfo, count, code, sendSmsCode, withdrawAll }
+    const selectBank = (item: any) => {
+      bankInfo.value = { ...item }
+      updateWitdrawParams(item)
+      bankSelectShow.value = false
+    }
+
+    const updateBank = () => {
+      bankSelectShow.value = true
+    }
+
+    const updateWitdrawParams = (data: any) => {
+      privateRechargeWithdraw.withdrawParams.bankCardId = data.id
+    }
+
+    const submitWithdraw = async () => {
+      try {
+        if (!privateRechargeWithdraw.withdrawParams.bankCardId) {
+          errorNotify('请选择银行卡')
+          return;
+        }
+
+        await withdraw()
+      } catch (error) {
+
+      }
+    }
+
+    watch(() => privateUserStore.bankList, newValue => {
+      if (!Object.keys(bankInfo.value).length && newValue.length) {
+        bankInfo.value = { ...newValue[0] }
+        updateWitdrawParams(newValue[0])
+      }
+    }, {
+      immediate: true
+    })
+
+    onMounted(async () => {
+      await getUserBindBankList()
+    })
+
+    return { amount, userInfo, count, code, bankSelectShow, privateUserStore, bankInfo, privateRechargeWithdraw, sendSmsCode, withdrawAll, selectBank, updateBank, submitWithdraw, Utils }
   }
 })
 </script>
@@ -120,6 +179,20 @@ export default defineComponent({
     .bank {
       width: 100%;
       height: 89px;
+      background: url('./assets/bank_bg.png') no-repeat;
+      background-size: 100% 100%;
+      padding: 25px 0 0 70px;
+
+      >h1 {
+        font-size: 14px;
+        color: #fff;
+      }
+
+      >h2 {
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: #fff;
+      }
     }
 
     .send {
@@ -169,6 +242,10 @@ export default defineComponent({
       color: grey;
       font-weight: 900;
     }
+  }
+
+  .bank-content {
+    padding: 20px 0;
   }
 }
 </style>

@@ -5,7 +5,7 @@
       <div>
         <div>
           <h2 class="title">金额</h2>
-          <q-input v-model="rechargeAmount" placeholder="请输入充值金额" />
+          <q-input v-model="privateRechargeWithdraw.rechargeParams.amount" placeholder="请输入充值金额" />
         </div>
         <div class="row wrap justify-between items-center content-center q-gutter-sm amount-list">
           <div v-for="item in  rechargeAmountList " :key="item" class="row justify-center items-center amount-item"
@@ -23,26 +23,93 @@
       </div>
 
       <div class="btn row justify-center">
-        <q-btn label="充 值" type="submit" color="primary" :disabled="!rechargeAmount" />
+        <q-btn label="充 值" type="submit" color="primary" :disabled="!privateRechargeWithdraw.rechargeParams.amount"
+          :loading="privateRechargeWithdraw.loading" @click="submitRecharge" />
       </div>
     </div>
 
+    <van-dialog v-model:show="rechargeModel" title="充值信息" show-cancel-button>
+      <div class="recharge-modal-content">
+        <div class="flex-between">
+          <span>姓名</span>
+          <div class="flex-start">
+            <span>xxx</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 256 256" @click="copy('')">
+              <path fill="currentColor"
+                d="M216 32H88a8 8 0 0 0-8 8v40H40a8 8 0 0 0-8 8v128a8 8 0 0 0 8 8h128a8 8 0 0 0 8-8v-40h40a8 8 0 0 0 8-8V40a8 8 0 0 0-8-8Zm-56 176H48V96h112Zm48-48h-32V88a8 8 0 0 0-8-8H96V48h112Z" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="flex-between">
+          <span>银行</span>
+          <div class="flex-start">
+            <span>中国银行</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 256 256" @click="copy('')">
+              <path fill="currentColor"
+                d="M216 32H88a8 8 0 0 0-8 8v40H40a8 8 0 0 0-8 8v128a8 8 0 0 0 8 8h128a8 8 0 0 0 8-8v-40h40a8 8 0 0 0 8-8V40a8 8 0 0 0-8-8Zm-56 176H48V96h112Zm48-48h-32V88a8 8 0 0 0-8-8H96V48h112Z" />
+            </svg>
+          </div>
+        </div>
+        <div class="flex-between">
+          <span>开户行</span>
+          <div class="flex-start">
+            <span>中国银行</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 256 256" @click="copy('')">
+              <path fill="currentColor"
+                d="M216 32H88a8 8 0 0 0-8 8v40H40a8 8 0 0 0-8 8v128a8 8 0 0 0 8 8h128a8 8 0 0 0 8-8v-40h40a8 8 0 0 0 8-8V40a8 8 0 0 0-8-8Zm-56 176H48V96h112Zm48-48h-32V88a8 8 0 0 0-8-8H96V48h112Z" />
+            </svg>
+
+          </div>
+
+        </div>
+        <div class="flex-between">
+          <span>卡号</span>
+          <div class="flex-start">
+            <span>{{ Utils.formatBank('123444444444444') }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 256 256" @click="copy('')">
+              <path fill="currentColor"
+                d="M216 32H88a8 8 0 0 0-8 8v40H40a8 8 0 0 0-8 8v128a8 8 0 0 0 8 8h128a8 8 0 0 0 8-8v-40h40a8 8 0 0 0 8-8V40a8 8 0 0 0-8-8Zm-56 176H48V96h112Zm48-48h-32V88a8 8 0 0 0-8-8H96V48h112Z" />
+            </svg>
+          </div>
+
+        </div>
+
+      </div>
+    </van-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-
+import { useRechargeWithdraw, useCopy } from 'src/hook';
+import { Utils } from 'src/common'
 export default defineComponent({
   setup() {
     const rechargeAmountList = ref([13, 26, 75, 243, 416, 638, 1091, 4991]);
-    const rechargeAmount = ref('');
-    const checkAmount = ref('');
+    const checkAmount = ref(0);
+    const rechargeModel = ref(false);
+    const rechargeInfo = ref<any>({});
+
+    const { privateRechargeWithdraw, recharge, rechargeConfig } = useRechargeWithdraw();
+    const { handleCopy } = useCopy();
+
     const selectAmount = (item: any) => {
       checkAmount.value = item;
-      rechargeAmount.value = item
+      privateRechargeWithdraw.rechargeParams.amount = item
     }
-    return { rechargeAmountList, rechargeAmount, checkAmount, selectAmount }
+
+    const submitRecharge = async () => {
+      await recharge();
+      const data = await rechargeConfig();
+      rechargeInfo.value = data
+      rechargeModel.value = true
+    }
+
+    const copy = (text: string) => {
+      handleCopy(text)
+    }
+    return { rechargeAmountList, checkAmount, privateRechargeWithdraw, rechargeModel, submitRecharge, selectAmount, copy, Utils }
   }
 })
 </script>
@@ -130,6 +197,23 @@ export default defineComponent({
       font-size: 18px;
       color: #f73;
       font-weight: 900;
+    }
+  }
+}
+
+.recharge-modal-content {
+  padding: 20px 15px;
+
+  >div {
+    margin-bottom: 15px;
+
+    svg {
+      margin-left: 5px;
+    }
+
+    span {
+      font-size: 14px;
+      font-weight: 500;
     }
   }
 }

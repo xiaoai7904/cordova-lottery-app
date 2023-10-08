@@ -3,17 +3,12 @@ import { GridItem } from 'vant';
   <div class="lotteryDraw">
     <div style="width: 100%; background: #fff">
       <van-tabs v-model:active="model.active">
-        <van-tab
-          v-for="(item, i) in model.tabList"
-          :key="i"
-          :title="item.name"
-          :name="item.value"
-        ></van-tab>
+        <van-tab v-for="(item, i) in model.tabList" :key="i" :title="item.name" :name="item.value"></van-tab>
       </van-tabs>
     </div>
     <div class="header">
       <div class="left"></div>
-      <div class="con">
+      <div class="con" @click="selectTime">
         <img :src="require('../assets/date.png')" />
         <span style="margin-left: 10px">9-15</span>
         <span style="margin-left: 10px">周五</span>
@@ -45,22 +40,64 @@ import { GridItem } from 'vant';
         <div class="three">泰国亚</div>
       </div>
     </div>
+
+    <van-action-sheet v-model:show="model.showTimeActionSheet" :actions="model.actionSheet" cancel-text="取消"
+      teleport="body" close-on-click-action @select="onSelect" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
+import { Utils } from 'src/common'
+import { useMatch } from 'src/hook'
+import { onMounted } from 'vue';
 export default defineComponent({
   setup() {
+    const { privateMatchStore, getBaketBallScoreList, getFootballScoreList } = useMatch()
     const model = reactive({
       tabList: [
         { name: '足球', value: 1 },
         { name: '篮球', value: 2 },
       ],
       active: 1,
+      showTimeActionSheet: false,
+      actionSheet: [] as any[]
     });
+
+    const createTime = () => {
+      let val = 0;
+      let timeList = []
+      while (true) {
+        if (val > 7) break;
+
+        timeList.push(Utils.formatDate(Utils.getDayjs().subtract(val, 'day').toDate().getTime(), 'YYYY-MM-DD'))
+        val++
+      }
+
+      model.actionSheet = timeList.map(item => ({
+        name: item,
+        value: item
+      }))
+    }
+
+    const onSelect = () => {
+      console.log('11')
+    }
+
+    const selectTime = () => {
+      model.showTimeActionSheet = true
+    }
+    onMounted(() => {
+      createTime()
+    })
+
     return {
       model,
+      privateMatchStore,
+      onSelect,
+      selectTime,
+      getBaketBallScoreList,
+      getFootballScoreList
     };
   },
 });
@@ -69,6 +106,7 @@ export default defineComponent({
 .lotteryDraw {
   background: #f6f6f6;
   min-height: 100vh;
+
   .header {
     display: flex;
     justify-content: space-between;
@@ -82,21 +120,25 @@ export default defineComponent({
     font-size: 12px;
     border-radius: 14px;
     background-color: #fff;
+
     .left {
       width: 31px;
       height: 31px;
       background: url('../assets/date_left.png') no-repeat 100%;
       background-size: 8px 12px;
     }
+
     .con {
       display: flex;
       justify-content: center;
       align-items: center;
+
       img {
         width: 20px;
         height: 20px;
       }
     }
+
     .right {
       width: 31px;
       height: 31px;
@@ -104,6 +146,7 @@ export default defineComponent({
       background-size: 8px 12px;
     }
   }
+
   .data-item {
     display: flex;
     flex-direction: column;
@@ -116,29 +159,35 @@ export default defineComponent({
     font-size: 12px;
     border-radius: 16prx;
     background-color: #fff;
+
     .top {
       display: flex;
       justify-content: space-between;
       width: 100%;
+
       .one {
         text-align: left;
         width: 109px;
+
         span {
           margin-left: 4px;
           color: #ae7817;
         }
       }
+
       .two {
         color: #f73;
         font-size: 16px;
         width: 109px;
         text-align: center;
       }
+
       .three {
         width: 109px;
         text-align: right;
       }
     }
+
     .bottom {
       margin-top: 5px;
       color: #48484b;
@@ -146,10 +195,12 @@ export default defineComponent({
       display: flex;
       justify-content: space-between;
       width: 100%;
+
       .one {
         text-align: left;
         width: 109px;
       }
+
       .two {
         color: #f73;
         font-size: 18px;
@@ -157,23 +208,28 @@ export default defineComponent({
         width: 109px;
         text-align: center;
       }
+
       .three {
         width: 109px;
         text-align: right;
       }
     }
   }
+
   :deep(.van-tabs__nav) {
     width: 100px;
   }
+
   :deep(.van-tab) {
     color: #2e2f30;
   }
+
   :deep(.van-tab--active) {
     color: #272929;
     font-size: 16px;
     font-weight: 600;
   }
+
   :deep(.van-tabs__line) {
     bottom: 23px;
     width: 29px;

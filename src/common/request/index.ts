@@ -340,3 +340,30 @@ export function AddFollowOrderRequest<T, R>(params = {} as T) {
 export function BannerRequest<T, R>(params = {} as T) {
   return api.get<T, R>('/api/home/bannerList', { params });
 }
+
+/**
+ * 提现
+ * @param params {}
+ * @returns
+ */
+export function WithdrawRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/finance/addWithdraw', params);
+}
+
+/**
+ * 充值
+ * @param params {}
+ * @returns
+ */
+export function RechargeRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/finance/addRecharge', params);
+}
+
+/**
+ * 充值信息
+ * @param params {}
+ * @returns
+ */
+export function RechargeConfigRequest<T, R>(params = {} as T) {
+  return api.get<T, R>('/api/finance/rechargeConfig', { params });
+}

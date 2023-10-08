@@ -87,6 +87,9 @@ export default class Utils {
     return r != null ? decodeURIComponent(r[2]) : null;
   };
 
+  static formatBank = (data: string) =>
+    String(data).replace(/(\d{4})(?=\d)/g, '$1 ');
+
   static formatNumber = (data: number) =>
     new Intl.NumberFormat('en-IN').format(data);
 
