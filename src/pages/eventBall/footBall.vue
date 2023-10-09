@@ -55,7 +55,7 @@
         <p>已选<span class="value">0</span>场</p>
         <span class="tips">页面赔率仅供参考</span>
       </div>
-      <div class="btn">确定</div>
+      <div class="btn" @click="gotoBetOrder">确定</div>
     </div>
     <PlayerPopup v-model:show="model.showPlayer" v-if="model.showPlayer"></PlayerPopup>
     <FilterPopup v-model:show="model.showFilter" :data="filterData" :currValue="model.currEvent" v-if="model.showFilter"
@@ -75,7 +75,7 @@ import BqcBet from './components/bqcBet.vue';
 import Choose2Bet from './components/choose2Bet.vue';
 import YczsBet from './components/yczsBet.vue';
 import { useMatch, useCustomRouter } from 'src/hook';
-import { Utils, MATCH_STATUS } from 'src/common'
+import { Utils, MATCH_STATUS, RouterNameEnum } from 'src/common'
 import { onMounted } from 'vue';
 export default defineComponent({
   components: {
@@ -126,12 +126,15 @@ export default defineComponent({
       return [startTime, endTime]
     }
 
+    const gotoBetOrder = () => {
+      router.push({ name: RouterNameEnum.BETORDER, query: { title: '' } })
+    }
     onMounted(() => {
       const [startTime, endTime] = getMatchTime()
       getFootballScoreList({ beginTime: startTime, endTime: endTime, status: MATCH_STATUS.NOT_START_YET })
     })
 
-    return { router, model, getEventName, filterData, handlerSelect };
+    return { router, model, getEventName, filterData, handlerSelect, gotoBetOrder };
   },
 });
 </script>

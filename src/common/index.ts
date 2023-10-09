@@ -56,6 +56,8 @@ export enum RouterNameEnum {
   RECHARGE = 'recharge',
   // 提现
   WITHDRAW = 'witdraw',
+  // 投注订单
+  BETORDER = 'betOrder',
 }
 
 // 语言标识

@@ -261,6 +261,16 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/betOrder',
+    name: RouterNameEnum.BETORDER,
+    component: () => import('pages/eventBall/betOrder.vue'),
+    meta: {
+      title: '投注订单',
+      depth: 3,
+      isFooter: false,
+    },
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },
