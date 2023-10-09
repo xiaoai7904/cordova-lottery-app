@@ -49,6 +49,14 @@
         <YczsBet v-if="model.currEvent == '7'"></YczsBet>
       </template>
     </div>
+    <div class="content-bottom flex-between van-safe-area-bottom">
+      <img src="./assets/del.png" alt="Del">
+      <div class="center">
+        <p>已选<span class="value">0</span>场</p>
+        <span class="tips">页面赔率仅供参考</span>
+      </div>
+      <div class="btn">确定</div>
+    </div>
     <PlayerPopup v-model:show="model.showPlayer" v-if="model.showPlayer"></PlayerPopup>
     <FilterPopup v-model:show="model.showFilter" :data="filterData" :currValue="model.currEvent" v-if="model.showFilter"
       @handlerSelect="handlerSelect"></FilterPopup>
@@ -129,7 +137,7 @@ export default defineComponent({
 </script>
 <style scoped lang="scss">
 .football {
-  padding-top: 44px;
+  padding: 44px 0 70px 0;
   background: rgba(255, 255, 255, 0.5);
   overflow: hidden;
 
@@ -206,6 +214,51 @@ export default defineComponent({
     border-radius: 20px 20px 0 0;
     background-color: #fff;
     transition: all 0.5s;
+  }
+
+  .content-bottom {
+    font-size: 14px;
+    width: 100%;
+    height: 68px;
+    background-color: #fff;
+    box-shadow: 0 -2px 7px 0 #e5e5e5;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+
+    >img {
+      width: 18px;
+      height: 23px;
+      margin-left: 15px;
+    }
+
+    .center {
+      color: #232a24;
+      text-align: center;
+
+      .value {
+        color: #ffa765;
+        margin: 0 5px;
+      }
+
+      .tips {
+        display: block;
+        color: #77838d;
+        font-size: 12px;
+        margin-top: 8px;
+      }
+    }
+
+    .btn {
+      width: 84px;
+      height: 68px;
+      font-size: 16px;
+      color: #2e2f30;
+      text-align: center;
+      line-height: 68px;
+      box-shadow: -2px 4px 8px 0 #f2f4df;
+      background: linear-gradient(127deg, #fff120, #fcdf6b);
+    }
   }
 }
 </style>

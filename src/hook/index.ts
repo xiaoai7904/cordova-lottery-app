@@ -18,3 +18,4 @@ export * from './useRecord.hook';
 export * from './useHome.hook';
 export * from './useMatch.hook';
 export * from './useRechargeWithdraw.hook';
+export * from './useBet.hook';
