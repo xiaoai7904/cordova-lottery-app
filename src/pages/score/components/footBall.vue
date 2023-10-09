@@ -3,16 +3,17 @@ import { GridItem } from 'vant';
   <div class="football">
     <van-tabs v-model:active="model.active">
       <van-tab v-for="(item, i) in model.tabList" :key="i" :title="item.name" :name="item.value">
-        <PageList isInit :requestApi="getFootballScoreList" :list="privateMatchStore.football.list"
-          :total="privateMatchStore.football.total" :pages=privateMatchStore.football.pages
-          :requestParams="item.value ? { status: item.value } : {}" v-model:current="privateMatchStore.football.pageNum"
-          v-slot="slotProps">
+        <PageList :ref="`pageListRef${item.value}`" isInit :requestApi="getFootballScoreList"
+          :list="privateMatchStore.football.list" :total="privateMatchStore.football.total"
+          :pages=privateMatchStore.football.pages
+          :requestParams="item.value !== '' ? { status: item.value, ...model.requestParams } : model.requestParams"
+          v-model:current="privateMatchStore.football.pageNum" v-slot="slotProps">
           <div class="data-item" v-for="(item, i) in slotProps.list" :key="i">
             <div class="base-box">
               {{ Utils.getWeek(item.matchTime * 1000) }}
               <br />
               <span class="flex-center">
-                <!-- <span class="edg">[{{ item.number }}]</span> -->
+                <span class="edg">{{ getRq(item.rq) }}</span>
                 <span class="es">{{ item.home }}</span>
               </span>
             </div>
@@ -40,9 +41,16 @@ import { GridItem } from 'vant';
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 import { useMatch } from 'src/hook'
-import { Utils } from 'src/common'
+import { Utils, XA_MATCH_SELECT_FOOTBALL } from 'src/common'
+import { onMounted } from 'vue';
+
+export type PageListRefType = {
+  resetStore: () => void;
+  refreshList: () => void;
+};
+
 export default defineComponent({
   setup() {
     const model = reactive({
@@ -53,18 +61,64 @@ export default defineComponent({
         { name: '已完赛', value: 2 },
       ],
       active: '',
+      requestParams: {}
     });
+
+    const pageListRef = ref<any>(null);
+    const pageListRef0 = ref<any>(null);
+    const pageListRef1 = ref<any>(null);
+    const pageListRef2 = ref<any>(null);
 
     const { privateMatchStore, getFootballScoreList } = useMatch();
 
     const isIng = (homeScore: number) => homeScore !== null;
+    const getRq = (rq: string) => {
+      const rqList = rq.split(',');
+
+      if (rqList.length && rqList[0]) {
+        return `[${rqList[0]}]`
+      }
+
+      return ''
+    }
+
+    const updatePageList = () => {
+      if (model.active === '') {
+        setTimeout(() => {
+          pageListRef.value[0].refreshList()
+        }, 300)
+      } else if (Number(model.active) === 0) {
+        setTimeout(() => {
+          pageListRef0.value[0].refreshList()
+        }, 300)
+      } else if (Number(model.active) === 1) {
+        setTimeout(() => {
+          pageListRef1.value[0].refreshList()
+        }, 300)
+      } else if (Number(model.active) === 2) {
+        setTimeout(() => {
+          pageListRef2.value[0].refreshList()
+        }, 300)
+      }
+    }
+    onMounted(() => {
+      window.xaCustomEvent.on(XA_MATCH_SELECT_FOOTBALL, data => {
+        model.requestParams = data?.length ? { shortComps: data } : {}
+        updatePageList()
+      })
+    })
 
     return {
+      pageListRef,
+      pageListRef0,
+      pageListRef1,
+      pageListRef2,
       model,
       privateMatchStore,
       getFootballScoreList,
       Utils,
-      isIng
+      isIng,
+      getRq
     };
   },
 });

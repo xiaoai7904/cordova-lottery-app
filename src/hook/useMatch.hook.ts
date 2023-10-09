@@ -1,4 +1,9 @@
-import { BasketballRequest, FootballRequest } from 'src/common';
+import {
+  BasketballRequest,
+  FootballRequest,
+  MatchFootballCompRequest,
+  MatchBasketballCompRequest,
+} from 'src/common';
 import { reactive } from 'vue';
 
 export function useMatch() {
@@ -13,6 +18,7 @@ export function useMatch() {
       isLoadEnd: false,
       beginTime: '',
       endTime: '',
+      matchList: [] as any[],
     },
     football: {
       pageNum: 1,
@@ -23,6 +29,7 @@ export function useMatch() {
       isLoadEnd: false,
       beginTime: '',
       endTime: '',
+      matchList: [] as any[],
     },
   });
 
@@ -100,5 +107,31 @@ export function useMatch() {
     }
   };
 
-  return { privateMatchStore, getBaketBallScoreList, getFootballScoreList };
+  const getBaketBallMatchList = async (params = {}) => {
+    try {
+      privateMatchStore.loading = true;
+      const data = await MatchBasketballCompRequest<any, any>(params);
+      privateMatchStore.basketball.matchList = [...data];
+    } finally {
+      privateMatchStore.loading = false;
+    }
+  };
+
+  const getFootBallMatchList = async (params = {}) => {
+    try {
+      privateMatchStore.loading = true;
+      const data = await MatchFootballCompRequest<any, any>(params);
+      privateMatchStore.football.matchList = [...data];
+    } finally {
+      privateMatchStore.loading = false;
+    }
+  };
+
+  return {
+    privateMatchStore,
+    getBaketBallScoreList,
+    getFootballScoreList,
+    getBaketBallMatchList,
+    getFootBallMatchList,
+  };
 }

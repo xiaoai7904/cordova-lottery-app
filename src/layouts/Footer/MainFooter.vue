@@ -79,7 +79,7 @@ onMounted(() => {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  background: #fff url('./assets/tabbar_bg.png') no-repeat;
+  background: url('./assets/tabbar_bg.png') no-repeat;
   background-size: 100% 100%;
 
   .q-tabs {

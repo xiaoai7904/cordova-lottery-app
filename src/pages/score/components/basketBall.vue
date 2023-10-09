@@ -1,8 +1,8 @@
 <template>
   <div class="basketBall">
-    <PageList isInit :requestApi="getBaketBallScoreList" :list="privateMatchStore.basketball.list"
+    <PageList ref="pageListRef" isInit :requestApi="getBaketBallScoreList" :list="privateMatchStore.basketball.list"
       :total="privateMatchStore.basketball.total" :pages=privateMatchStore.basketball.pages
-      v-model:current="privateMatchStore.basketball.pageNum" v-slot="slotProps">
+      v-model:current="privateMatchStore.basketball.pageNum" :requestParams="requestParams" v-slot="slotProps">
       <div class="ball-box" v-for="(item, index) in slotProps.list" :key="index">
         <div class="a-box">
           {{ Utils.getWeek(item.matchTime * 1000) }} {{ item.shortComp }}<span class="time">{{
@@ -27,12 +27,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import { useMatch } from 'src/hook'
-import { Utils } from 'src/common'
+import { Utils, XA_MATCH_SELECT_BASKETTBALL } from 'src/common'
+
+export type PageListRefType = {
+  resetStore: () => void;
+  refreshList: () => void;
+};
+
 
 export default defineComponent({
   setup() {
+    const pageListRef = ref<PageListRefType | null>(null);
+    const requestParams = ref({})
+
     const { privateMatchStore, getBaketBallScoreList } = useMatch();
     const isIng = (matchTime: number) => (matchTime * 1000) <= Date.now()
     const matchStatus: any = {
@@ -40,7 +49,17 @@ export default defineComponent({
       1: '进行中',
       2: '已完赛'
     }
-    return { privateMatchStore, getBaketBallScoreList, Utils, isIng, matchStatus };
+
+    onMounted(() => {
+      window.xaCustomEvent.on(XA_MATCH_SELECT_BASKETTBALL, data => {
+        requestParams.value = data?.length ? { shortComps: data } : {}
+        setTimeout(() => {
+          pageListRef.value?.refreshList()
+        }, 300)
+      })
+    })
+
+    return { pageListRef, privateMatchStore, getBaketBallScoreList, Utils, isIng, matchStatus, requestParams };
   }
 });
 </script>

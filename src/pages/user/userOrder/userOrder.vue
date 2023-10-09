@@ -5,8 +5,8 @@
       <div class="user_box">
         <img :src="require('./assets/1.png')" />
         <div class="info">
-          <div class="top">博哥玩球</div>
-          <div class="bottom"><span>783</span>粉丝</div>
+          <div class="top">{{ privateRecordStore.followOrder.details.nikeName }}</div>
+          <div class="bottom"><span>{{ privateRecordStore.followOrder.details.fans }}</span>粉丝</div>
         </div>
         <div class="follow" @click="follow2cancel">已关注</div>
       </div>
@@ -15,15 +15,15 @@
       <!--中奖信息-->
       <div class="top">
         <div class="item">
-          11109.56
+          {{ privateRecordStore.followOrder.details.winAmount || '--' }}
           <div>累计中奖</div>
         </div>
         <div class="item item1">
-          227%
+          {{ privateRecordStore.followOrder.details.profit }}%
           <div>7日盈利</div>
         </div>
         <div class="item">
-          11109.56
+          --
           <div>7日命中</div>
         </div>
       </div>
@@ -43,29 +43,28 @@
       <div class="game_box">
         <div class="top">
           <img src="./assets/ball.png" />
-          <span>竞彩足球(2串1)</span>
-          <span class="right"> 09-24 17:30截止 </span>
+          <span>{{ privateRecordStore.followOrder.details.cname }}</span>
+          <span class="right">{{ privateRecordStore.followOrder.details.cdate }}截止 </span>
         </div>
         <div class="middle">
-          SP6.9倍！奖金89700元，决胜
-          17:30分。高赔真正的王者，我十余次命中5.8-7.8倍水位，平局王者！看盘有自己独特风格以及超高命中率！
+          {{ privateRecordStore.followOrder.details.cdesc }}
         </div>
         <div class="bottom">
           <div class="item">
-            <div>1300元</div>
+            <div>{{ privateRecordStore.followOrder.details.tmoney }}元</div>
             <div>自购</div>
           </div>
           <div class="item">
-            <div>10%</div>
+            <div>{{ privateRecordStore.followOrder.details.commission }}%</div>
             <div>佣金</div>
           </div>
           <div class="item">
-            <div>25772.3</div>
-            <div>奖金</div>
+            <div>{{ privateRecordStore.followOrder.details.startAmount }}</div>
+            <div>起投</div>
           </div>
           <div class="item">
-            <div>13380</div>
-            <div>佣金</div>
+            <div>{{ privateRecordStore.followOrder.details.rate }}倍</div>
+            <div>预估最高回报率</div>
           </div>
         </div>
       </div>
@@ -179,7 +178,7 @@ export default defineComponent({
         getFollowOrderDetails(query.id as string)
       }
     })
-    return { data, activeName, follow2cancel };
+    return { data, activeName, follow2cancel, privateRecordStore };
   },
 });
 </script>
@@ -301,7 +300,7 @@ export default defineComponent({
     .bottom {
       display: flex;
       align-items: center;
-      padding: 15px 18px;
+      padding: 15px 5px;
       width: 100%;
 
       span {

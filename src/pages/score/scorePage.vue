@@ -14,16 +14,21 @@
     <div class="content">
       <component :is="model.currTab" />
     </div>
-    <van-dialog v-model:show="model.show" show-cancel-button>
+    <van-dialog v-model:show="model.show" show-cancel-button @confirm="confirmMatch">
       <div class="dialog-con">
         <div class="header">赛事筛选</div>
         <div class="select-box">
-          <div>全选</div>
-          <div>反选</div>
-          <div>清空</div>
+          <div @click="selectAll">全选</div>
+          <div @click="selectCounter">反选</div>
+          <div @click="clear">清空</div>
         </div>
-        <div class="tag-box">
-          <div>美职女篮</div>
+        <div v-if="isFootballMatch" class="tag-box">
+          <div v-for="(item, index) in privateMatchStore.football.matchList" :key="index" class="es"
+            :class="{ 'active': model.matchList.includes(item) }" @click="selectMatch(item)">{{ item }}</div>
+        </div>
+        <div v-else class="tag-box">
+          <div v-for="(item, index) in privateMatchStore.basketball.matchList" :key="index" class="es"
+            :class="{ 'active': model.matchList.includes(item) }" @click="selectMatch(item)">{{ item }}</div>
         </div>
       </div>
     </van-dialog>
@@ -31,9 +36,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, reactive, onMounted, computed } from 'vue';
+import { useMatch } from 'src/hook'
 import FootBall from './components/footBall.vue';
 import BasketBall from './components/basketBall.vue';
+import { XA_MATCH_SELECT_FOOTBALL, XA_MATCH_SELECT_BASKETTBALL } from 'src/common';
+
 interface tabItem {
   name: string;
   value: string;
@@ -52,12 +60,48 @@ export default defineComponent({
       currIndex: 0,
       currTab: 'FootBall',
       show: false,
+      matchList: [] as string[]
     });
+
+    const { privateMatchStore, getBaketBallMatchList, getFootBallMatchList } = useMatch();
+
+    const isFootballMatch = computed(() => model.currIndex === 0);
+
     const changeIndex = (item: tabItem, i: number) => {
       model.currIndex = i;
       model.currTab = item.value;
     };
-    return { model, changeIndex };
+
+    const selectAll = () => {
+      model.matchList = isFootballMatch.value ? [...privateMatchStore.football.matchList] : [...privateMatchStore.basketball.matchList]
+    }
+
+    const selectCounter = () => {
+      model.matchList = isFootballMatch.value ? privateMatchStore.football.matchList.filter(item => !model.matchList.includes(item)) : privateMatchStore.basketball.matchList.filter(item => !model.matchList.includes(item))
+    }
+
+    const clear = () => {
+      model.matchList = []
+    }
+
+    const selectMatch = (item: string) => {
+      if (model.matchList.includes(item)) {
+        model.matchList = model.matchList.filter(v => v !== item)
+      } else {
+        model.matchList.push(item)
+      }
+    }
+
+    const confirmMatch = () => {
+      window.xaCustomEvent.trigger(isFootballMatch.value ? XA_MATCH_SELECT_FOOTBALL : XA_MATCH_SELECT_BASKETTBALL, [model.matchList])
+    }
+
+    onMounted(() => {
+      getBaketBallMatchList();
+      getFootBallMatchList();
+    })
+
+    return { isFootballMatch, model, changeIndex, privateMatchStore, selectAll, selectCounter, clear, selectMatch, confirmMatch };
   },
 });
 </script>
@@ -161,21 +205,33 @@ export default defineComponent({
     .tag-box {
       padding: 22px 16px;
       width: 100%;
-      height: 183px;
+      max-height: 183px;
+      overflow-y: auto;
       background-color: #f6f6f6;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+      grid-gap: 8px;
 
       div {
-        display: inline-block;
-        margin: 5px 6px;
-        width: 88px;
+        // display: inline-block;
+        // margin: 5px 6px;
+        padding: 5px;
+        // width: 88px;
         height: 29px;
+        line-height: 20px;
         color: #191818;
         font-size: 14px;
         font-weight: 500;
         text-align: center;
-        line-height: 29px;
         border-radius: 5px;
         border: 0.5px solid #ffca2d;
+
+      }
+
+      .active {
+        background-color: #ffca2d;
+        border: 0.5px solid #ffca2d;
+        color: #fff;
       }
     }
   }

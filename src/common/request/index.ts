@@ -376,3 +376,21 @@ export function RechargeRequest<T, R>(params = {} as T) {
 export function RechargeConfigRequest<T, R>(params = {} as T) {
   return api.get<T, R>('/api/finance/rechargeConfig', { params });
 }
+
+/**
+ * 足球赛事列表
+ * @param params {}
+ * @returns
+ */
+export function MatchFootballCompRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/match/footballComp', params);
+}
+
+/**
+ * 篮球赛事列表
+ * @param params {}
+ * @returns
+ */
+export function MatchBasketballCompRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/match/basketballComp', params);
+}

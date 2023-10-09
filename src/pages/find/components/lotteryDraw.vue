@@ -309,11 +309,11 @@ export default defineComponent({
     width: 29px;
     height: 3px;
     background: linear-gradient(63deg, #fff120, #fcdf6b);
+  }
 
-    .van-tabs__wrap {
-      background-color: #fff;
-      border-radius: 0 0 15px 15px;
-    }
+  :deep(.van-tabs__wrap) {
+    background-color: #fff;
+    border-radius: 0 0 15px 15px;
   }
 }
 </style>

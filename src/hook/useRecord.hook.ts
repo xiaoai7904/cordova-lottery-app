@@ -517,7 +517,7 @@ export function useRecord() {
     try {
       privateRecordStore.loading = true;
       const data: any = await FollowOrderUserDetailsRequest<any, any>(id);
-      privateRecordStore.hotUser.details = { ...data.data };
+      privateRecordStore.hotUser.details = { ...data };
     } finally {
       privateRecordStore.loading = false;
     }
@@ -572,7 +572,7 @@ export function useRecord() {
     try {
       privateRecordStore.loading = true;
       const data: any = await FollowOrderDetailsRequest<any, any>(id);
-      privateRecordStore.followOrder.details = { ...data.data };
+      privateRecordStore.followOrder.details = { ...data };
     } finally {
       privateRecordStore.loading = false;
     }
