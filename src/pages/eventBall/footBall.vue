@@ -13,42 +13,49 @@
         </div>
       </template>
     </Headers>
-    <div class="content-title" @click="() => (model.showDown = !model.showDown)"
-      :class="model.showDown && 'content-active'">
-      <span>09-29</span>
-      <span class="week">星期五</span>
-      <span>4场</span>
-    </div>
-    <div class="content-expand">
-      <!--胜平负[让]-->
-      <template v-for="item in 4" :key="item">
-        <SpfhBet v-if="model.currEvent == '1'"></SpfhBet>
-      </template>
-      <!--混合投注-->
-      <template v-for="item in 4" :key="item">
-        <HhBet v-if="model.currEvent == '2'"></HhBet>
-      </template>
-      <!--猜比分-->
-      <template v-for="item in 4" :key="item">
-        <CbfBet v-if="model.currEvent == '3'"></CbfBet>
-      </template>
-      <!--进球数-->
-      <template v-for="item in 4" :key="item">
-        <JqsBet v-if="model.currEvent == '4'"></JqsBet>
-      </template>
-      <!--进球数-->
-      <template v-for="item in 4" :key="item">
-        <BqcBet v-if="model.currEvent == '5'"></BqcBet>
-      </template>
-      <!--2选1-->
-      <template v-for="item in 4" :key="item">
-        <Choose2Bet v-if="model.currEvent == '6'"></Choose2Bet>
-      </template>
-      <!--一场致胜-->
-      <template v-for="item in 4" :key="item">
-        <YczsBet v-if="model.currEvent == '7'"></YczsBet>
-      </template>
-    </div>
+    <van-collapse v-model="model.activeMatch" :border="false">
+      <van-collapse-item v-for="(data, index) in privateMatchStore.footballGroup.data" :name="index" :key="index">
+        <template #title>
+          <div class="content-title" :class="model.activeMatch.includes(String(index)) && 'content-active'">
+            <span>{{ index }}</span>
+            <span class="week">{{ Utils.getWeek(new Date(index).getTime()) }}</span>
+            <span>{{ data.length }}场</span>
+          </div>
+        </template>
+        <div class="content-expand">
+          <!--胜平负[让]-->
+          <template v-for="item in data" :key="item">
+            <SpfhBet v-if="model.currEvent == '1'" :data="item"></SpfhBet>
+          </template>
+          <!--混合投注-->
+          <template v-for="item in data" :key="item">
+            <HhBet v-if="model.currEvent == '2'" :data="item"></HhBet>
+          </template>
+          <!--猜比分-->
+          <template v-for="item in data" :key="item">
+            <CbfBet v-if="model.currEvent == '3'" :data="item"></CbfBet>
+          </template>
+          <!--进球数-->
+          <template v-for="item in data" :key="item">
+            <JqsBet v-if="model.currEvent == '4'" :data="item"></JqsBet>
+          </template>
+          <!--进球数-->
+          <template v-for="item in data" :key="item">
+            <BqcBet v-if="model.currEvent == '5'" :data="item"></BqcBet>
+          </template>
+          <!--2选1-->
+          <template v-for="item in data" :key="item">
+            <Choose2Bet v-if="model.currEvent == '6'" :data="item"></Choose2Bet>
+          </template>
+          <!--一场致胜-->
+          <template v-for="item in data" :key="item">
+            <YczsBet v-if="model.currEvent == '7'" :data="item"></YczsBet>
+          </template>
+        </div>
+      </van-collapse-item>
+    </van-collapse>
+
+
     <div class="content-bottom flex-between van-safe-area-bottom">
       <img src="./assets/del.png" alt="Del">
       <div class="center">
@@ -64,7 +71,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, reactive, onMounted, computed } from 'vue';
 import PlayerPopup from './components/playerPopup.vue';
 import FilterPopup from './components/filerPopup.vue';
 import HhBet from './components/hhBet.vue';
@@ -74,9 +81,9 @@ import JqsBet from './components/jqsBet.vue';
 import BqcBet from './components/bqcBet.vue';
 import Choose2Bet from './components/choose2Bet.vue';
 import YczsBet from './components/yczsBet.vue';
-import { useMatch, useCustomRouter } from 'src/hook';
+import { useMatch, useCustomRouter, useBet } from 'src/hook';
 import { Utils, MATCH_STATUS, RouterNameEnum } from 'src/common'
-import { onMounted } from 'vue';
+import { watch } from 'vue';
 export default defineComponent({
   components: {
     PlayerPopup,
@@ -91,12 +98,14 @@ export default defineComponent({
   },
   setup() {
     const router = useCustomRouter();
-    const { privateMatchStore, getFootballScoreList } = useMatch();
+    const { privateMatchStore, getFootBallGroupList } = useMatch();
+    const { } = useBet();
     const model = reactive({
       currEvent: '2',
       showFilter: false, // 是否展示删选栏
       showPlayer: false, // 是否展示右侧导航
       showDown: false, // 是否收起当前赛事
+      activeMatch: [] as any[]
     });
     const filterData = [
       { label: '胜平负[让]', value: '1' },
@@ -107,6 +116,7 @@ export default defineComponent({
       { label: '2选1', value: '6' },
       { label: '一场致胜', value: '7' },
     ];
+
     // 获取当前筛选label
     const getEventName = (value: string) => {
       return filterData.find((item) => item.value === model.currEvent)?.label;
@@ -119,30 +129,40 @@ export default defineComponent({
     };
 
 
-    const getMatchTime = () => {
-      const startTime = Utils.formatDate(new Date().getTime())
-      const endTime = Utils.formatDate(Utils.getDayjs().add(3, 'day').toDate().getTime())
+    // const getMatchTime = () => {
+    //   const startTime = Utils.formatDate(new Date().getTime())
+    //   const endTime = Utils.formatDate(Utils.getDayjs().add(3, 'day').toDate().getTime())
 
-      return [startTime, endTime]
-    }
+    //   return [startTime, endTime]
+    // }
 
     const gotoBetOrder = () => {
       router.push({ name: RouterNameEnum.BETORDER, query: { title: '' } })
     }
-    onMounted(() => {
-      const [startTime, endTime] = getMatchTime()
-      getFootballScoreList({ beginTime: startTime, endTime: endTime, status: MATCH_STATUS.NOT_START_YET })
+
+    watch(() => privateMatchStore.footballGroup.data, newValue => {
+      if (Object.keys(newValue).length) {
+        model.activeMatch = [Object.keys(newValue)[0]]
+      }
+    }, {
+      immediate: true,
     })
 
-    return { router, model, getEventName, filterData, handlerSelect, gotoBetOrder };
+    onMounted(() => {
+      // const [startTime, endTime] = getMatchTime()
+      getFootBallGroupList({ status: MATCH_STATUS.NOT_START_YET })
+    })
+
+    return { router, model, privateMatchStore, getEventName, filterData, handlerSelect, gotoBetOrder, Utils };
   },
 });
 </script>
 <style scoped lang="scss">
 .football {
   padding: 44px 0 70px 0;
-  background: rgba(255, 255, 255, 0.5);
+  background: url('./assets/member_bg.png') no-repeat;
   overflow: hidden;
+  min-height: 100vh;
 
   .title {
     font-size: 18px;
@@ -261,6 +281,22 @@ export default defineComponent({
       line-height: 68px;
       box-shadow: -2px 4px 8px 0 #f2f4df;
       background: linear-gradient(127deg, #fff120, #fcdf6b);
+    }
+  }
+
+  :deep(.van-collapse-item) {
+    .van-collapse-item__title {
+      padding: 0;
+      background: transparent;
+    }
+
+    .van-cell__right-icon {
+      display: none;
+    }
+
+    .van-collapse-item__content {
+      border-radius: 15px 15px 0 0;
+      padding: 0;
     }
   }
 }

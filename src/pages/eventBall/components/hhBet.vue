@@ -2,26 +2,42 @@
   <div class="hh-bet">
     <div class="content-item">
       <div class="top">
-        <div class="left">横滨水手<span>VS</span>神户胜利</div>
-        <div class="right">001<span>日职</span>17:30</div>
+        <div class="left">{{ data.home }}<span>VS</span>{{ data.away }}</div>
+        <div class="right"><span>{{ data.shortComp }}</span>{{ Utils.formatDate(data.matchTime, 'HH:mm') }}</div>
       </div>
       <div class="bottom">
         <div class="game-item">
           <!--比分-->
           <div class="source-box">
             <div>0</div>
-            <div>-1</div>
+            <div :class="{ 'up': Number(getBetValue(data.rq, 0)) > 0, 'down': Number(getBetValue(data.rq, 0)) < 0 }">
+              {{
+                getBetValue(data.rq, 0)
+              }}
+            </div>
           </div>
           <!--投注项-->
           <div class="bet-item">
-            <div class="item active" :class="'hasdan'" @click="selectBet">
-              胜 <span>2.00</span>
+            <div class="item" :class="'hasdan'" @click="selectBet(getBetValue(data.spf, 0), ODDS_MAP.spf)">
+              胜 <span>{{ getBetValue(data.spf, 0) }}</span>
             </div>
-            <div class="item">平 <span>2.00</span></div>
-            <div class="item">负 <span>2.00</span></div>
-            <div class="item">让胜 <span>2.00</span></div>
-            <div class="item">让平 <span>2.00</span></div>
-            <div class="item">让负 <span>2.00</span></div>
+            <div class="item" @click="selectBet(getBetValue(data.spf, 1), ODDS_MAP.spf)">平 <span>{{ getBetValue(data.spf,
+              1)
+            }}</span>
+            </div>
+            <div class="item" @click="selectBet(getBetValue(data.spf, 2), ODDS_MAP.spf)">负 <span>{{ getBetValue(data.spf,
+              2)
+            }}</span>
+            </div>
+            <div class="item" @click="selectBet(getBetValue(data.rq, 1), ODDS_MAP.rq)">让胜 <span>{{ getBetValue(data.rq, 1)
+            }}</span>
+            </div>
+            <div class="item" @click="selectBet(getBetValue(data.rq, 2), ODDS_MAP.rq)">让平 <span>{{ getBetValue(data.rq, 2)
+            }}</span>
+            </div>
+            <div class="item" @click="selectBet(getBetValue(data.rq, 3), ODDS_MAP.rq)">让负 <span>{{ getBetValue(data.rq, 3)
+            }}</span>
+            </div>
           </div>
           <!--选择值-->
           <div class="number-box" @click="explandAll">
@@ -88,20 +104,30 @@
           <van-button type="primary" @click="confirm">确定</van-button>
         </div>
       </template>
-      <BetView v-if="model.betModel" @bet="betEvent" />
+      <div class="bet-modal-content">
+        <BetView v-if="model.betModel" :data="data" :checkData="model.betList" @bet="betEvent" />
+      </div>
+
     </van-dialog>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, reactive, computed, PropType } from 'vue';
 import { useRouter } from 'vue-router';
 import { useBet } from 'src/hook'
+import { Utils, ODDS_MAP, betNameMap } from 'src/common'
 import BetView from './betView.vue';
-import { computed } from 'vue';
+import { data } from 'autoprefixer';
 
 export default defineComponent({
   components: { BetView },
-  setup() {
+  props: {
+    data: {
+      type: Object as PropType<any>,
+      default: () => ({})
+    }
+  },
+  setup(props) {
     const router = useRouter();
     const model = reactive({
       showEvent: false,
@@ -109,13 +135,25 @@ export default defineComponent({
       tempBetList: [] as any[],
       betList: [] as any[]
     });
-    const { addBet, delBet } = useBet()
+    const { addBet, delBet, getBetValue } = useBet()
     const betCount = computed(() => model.betList.length)
+    const betNames = computed(() => model.betList.map(item => item.name))
+
     const explandAll = () => {
       model.betModel = true
     }
     const confirm = () => {
-      // addBet()
+      model.tempBetList.forEach(item => {
+        addBet({
+          matchId: props.data.id,
+          shortComp: props.data.shortComp,
+          shortHome: props.data.shortHome,
+          shortAway: props.data.shortAway,
+          oddRate: item.value,
+          odds: item.code
+        })
+      })
+
       model.betList = [...model.tempBetList]
       model.tempBetList = []
       model.betModel = false
@@ -123,10 +161,30 @@ export default defineComponent({
     const betEvent = (data: any) => {
       model.tempBetList = [...data]
     }
-    const selectBet = () => {
-      // addBet()
+    const selectBet = (value: any, code: string) => {
+      if (betNames.value.includes(betNameMap[code].name)) {
+        model.betList = model.betList.filter(item => item.name !== betNameMap[code].name)
+        delBet({
+          matchId: props.data.id,
+          odds: code
+        })
+      } else {
+        model.betList.push({
+          name: betNameMap[code].name, value, code
+        })
+
+        addBet({
+          matchId: props.data.id,
+          shortComp: props.data.shortComp,
+          shortHome: props.data.shortHome,
+          shortAway: props.data.shortAway,
+          oddRate: value,
+          odds: code
+        })
+      }
+
     }
-    return { router, model, betCount, explandAll, confirm, betEvent, selectBet };
+    return { router, model, betCount, explandAll, confirm, betEvent, selectBet, getBetValue, Utils, ODDS_MAP };
   },
 });
 </script>
@@ -385,6 +443,11 @@ export default defineComponent({
   }
 }
 
+.bet-modal-content {
+  max-height: 70vh;
+  overflow: auto;
+}
+
 .bet-modal-footer {
   height: 60px;
   padding: 0 15px;
@@ -408,5 +471,13 @@ export default defineComponent({
     color: #2e2f30;
   }
 
+}
+
+.up {
+  color: #2dae8b !important;
+}
+
+.down {
+  color: #f73 !important;
 }
 </style>

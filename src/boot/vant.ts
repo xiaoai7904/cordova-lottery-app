@@ -16,6 +16,8 @@ import {
   PullRefresh,
   Image,
   ActionSheet,
+  Collapse,
+  CollapseItem,
 } from 'vant';
 import 'vant/lib/index.css';
 import Header from 'src/components/Header/Header.vue';
@@ -38,6 +40,8 @@ export default boot(({ app }) => {
   app.use(PullRefresh);
   app.use(Image);
   app.use(ActionSheet);
+  app.use(Collapse);
+  app.use(CollapseItem);
 
   app.component('Headers', Header);
   app.component('PageList', PageList);

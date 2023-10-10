@@ -18,9 +18,9 @@
         </div>
         <div v-else class="item-box">
           <template v-for="(item, i) in model.navList" :key="i">
-            <div class="item" v-if="i <= 7" @click="() => gotoByPath('/userDetail')">
-              <img :src="item.img" />
-              <span>{{ item.nid }}</span>
+            <div class="item" v-if="i <= 7" @click="gotoUserDetails(item.id)">
+              <img :src="item.avatar" />
+              <span>{{ item.nikeName }}</span>
             </div>
           </template>
         </div>
@@ -28,9 +28,9 @@
         <div class="tj-box">
           <div class="d1"></div>
           <template v-for="(item, i) in model.nav2List" :key="i">
-            <div class="d2" v-if="i <= 3" @click="() => gotoByPath('/userDetail')">
-              <img :src="item.img" />
-              <span>{{ item.name }}</span>
+            <div class="d2" v-if="i <= 3" @click="gotoUserDetails(item.id)">
+              <img :src="item.avatar" />
+              <span>{{ item.nikeName }}</span>
             </div>
           </template>
         </div>
@@ -101,57 +101,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { useRecord, gotoByPath } from 'src/hook';
-import { onMounted } from 'vue';
+import { defineComponent, reactive, watch, onMounted } from 'vue';
+import { useRecord, useCustomRouter, gotoByPath } from 'src/hook';
 import OrderItemPage from './orderItemPage.vue';
+import { RouterNameEnum } from 'src/common';
 
 export default defineComponent({
   components: { OrderItemPage },
   setup() {
+    const router = useCustomRouter();
     const { privateRecordStore, getHotUserList, getFollowOrderList } = useRecord();
 
     const model = reactive({
-      navList: [
-        {
-          nid: '出手就赢',
-          img: require('./assets/1.png'),
-        },
-        {
-          img: require('./assets/2.png'),
-          nid: '傲雪鹏少',
-        },
-        {
-          nid: '斗皇强者',
-          img: require('./assets/3.png'),
-        },
-        {
-          nid: '红单菩萨',
-          img: require('./assets/4.png'),
-        },
-        {
-          nid: '博哥玩球',
-          img: require('./assets/5.png'),
-        },
-        {
-          nid: '藏龙卧虎',
-          img: require('./assets/6.png'),
-        },
-        {
-          nid: '晚场竞彩大神',
-          img: require('./assets/1.png'),
-        },
-        {
-          nid: '皓月千里照神州',
-          img: require('./assets/8.png'),
-        },
-      ],
-      nav2List: [
-        { name: '萌度足球', img: require('./assets/a1.png') },
-        { name: '收米哥哥', img: require('./assets/a2.png') },
-        { name: '杭州马云', img: require('./assets/a3.png') },
-        { name: '会所有嫩模', img: require('./assets/a4.png') },
-      ],
+      navList: [] as any[],
+      nav2List: [] as any[],
       filterNav: [
         { label: '金额', value: 1 },
         { label: '人气', value: 2 },
@@ -166,11 +129,30 @@ export default defineComponent({
       model.active = i;
     };
 
+    const gotoUserDetails = (id: any) => {
+      router.push({ name: RouterNameEnum.USERDETAIL, query: { id } })
+    }
+
+    watch(() => privateRecordStore.hotUser.list, newValue => {
+      if (newValue.length) {
+        console.log(newValue)
+        newValue.forEach(item => {
+          if (item.type === 2) {
+            model.nav2List.push({ ...item })
+          } else {
+            model.navList.push({ ...item })
+          }
+        })
+      }
+    }, {
+      immediate: true
+    })
+
     onMounted(() => {
       getHotUserList();
     })
 
-    return { privateRecordStore, model, changeTab, getFollowOrderList, gotoByPath };
+    return { privateRecordStore, model, changeTab, getFollowOrderList, gotoUserDetails, gotoByPath };
   },
 });
 </script>

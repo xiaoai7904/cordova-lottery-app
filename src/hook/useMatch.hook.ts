@@ -3,6 +3,10 @@ import {
   FootballRequest,
   MatchFootballCompRequest,
   MatchBasketballCompRequest,
+  MatchFootBallGroupRequest,
+  MatchBaketBallGroupRequest,
+  MatchFootballHistroyRequest,
+  MatchBasketHistroyRequest,
 } from 'src/common';
 import { reactive } from 'vue';
 
@@ -31,6 +35,18 @@ export function useMatch() {
       endTime: '',
       matchList: [] as any[],
     },
+    basketballGroup: {
+      data: {} as any,
+      beginTime: '',
+      endTime: '',
+    },
+    footballGroup: {
+      data: {} as any,
+      beginTime: '',
+      endTime: '',
+    },
+    basketballHistory: {},
+    footballHistory: {},
   });
 
   const getBaketBallScoreList = async (params = {}) => {
@@ -127,11 +143,55 @@ export function useMatch() {
     }
   };
 
+  const getBaketBallGroupList = async (params = {}) => {
+    try {
+      privateMatchStore.loading = true;
+      const data = await MatchBaketBallGroupRequest<any, any>(params);
+      privateMatchStore.basketballGroup.data = { ...data };
+    } finally {
+      privateMatchStore.loading = false;
+    }
+  };
+
+  const getFootBallGroupList = async (params = {}) => {
+    try {
+      privateMatchStore.loading = true;
+      const data = await MatchFootBallGroupRequest<any, any>(params);
+      privateMatchStore.footballGroup.data = { ...data };
+    } finally {
+      privateMatchStore.loading = false;
+    }
+  };
+
+  const getFootballHistory = async (params = {}) => {
+    try {
+      privateMatchStore.loading = true;
+      const data = await MatchFootballHistroyRequest<any, any>(params);
+      privateMatchStore.footballHistory = { ...data };
+    } finally {
+      privateMatchStore.loading = false;
+    }
+  };
+
+  const getBaketBallHistory = async (params = {}) => {
+    try {
+      privateMatchStore.loading = true;
+      const data = await MatchBasketHistroyRequest<any, any>(params);
+      privateMatchStore.basketballHistory = { ...data };
+    } finally {
+      privateMatchStore.loading = false;
+    }
+  };
+
   return {
     privateMatchStore,
     getBaketBallScoreList,
     getFootballScoreList,
     getBaketBallMatchList,
     getFootBallMatchList,
+    getBaketBallGroupList,
+    getFootBallGroupList,
+    getFootballHistory,
+    getBaketBallHistory,
   };
 }

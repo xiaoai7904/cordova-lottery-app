@@ -92,12 +92,29 @@ export enum ERROR_CODES {
 }
 
 export enum MATCH_STATUS {
+  // 未开赛
   'NOT_START_YET' = 0,
+  // 进行中
   'ONGOING' = 1,
+  // 结束
   'END' = 2,
 }
 
-export const betNameMap = {
+// 玩法表
+export const ODDS_MAP = {
+  // 胜负平
+  spf: 'spf',
+  // 让球
+  rq: 'rq',
+  // 比分
+  bf: 'bf',
+  // 角球
+  jq: 'jq',
+  // 半全场
+  bqc: 'bqc',
+};
+
+export const betNameMap: any = {
   spf: {
     name: '胜平负',
     betName: ['胜', '平', '负'],

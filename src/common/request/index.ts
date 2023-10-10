@@ -394,3 +394,39 @@ export function MatchFootballCompRequest<T, R>(params = {} as T) {
 export function MatchBasketballCompRequest<T, R>(params = {} as T) {
   return api.post<T, R>('/api/match/basketballComp', params);
 }
+
+/**
+ * 足球赛事分组
+ * @param params {}
+ * @returns
+ */
+export function MatchFootBallGroupRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/match/footballGroup', params);
+}
+
+/**
+ * 篮球赛事分组
+ * @param params {}
+ * @returns
+ */
+export function MatchBaketBallGroupRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/match/basketballGroup', params);
+}
+
+/**
+ * 足球历史数据
+ * @param params {}
+ * @returns
+ */
+export function MatchFootballHistroyRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/match/footballHistory', params);
+}
+
+/**
+ * 篮球历史数据
+ * @param params {}
+ * @returns
+ */
+export function MatchBasketHistroyRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/match/basketballHistory', params);
+}

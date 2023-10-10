@@ -40,9 +40,21 @@ export function useBet() {
     }
   };
 
+  const getBetCount = () => {
+    betStore.betInfo;
+  };
+
+  const getBetValue = (data: string, index: number) => {
+    if (index !== undefined) {
+      return data.split(',')[index];
+    }
+    return data.split(',');
+  };
+
   return {
     betStore,
     addBet,
     delBet,
+    getBetValue,
   };
 }

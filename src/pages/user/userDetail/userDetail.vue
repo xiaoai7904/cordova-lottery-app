@@ -63,7 +63,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted } from 'vue';
+import { useRoute } from 'vue-router'
+import { useRecord } from 'src/hook'
 export default defineComponent({
   setup() {
     const data = [
@@ -126,6 +128,16 @@ export default defineComponent({
       0: '待开奖',
       1: '未中奖',
     };
+
+    const { query } = useRoute()
+    const { privateRecordStore, getHotUserDetails } = useRecord();
+
+    onMounted(() => {
+      if (query.id) {
+        getHotUserDetails(query.id as string)
+      }
+    })
+
     return { data, list, prize, status };
   },
 });
