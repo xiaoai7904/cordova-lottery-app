@@ -2,9 +2,9 @@
   <div class="football">
     <Headers>
       <template #title>
-        <div class="title">
+        <div class="title" @click="() => (model.showFilter = !model.showFilter)">
           <span>{{ getEventName(model.currEvent) }} </span>
-          <van-icon name="play" :class="'icon'" @click="() => (model.showFilter = !model.showFilter)" />
+          <van-icon name="play" :class="'icon'" />
         </div>
       </template>
       <template #right>
@@ -13,7 +13,17 @@
         </div>
       </template>
     </Headers>
-    <van-collapse v-model="model.activeMatch" :border="false">
+
+    <div class="skeleton" v-if="privateMatchStore.loading">
+      <van-skeleton title :row="3" />
+      <van-skeleton title :row="3" />
+      <van-skeleton title :row="3" />
+      <van-skeleton title :row="3" />
+      <van-skeleton title :row="3" />
+      <van-skeleton title :row="3" />
+    </div>
+
+    <van-collapse v-else v-model="model.activeMatch" :border="false">
       <van-collapse-item v-for="(data, index) in privateMatchStore.footballGroup.data" :name="index" :key="index">
         <template #title>
           <div class="content-title" :class="model.activeMatch.includes(String(index)) && 'content-active'">
@@ -57,9 +67,9 @@
 
 
     <div class="content-bottom flex-between van-safe-area-bottom">
-      <img src="./assets/del.png" alt="Del">
+      <img src="./assets/del.png" alt="Del" @click="delBet()">
       <div class="center">
-        <p>已选<span class="value">0</span>场</p>
+        <p>已选<span class="value">{{ getBetMatchCount() }}</span>场</p>
         <span class="tips">页面赔率仅供参考</span>
       </div>
       <div class="btn" @click="gotoBetOrder">确定</div>
@@ -82,7 +92,7 @@ import BqcBet from './components/bqcBet.vue';
 import Choose2Bet from './components/choose2Bet.vue';
 import YczsBet from './components/yczsBet.vue';
 import { useMatch, useCustomRouter, useBet } from 'src/hook';
-import { Utils, MATCH_STATUS, RouterNameEnum } from 'src/common'
+import { Utils, MATCH_STATUS, XA_DEL_BET, RouterNameEnum } from 'src/common'
 import { watch } from 'vue';
 export default defineComponent({
   components: {
@@ -99,7 +109,7 @@ export default defineComponent({
   setup() {
     const router = useCustomRouter();
     const { privateMatchStore, getFootBallGroupList } = useMatch();
-    const { } = useBet();
+    const { getBetMatchCount } = useBet();
     const model = reactive({
       currEvent: '2',
       showFilter: false, // 是否展示删选栏
@@ -113,8 +123,8 @@ export default defineComponent({
       { label: '猜比分', value: '3' },
       { label: '进球数', value: '4' },
       { label: '半全场', value: '5' },
-      { label: '2选1', value: '6' },
-      { label: '一场致胜', value: '7' },
+      // { label: '2选1', value: '6' },
+      // { label: '一场致胜', value: '7' },
     ];
 
     // 获取当前筛选label
@@ -126,6 +136,7 @@ export default defineComponent({
       model.currEvent = val;
       model.showFilter = false;
       // 列表请求
+      window.xaCustomEvent.trigger(XA_DEL_BET)
     };
 
 
@@ -135,6 +146,10 @@ export default defineComponent({
 
     //   return [startTime, endTime]
     // }
+
+    const delBet = () => {
+      window.xaCustomEvent.trigger(XA_DEL_BET)
+    }
 
     const gotoBetOrder = () => {
       router.push({ name: RouterNameEnum.BETORDER, query: { title: '' } })
@@ -153,7 +168,7 @@ export default defineComponent({
       getFootBallGroupList({ status: MATCH_STATUS.NOT_START_YET })
     })
 
-    return { router, model, privateMatchStore, getEventName, filterData, handlerSelect, gotoBetOrder, Utils };
+    return { router, model, privateMatchStore, getEventName, filterData, handlerSelect, gotoBetOrder, Utils, getBetMatchCount, delBet };
   },
 });
 </script>
@@ -297,6 +312,12 @@ export default defineComponent({
     .van-collapse-item__content {
       border-radius: 15px 15px 0 0;
       padding: 0;
+    }
+  }
+
+  .skeleton {
+    :deep(.van-skeleton-paragraph) {
+      background-color: #fff;
     }
   }
 }

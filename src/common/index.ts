@@ -85,6 +85,8 @@ export const XA_MATCH_SELECT_FOOTBALL = 'XA_MATCH_SELECT_FOOTBALL';
 // 选择联赛
 export const XA_MATCH_SELECT_BASKETTBALL =
   'XA_MATCH_SELECT_XA_MATCH_SELECT_BASKETTBALL';
+// 删除投注数据
+export const XA_DEL_BET = 'XA_DEL_BET';
 
 export enum ERROR_CODES {
   'INSUFFICIENT_BALANCE' = 1013,
@@ -118,10 +120,12 @@ export const betNameMap: any = {
   spf: {
     name: '胜平负',
     betName: ['胜', '平', '负'],
+    betCode: ['3', '1', '0'],
   },
   rq: {
     name: '让球',
     betName: ['让球数', '胜', '平', '负'],
+    betCode: ['', '3', '1', '0'],
   },
   bf: {
     name: '比分',
@@ -158,10 +162,44 @@ export const betNameMap: any = {
       '2:5',
       '负其他',
     ],
+    betCode: [
+      '1:0',
+      '2:0',
+      '2:1',
+      '3:0',
+      '3:1',
+      '3:2',
+      '4:0',
+      '4:1',
+      '4:2',
+      '5:0',
+      '5:1',
+      '5:2',
+      '胜其他',
+      '0:0',
+      '1:1',
+      '2:2',
+      '3:3',
+      '平其他',
+      '0:1',
+      '0:2',
+      '1:2',
+      '0:3',
+      '1:3',
+      '2:3',
+      '0:4',
+      '1:4',
+      '2:4',
+      '0:5',
+      '1:5',
+      '2:5',
+      '负其他',
+    ],
   },
   jq: {
-    name: '胜平负',
+    name: '进球数',
     betName: ['0球', '1球', '2球', '3球', '4球', '5球', '6球', '7+球'],
+    betCode: ['0', '1', '2', '3', '4', '5', '6', '7+'],
   },
   bqc: {
     name: '半全场胜平负',
@@ -176,5 +214,6 @@ export const betNameMap: any = {
       '负平',
       '负负',
     ],
+    betCode: ['3,3', '3,1', '3,0', '1,3', '1,0', '1,1', '0,3', '0,1', '0,0'],
   },
 };

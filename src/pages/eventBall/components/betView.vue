@@ -8,7 +8,7 @@
                 </p> -->
         <div class="grid">
           <p v-for="(item1, index1) in item.betName" :key="index1"
-            @click="select({ name: item1, value: getBetValue(data[index], index1), code: index })"
+            @click="select({ name: item1, value: getBetValue(data[index], index1), code: index, playCode: item.betCode[index1] })"
             :class="{ 'active': betNames.includes(`${index}_${item1}`) }">
             <span>{{ item1 }}</span>
             <span>{{ getBetValue(data[index], index1) }}</span>
@@ -53,8 +53,8 @@ export default defineComponent({
     const betAreaMap = computed(() => props.type ? { [props.type]: betNameMap[props.type] } : betNameMap)
 
     const select = (item: any) => {
-      if (betStore.betList.map((v: any) => v.name).includes(item.name)) {
-        betStore.betList = betStore.betList.filter((v: any) => v.name !== item.name)
+      if (betStore.betList.map((v: any) => `${v.code}_${v.name}`).includes(`${item.code}_${item.name}`)) {
+        betStore.betList = betStore.betList.filter((v: any) => v.name !== item.name && v.code !== item.code)
       } else {
         betStore.betList.push(item)
       }
@@ -113,7 +113,7 @@ export default defineComponent({
       flex: 1;
 
       .active {
-        background-color: #fff120;
+        background-color: #fff853;
         border-color: #fff;
       }
 

@@ -18,25 +18,51 @@
           </div>
           <!--投注项-->
           <div class="bet-item">
-            <div class="item" :class="'hasdan'" @click="selectBet(getBetValue(data.spf, 0), ODDS_MAP.spf)">
+            <div class="item" :class="{ 'hasdan': true, 'active': isSpfSelect('胜') }"
+              @click="selectBetEvent(getBetValue(data.spf, 0), ODDS_MAP.spf, betNameMap[ODDS_MAP.spf].betCode[0])">
               胜 <span>{{ getBetValue(data.spf, 0) }}</span>
             </div>
-            <div class="item" @click="selectBet(getBetValue(data.spf, 1), ODDS_MAP.spf)">平 <span>{{ getBetValue(data.spf,
-              1)
-            }}</span>
+            <div class="item" :class="{ 'active': isSpfSelect('平') }"
+              @click="selectBetEvent(getBetValue(data.spf, 1), ODDS_MAP.spf, betNameMap[ODDS_MAP.spf].betCode[1])">平
+              <span>
+                {{
+                  getBetValue(data.spf,
+                    1)
+                }}
+              </span>
             </div>
-            <div class="item" @click="selectBet(getBetValue(data.spf, 2), ODDS_MAP.spf)">负 <span>{{ getBetValue(data.spf,
-              2)
-            }}</span>
+            <div class="item" :class="{ 'active': isSpfSelect('负') }"
+              @click="selectBetEvent(getBetValue(data.spf, 2), ODDS_MAP.spf, betNameMap[ODDS_MAP.spf].betCode[2])">负
+              <span>
+                {{
+                  getBetValue(data.spf,
+                    2)
+                }}
+              </span>
             </div>
-            <div class="item" @click="selectBet(getBetValue(data.rq, 1), ODDS_MAP.rq)">让胜 <span>{{ getBetValue(data.rq, 1)
-            }}</span>
+            <div class="item" :class="{ 'active': isRqSelect('胜') }"
+              @click="selectBetEvent(getBetValue(data.rq, 1), ODDS_MAP.rq, betNameMap[ODDS_MAP.rq].betCode[1])">让胜
+              <span>
+                {{
+                  getBetValue(data.rq, 1)
+                }}
+              </span>
             </div>
-            <div class="item" @click="selectBet(getBetValue(data.rq, 2), ODDS_MAP.rq)">让平 <span>{{ getBetValue(data.rq, 2)
-            }}</span>
+            <div class="item" :class="{ 'active': isRqSelect('平') }"
+              @click="selectBetEvent(getBetValue(data.rq, 2), ODDS_MAP.rq, betNameMap[ODDS_MAP.rq].betCode[2])">让平
+              <span>
+                {{
+                  getBetValue(data.rq, 2)
+                }}
+              </span>
             </div>
-            <div class="item" @click="selectBet(getBetValue(data.rq, 3), ODDS_MAP.rq)">让负 <span>{{ getBetValue(data.rq, 3)
-            }}</span>
+            <div class="item" :class="{ 'active': isRqSelect('负') }"
+              @click="selectBetEvent(getBetValue(data.rq, 3), ODDS_MAP.rq, betNameMap[ODDS_MAP.rq].betCode[3])">让负
+              <span>
+                {{
+                  getBetValue(data.rq, 3)
+                }}
+              </span>
             </div>
           </div>
           <!--选择值-->
@@ -101,7 +127,7 @@
       <template #footer>
         <div class="bet-modal-footer flex-between">
           <van-button @click="model.betModel = false">取消</van-button>
-          <van-button type="primary" @click="confirm">确定</van-button>
+          <van-button type="primary" @click="confirmEvent">确定</van-button>
         </div>
       </template>
       <div class="bet-modal-content">
@@ -112,7 +138,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, computed, PropType } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { useRouter } from 'vue-router';
 import { useBet } from 'src/hook'
 import { Utils, ODDS_MAP, betNameMap } from 'src/common'
@@ -129,62 +155,27 @@ export default defineComponent({
   },
   setup(props) {
     const router = useRouter();
-    const model = reactive({
-      showEvent: false,
-      betModel: false,
-      tempBetList: [] as any[],
-      betList: [] as any[]
-    });
-    const { addBet, delBet, getBetValue } = useBet()
-    const betCount = computed(() => model.betList.length)
-    const betNames = computed(() => model.betList.map(item => item.name))
 
-    const explandAll = () => {
-      model.betModel = true
-    }
-    const confirm = () => {
-      model.tempBetList.forEach(item => {
-        addBet({
-          matchId: props.data.id,
-          shortComp: props.data.shortComp,
-          shortHome: props.data.shortHome,
-          shortAway: props.data.shortAway,
-          oddRate: item.value,
-          odds: item.code
-        })
-      })
+    const {
+      model,
+      betCount,
+      betNames,
+      getBetValue,
+      explandAll,
+      confirm,
+      betEvent,
+      selectBet,
+      isSpfSelect,
+      isRqSelect } = useBet()
 
-      model.betList = [...model.tempBetList]
-      model.tempBetList = []
-      model.betModel = false
+    const confirmEvent = () => {
+      confirm(props.data)
     }
-    const betEvent = (data: any) => {
-      model.tempBetList = [...data]
+    const selectBetEvent = (value: any, code: string, playCode: string) => {
+      selectBet(props.data, value, code, playCode)
     }
-    const selectBet = (value: any, code: string) => {
-      if (betNames.value.includes(betNameMap[code].name)) {
-        model.betList = model.betList.filter(item => item.name !== betNameMap[code].name)
-        delBet({
-          matchId: props.data.id,
-          odds: code
-        })
-      } else {
-        model.betList.push({
-          name: betNameMap[code].name, value, code
-        })
 
-        addBet({
-          matchId: props.data.id,
-          shortComp: props.data.shortComp,
-          shortHome: props.data.shortHome,
-          shortAway: props.data.shortAway,
-          oddRate: value,
-          odds: code
-        })
-      }
-
-    }
-    return { router, model, betCount, explandAll, confirm, betEvent, selectBet, getBetValue, Utils, ODDS_MAP };
+    return { router, model, betCount, betNames, explandAll, confirm, betEvent, selectBetEvent, confirmEvent, getBetValue, isSpfSelect, isRqSelect, Utils, ODDS_MAP, betNameMap };
   },
 });
 </script>
@@ -197,7 +188,7 @@ export default defineComponent({
   .content-item {
     display: flex;
     flex-direction: column;
-    padding: 0 20px;
+    padding: 0 15px;
     width: 100%;
     height: 150px;
 
