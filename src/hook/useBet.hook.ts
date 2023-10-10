@@ -1,5 +1,9 @@
 import { reactive, computed, onMounted } from 'vue';
-import { betNameMap, XA_DEL_BET } from 'src/common';
+import { betNameMap, XA_DEL_BET, Utils } from 'src/common';
+
+// 默认单注金额
+const defaultBetAmount = 2;
+
 const betStore = reactive({
   betInfo: {} as any,
 });
@@ -10,11 +14,15 @@ export function useBet() {
     betModel: false,
     tempBetList: [] as any[],
     betList: [] as any[],
+    multiple: 50,
   });
 
   const betCount = computed(() => model.betList.length);
   const betNames = computed(() =>
     model.betList.map((item) => item.code + '_' + item.name)
+  );
+  const betAmount = computed(() =>
+    Utils.mathTimes(model.multiple, defaultBetAmount)
   );
 
   const isSpfSelect = (txt: string) => betNames.value.includes(`spf_${txt}`);
@@ -28,6 +36,7 @@ export function useBet() {
       matchInfo.orderOdds.push({
         odds: data.odds,
         oddRate: data.oddRate,
+        oddValue: data.oddValue,
       });
     } else {
       betStore.betInfo[data.matchId] = {
@@ -35,17 +44,26 @@ export function useBet() {
         shortComp: data.shortComp,
         shortHome: data.shortHome,
         shortAway: data.shortAway,
+        matchTime: data.matchTime,
+        org: { ...data.org },
       };
       betStore.betInfo[data.matchId].orderOdds = [
         {
           odds: data.odds,
           oddRate: data.oddRate,
+          betName: data.betName,
+          oddValue: data.oddValue,
         },
       ];
     }
   };
 
   const delBet = (data: any) => {
+    if (data && data.delAll) {
+      delete betStore.betInfo[data.matchId];
+      return;
+    }
+
     if (data && betStore.betInfo[data.matchId]) {
       betStore.betInfo[data.matchId].orderOdds = betStore.betInfo[
         data.matchId
@@ -58,9 +76,6 @@ export function useBet() {
       betStore.betInfo = {};
       model.betList = [];
     }
-
-    console.log('delBet1', betStore.betInfo);
-    console.log('delBet2', model.betList);
   };
 
   const getBetMatchCount = () => Object.keys(betStore.betInfo).length;
@@ -82,8 +97,13 @@ export function useBet() {
         shortComp: data.shortComp,
         shortHome: data.shortHome,
         shortAway: data.shortAway,
+        matchTime: data.matchTime,
+        playCode: item.playCode,
+        betName: item.name,
         oddRate: `${item.playCode},${item.value}`,
         odds: item.code,
+        oddValue: item.value,
+        org: { ...data },
       });
     });
 
@@ -120,19 +140,87 @@ export function useBet() {
         shortComp: data.shortComp,
         shortHome: data.shortHome,
         shortAway: data.shortAway,
+        matchTime: data.matchTime,
+        playCode,
+        betName: name,
         oddRate: `${playCode},${value}`,
         odds: code,
+        oddValue: value,
+        org: { ...data },
       });
     }
 
     console.log('selectBet1', betStore.betInfo);
     console.log('selectBet2', model.betList);
-    console.log(betNames.value);
+  };
+
+  // 获取投注总注单数
+  const getBetCount = (isSingle: boolean) => {
+    let betCount = 0;
+    Object.keys(betStore.betInfo).forEach((item) => {
+      betCount += betStore.betInfo[item].orderOdds.length;
+    });
+
+    if (isSingle) {
+      return combination(betCount, 2);
+    }
+    return betCount;
+  };
+
+  // 获取投注总金额
+  const getBetTotalAmount = (isSingle: boolean) => {
+    return Utils.mathTimes(
+      Utils.mathTimes(model.multiple, defaultBetAmount),
+      getBetCount(isSingle)
+    );
+  };
+
+  // 计算预计奖金
+  const getEstimatedBonus = (isSingle: boolean) => {
+    const betValue: any[] = [];
+    Object.keys(betStore.betInfo).forEach((item) => {
+      betValue.push(
+        ...[
+          ...betStore.betInfo[item].orderOdds.map((item: any) =>
+            Number(item.oddValue)
+          ),
+        ]
+      );
+    });
+
+    const max = Math.max(...betValue);
+    const min = Math.min(...betValue);
+    const betAmount = getBetTotalAmount(isSingle);
+
+    return `${Utils.mathTimes(min, betAmount)}~${Utils.mathTimes(
+      max,
+      betAmount
+    )}`;
+  };
+
+  const factorial = (n: number): number => {
+    // 阶乘函数
+    if (n === 0) {
+      return 1;
+    } else {
+      return Utils.mathTimes(n, factorial(n - 1));
+    }
+  };
+
+  // 计算排列组合
+  const combination = (n: number, k: number) => {
+    // 组合数函数
+    return Math.ceil(
+      Utils.mathDiv(
+        factorial(n),
+        Utils.mathTimes(factorial(k), factorial(n - k))
+      )
+    );
   };
 
   onMounted(() => {
-    window.xaCustomEvent.on(XA_DEL_BET, () => {
-      delBet(null);
+    window.xaCustomEvent.on(XA_DEL_BET, (data: any) => {
+      delBet(data ? data : null);
     });
   });
 
@@ -153,5 +241,8 @@ export function useBet() {
     isBqcSelect,
     isJqSelect,
     isRqSelect,
+    getBetCount,
+    getBetTotalAmount,
+    getEstimatedBonus,
   };
 }

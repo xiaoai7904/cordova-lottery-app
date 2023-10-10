@@ -54,60 +54,7 @@ const routes: RouteRecordRaw[] = [
           isFooter: true,
         },
       },
-      {
-        path: '/sliderInfo',
-        name: RouterNameEnum.SLIDER,
-        component: () => import('src/pages/sliderInfo/sliderInfo.vue'),
-        meta: {
-          title: '',
-          depth: 1,
-        },
-      },
-      {
-        path: '/shopDetail',
-        name: RouterNameEnum.SHOP,
-        component: () => import('src/pages/shopDetail/shopDetail.vue'),
-        meta: {
-          title: '',
-          depth: 1,
-        },
-      },
-      {
-        path: '/userDetail',
-        name: RouterNameEnum.USERDETAIL,
-        component: () => import('src/pages/user/userDetail/userDetail.vue'),
-        meta: {
-          title: '',
-          depth: 2,
-        },
-      },
-      {
-        path: '/userOrder',
-        name: RouterNameEnum.USERORDER,
-        component: () => import('src/pages/user/userOrder/userOrder.vue'),
-        meta: {
-          title: '',
-          depth: 2,
-        },
-      },
-      {
-        path: '/footBall',
-        name: RouterNameEnum.FOOTBALL,
-        component: () => import('src/pages/eventBall/footBall.vue'),
-        meta: {
-          title: '赛事-足球',
-          depth: 1,
-        },
-      },
-      {
-        path: '/basketball',
-        name: RouterNameEnum.BASKETBALL,
-        component: () => import('src/pages/eventBall/basketball.vue'),
-        meta: {
-          title: '赛事-篮球',
-          depth: 1,
-        },
-      },
+
       // {
       //   path: '/share',
       //   name: RouterNameEnum.HOME,
@@ -268,6 +215,60 @@ const routes: RouteRecordRaw[] = [
       title: '投注订单',
       depth: 3,
       isFooter: false,
+    },
+  },
+  {
+    path: '/sliderInfo',
+    name: RouterNameEnum.SLIDER,
+    component: () => import('src/pages/sliderInfo/sliderInfo.vue'),
+    meta: {
+      title: '',
+      depth: 1,
+    },
+  },
+  {
+    path: '/shopDetail',
+    name: RouterNameEnum.SHOP,
+    component: () => import('src/pages/shopDetail/shopDetail.vue'),
+    meta: {
+      title: '',
+      depth: 1,
+    },
+  },
+  {
+    path: '/userDetail',
+    name: RouterNameEnum.USERDETAIL,
+    component: () => import('src/pages/user/userDetail/userDetail.vue'),
+    meta: {
+      title: '',
+      depth: 2,
+    },
+  },
+  {
+    path: '/userOrder',
+    name: RouterNameEnum.USERORDER,
+    component: () => import('src/pages/user/userOrder/userOrder.vue'),
+    meta: {
+      title: '',
+      depth: 2,
+    },
+  },
+  {
+    path: '/footBall',
+    name: RouterNameEnum.FOOTBALL,
+    component: () => import('src/pages/eventBall/footBall.vue'),
+    meta: {
+      title: '赛事-足球',
+      depth: 2,
+    },
+  },
+  {
+    path: '/basketball',
+    name: RouterNameEnum.BASKETBALL,
+    component: () => import('src/pages/eventBall/basketball.vue'),
+    meta: {
+      title: '赛事-篮球',
+      depth: 2,
     },
   },
   {

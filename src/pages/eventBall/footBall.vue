@@ -77,6 +77,10 @@
     <PlayerPopup v-model:show="model.showPlayer" v-if="model.showPlayer"></PlayerPopup>
     <FilterPopup v-model:show="model.showFilter" :data="filterData" :currValue="model.currEvent" v-if="model.showFilter"
       @handlerSelect="handlerSelect"></FilterPopup>
+
+    <van-popup v-model:show="model.betOrderPopup" position="bottom" :style="{ width: '100vw', height: '100vh' }">
+      <BetOrder :title="model.betOrderTitle" :isSingle="model.isSingle" @back="() => model.betOrderPopup = false" />
+    </van-popup>
   </div>
 </template>
 
@@ -91,6 +95,7 @@ import JqsBet from './components/jqsBet.vue';
 import BqcBet from './components/bqcBet.vue';
 import Choose2Bet from './components/choose2Bet.vue';
 import YczsBet from './components/yczsBet.vue';
+import BetOrder from './betOrder.vue';
 import { useMatch, useCustomRouter, useBet, useNotify } from 'src/hook';
 import { Utils, MATCH_STATUS, XA_DEL_BET, RouterNameEnum } from 'src/common'
 import { watch } from 'vue';
@@ -105,6 +110,7 @@ export default defineComponent({
     BqcBet,
     Choose2Bet,
     YczsBet,
+    BetOrder
   },
   setup() {
     const router = useCustomRouter();
@@ -116,7 +122,10 @@ export default defineComponent({
       showFilter: false, // 是否展示删选栏
       showPlayer: false, // 是否展示右侧导航
       showDown: false, // 是否收起当前赛事
-      activeMatch: [] as any[]
+      activeMatch: [] as any[],
+      betOrderPopup: false, // 订单页面
+      betOrderTitle: '' as any,
+      isSingle: false,
     });
     const filterData = [
       { label: '胜平负[让]', value: '1' },
@@ -158,7 +167,12 @@ export default defineComponent({
         return;
       }
 
-      router.push({ name: RouterNameEnum.BETORDER, query: { title: getEventName() } })
+      model.betOrderTitle = getEventName()
+      model.isSingle = model.currEvent === '2'
+
+      model.betOrderPopup = true
+
+      // router.push({ name: RouterNameEnum.BETORDER, query: { title: getEventName() } })
     }
 
     watch(() => privateMatchStore.footballGroup.data, newValue => {

@@ -1,6 +1,6 @@
 <template>
   <div class="headers" :class="{ headerBg: props.transparent }">
-    <div class="left" @click="() => router.back()" v-if="!props.hidenLeft">
+    <div class="left" @click="back" v-if="!props.hidenLeft">
       <img
         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAYAAABV7bNHAAAACXBIWXMAACE4AAAhOAFFljFgAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFsSURBVHgB7duBTcJQFIXhP07gCGcDHYERHIER3ABGcANWcANG0A0YAZ0A+wIYxd5eUlqV1/MlNyFNSsKfl6a8tGBmZmZmZjYpauYe+0HNrJvZHWZzOGbsQ5Qgu5NZY2Gc40ya6I6zYcJEd5wySyZKOE5IOE5IOE5IOE5IOE5IOE5IOE5IOE5IOE5IOE5IOE5IOE5IXB7ntplZMw9UuFF2aRydfEf5XM2264Jh43yNdPXEOHGOI67cnPHiVBHoifYftjrj3CzOnwa6YRh3wfFnus3456tjqEBv9NP3vF8zVKD34Pgj3V4PU7058fVjkZwrJnCRLne/W8aLJCqwpHsV9I1UxY1iUVbRC8NGKquyqic8RH49ySIV5Y/qnH306ohhIlVNOFJKOFJKOFJKOFJKOFJKOFJKOFJKOFJKOFJKOFJKOFJK5JGyncnqie5IW8yvIpxDtEdaYZ/E90hr/DpUq7LVKszMzMzMzOrzAc5NpNnqQnlVAAAAAElFTkSuQmCC"
         alt="" srcset="" />
@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { useCustomRouter } from 'src/hook'
 export default defineComponent({
   props: {
@@ -30,10 +30,20 @@ export default defineComponent({
       type: Boolean,
       default: () => false,
     },
+    backEvent: {
+      type: Function as PropType<any>,
+    }
   },
   setup(props) {
     const router = useCustomRouter();
-    return { props, router };
+    const back = () => {
+      if (props.backEvent) {
+        props.backEvent()
+        return;
+      }
+      router.back()
+    }
+    return { props, router, back };
   },
 });
 </script>
