@@ -3,7 +3,7 @@
     <Headers>
       <template #title>
         <div class="title" @click="() => (model.showFilter = !model.showFilter)">
-          <span>{{ getEventName(model.currEvent) }} </span>
+          <span>{{ getEventName() }} </span>
           <van-icon name="play" :class="'icon'" />
         </div>
       </template>
@@ -91,7 +91,7 @@ import JqsBet from './components/jqsBet.vue';
 import BqcBet from './components/bqcBet.vue';
 import Choose2Bet from './components/choose2Bet.vue';
 import YczsBet from './components/yczsBet.vue';
-import { useMatch, useCustomRouter, useBet } from 'src/hook';
+import { useMatch, useCustomRouter, useBet, useNotify } from 'src/hook';
 import { Utils, MATCH_STATUS, XA_DEL_BET, RouterNameEnum } from 'src/common'
 import { watch } from 'vue';
 export default defineComponent({
@@ -110,6 +110,7 @@ export default defineComponent({
     const router = useCustomRouter();
     const { privateMatchStore, getFootBallGroupList } = useMatch();
     const { getBetMatchCount } = useBet();
+    const { errorNotify } = useNotify()
     const model = reactive({
       currEvent: '2',
       showFilter: false, // 是否展示删选栏
@@ -128,7 +129,7 @@ export default defineComponent({
     ];
 
     // 获取当前筛选label
-    const getEventName = (value: string) => {
+    const getEventName = () => {
       return filterData.find((item) => item.value === model.currEvent)?.label;
     };
     // 筛选选择回调
@@ -152,7 +153,12 @@ export default defineComponent({
     }
 
     const gotoBetOrder = () => {
-      router.push({ name: RouterNameEnum.BETORDER, query: { title: '' } })
+      if (model.currEvent === '2' && getBetMatchCount() < 2) {
+        errorNotify('至少选择两场比赛')
+        return;
+      }
+
+      router.push({ name: RouterNameEnum.BETORDER, query: { title: getEventName() } })
     }
 
     watch(() => privateMatchStore.footballGroup.data, newValue => {
