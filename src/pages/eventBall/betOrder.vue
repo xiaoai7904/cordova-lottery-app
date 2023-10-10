@@ -1,8 +1,8 @@
 <template>
   <div class="bet-order">
-    <Headers title="投注单" transparent />
+    <Headers :title="betOrderStore.title" transparent />
     <div class="bet-order-content">
-      <div class="clear flex-center">
+      <div class="clear flex-center" @click="clearOrder">
         <van-icon name="delete-o" size="14" />
         <span>清空赛事</span>
       </div>
@@ -42,15 +42,26 @@
 </template>
 
 <script lang="ts">
+import { useRoute } from 'vue-router';
 import { useBet } from 'src/hook'
-import { defineComponent } from 'vue';
+import { XA_DEL_BET } from 'src/common'
+import { defineComponent, reactive } from 'vue';
 
 export default defineComponent({
   setup() {
+    const { query } = useRoute()
     const { betStore } = useBet()
 
+    const betOrderStore = reactive({
+      title: query.title
+    })
+
+    const clearOrder = () => {
+      window.xaCustomEvent.trigger(XA_DEL_BET)
+    }
+
     console.log(betStore)
-    return {}
+    return { betOrderStore, clearOrder }
   }
 })
 </script>
