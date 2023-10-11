@@ -15,7 +15,8 @@
         </div>
       </div>
     </div>
-    <BetHistory :showEvent="model.showEvent" :params="{ shortHome: data.shortHome, shortAway: data.shortAway }" />
+    <BetHistory :betType="2" :showEvent="model.showEvent"
+      :params="{ shortHome: data.shortHome, shortAway: data.shortAway }" />
     <van-dialog v-model:show="model.betModel">
       <template #footer>
         <div class="bet-modal-footer flex-between">
@@ -24,7 +25,7 @@
         </div>
       </template>
       <div class="bet-modal-content">
-        <BetView v-if="model.betModel" :data="data" :type="ODDS_MAP.bf" :checkData="model.betList" @bet="betEvent" />
+        <BetView v-if="model.betModel" :data="data" :type="ODDS_MAP.sfc" :checkData="model.betList" @bet="betEvent" />
       </div>
 
     </van-dialog>

@@ -140,7 +140,7 @@ export default defineComponent({
         .bet-item {
           display: flex;
           flex-wrap: wrap;
-          width: 100%px;
+          width: 100%;
           height: 88px;
           text-align: center;
           line-height: 44px;

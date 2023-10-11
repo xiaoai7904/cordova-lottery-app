@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, PropType } from 'vue';
-import { betNameMap } from 'src/common'
+import { betNameMap, BET_TYPE, footBallOdds, baskteBallOdds } from 'src/common'
 import { useBet } from 'src/hook'
 import { computed } from 'vue';
 import { watch } from 'vue';
@@ -40,6 +40,10 @@ export default defineComponent({
             type: Array as PropType<Record<string, string>[]>,
             default: () => ([])
         },
+        betType: {
+            type: Number as PropType<number>,
+            default: 1
+        }
     },
     emits: ['bet'],
     setup(props, { emit }) {
@@ -50,7 +54,28 @@ export default defineComponent({
         const { getBetValue } = useBet();
 
         const betNames = computed(() => betStore.betList.map(item => props.data.matchId + '_' + item.code + '_' + item.name))
-        const betAreaMap = computed(() => props.type ? { [props.type]: betNameMap[props.type] } : betNameMap)
+        const betAreaMap = computed(() => {
+            if (props.type) {
+                return { [props.type]: betNameMap[props.type] }
+            }
+
+            if (props.betType === BET_TYPE.FOOTEBALL) {
+                const result: any = {}
+                footBallOdds.forEach(item => {
+                    result[item] = betNameMap[item]
+                })
+
+                return result
+            }
+
+            const result: any = {}
+            baskteBallOdds.forEach(item => {
+                result[item] = betNameMap[item]
+            })
+
+            return result
+
+        })
 
         const select = (item: any) => {
             if (betStore.betList.map((v: any) => `${v.code}_${v.name}`).includes(`${item.code}_${item.name}`)) {

@@ -11,11 +11,11 @@
           <div class="bet-item">
             <div class="item" :class="{ 'active': isJqSelect(data.id, '大') }"
               @click="selectBetEvent(getBetValue(data.dxf, 1), ODDS_MAP.jq, betNameMap[ODDS_MAP.dxf].betCode[1])">
-              大于 <span>{{ getBetValue(data.dxf, 0) }}</span> <span>{{ getBetValue(data.dxf, 1) }}</span>
+              大于 {{ getBetValue(data.dxf, 0) }} <span>{{ getBetValue(data.dxf, 1) }}</span>
             </div>
             <div class="item" :class="{ 'active': isJqSelect(data.id, '大') }"
               @click="selectBetEvent(getBetValue(data.dxf, 2), ODDS_MAP.jq, betNameMap[ODDS_MAP.dxf].betCode[2])">
-              小于 <span>{{ getBetValue(data.dxf, 0) }}</span> <span>{{ getBetValue(data.dxf, 2) }}</span>
+              小于 {{ getBetValue(data.dxf, 0) }} <span>{{ getBetValue(data.dxf, 2) }}</span>
             </div>
           </div>
         </div>
@@ -24,7 +24,8 @@
         </div>
       </div>
     </div>
-    <BetHistory :showEvent="model.showEvent" :params="{ shortHome: data.shortHome, shortAway: data.shortAway }" />
+    <BetHistory :betType="2" :showEvent="model.showEvent"
+      :params="{ shortHome: data.shortHome, shortAway: data.shortAway }" />
   </div>
 </template>
 <script lang="ts">
@@ -69,7 +70,7 @@ export default defineComponent({
     flex-direction: column;
     padding: 0 15px;
     width: 100%;
-    height: 150px;
+    height: 100%;
 
     .top {
       display: flex;
@@ -107,13 +108,13 @@ export default defineComponent({
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      height: 83px;
+      height: 44px;
 
       .game-item {
         display: flex;
         align-items: center;
         width: 315px;
-        height: 88px;
+        height: 44px;
         border-radius: 4px;
         background-color: #fff7ec;
 
@@ -121,7 +122,7 @@ export default defineComponent({
           display: flex;
           flex-direction: column;
           width: 40px;
-          height: 88px;
+          height: 44px;
           color: #232a24;
           font-size: 14px;
           font-weight: 500;
@@ -143,8 +144,8 @@ export default defineComponent({
         .bet-item {
           display: flex;
           flex-wrap: wrap;
-          width: 100%px;
-          height: 88px;
+          width: 100%;
+          height: 44px;
           text-align: center;
           line-height: 44px;
           justify-content: space-between;
@@ -156,7 +157,7 @@ export default defineComponent({
 
           .item {
             position: relative;
-            width: 69px;
+            width: 50%;
             height: 41px;
             border-radius: 6px;
             color: #2e2f30;

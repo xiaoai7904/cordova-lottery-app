@@ -133,6 +133,9 @@ export const ODDS_MAP = {
   sfc: 'sfc',
 };
 
+export const footBallOdds = ['spf', 'rq', 'bf', 'jq', 'bqc'];
+export const baskteBallOdds = ['sf', 'rf', 'dxf', 'sfc'];
+
 export const betNameMap: any = {
   spf: {
     name: '胜平负',

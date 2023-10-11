@@ -36,7 +36,7 @@
             </div>
             <div class="item" :class="{ 'active': isRqSelect(data.id, '胜') }"
               @click="selectBetEvent(getBetValue(data.rf, 2), ODDS_MAP.rf, betNameMap[ODDS_MAP.rf].betCode[2])">
-              <span>{{ getBetValue(data.rf, 0) }}</span>让主胜
+              <span class="up">{{ getBetValue(data.rf, 0) }}</span> 让主胜
               <span>
                 {{
                   getBetValue(data.rf, 2)
@@ -56,7 +56,8 @@
       </div>
     </div>
 
-    <BetHistory :showEvent="model.showEvent" :params="{ shortHome: data.shortHome, shortAway: data.shortAway }" />
+    <BetHistory :betType="2" :showEvent="model.showEvent"
+      :params="{ shortHome: data.shortHome, shortAway: data.shortAway }" />
 
     <van-dialog v-model:show="model.betModel">
       <template #footer>
@@ -66,7 +67,7 @@
         </div>
       </template>
       <div class="bet-modal-content">
-        <BetView v-if="model.betModel" :data="data" :checkData="model.betList" @bet="betEvent" />
+        <BetView v-if="model.betModel" :data="data" :betType="2" :checkData="model.betList" @bet="betEvent" />
       </div>
 
     </van-dialog>
@@ -211,7 +212,7 @@ export default defineComponent({
 
           .item {
             position: relative;
-            width: 69px;
+            width: 50%;
             height: 41px;
             border-radius: 6px;
             color: #2e2f30;

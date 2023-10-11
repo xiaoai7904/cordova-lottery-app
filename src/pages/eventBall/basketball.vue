@@ -92,6 +92,7 @@ export default defineComponent({
     LhhBet,
     SfrBet,
     DxfBet,
+    SfcBet,
     BetOrder
   },
   setup() {
