@@ -76,52 +76,8 @@
         </div>
       </div>
     </div>
-    <div class="content-more" :class="model.showEvent && 'content-more-active'">
-      <!--平均赔率-->
-      <div class="first-cloumn">
-        <div>平均赔率</div>
-        <div>-</div>
-        <div>-</div>
-        <div>-</div>
-      </div>
-      <!--历史交锋-->
-      <div class="two-cloumn">
-        <div>历史交锋 近10场</div>
-        <div>5胜</div>
-        <div>2平</div>
-        <div>2负</div>
-      </div>
-      <!--近期战绩-->
-      <div class="three-cloumn">
-        <div class="title">近期战绩 近10场</div>
-        <div class="game-con">
-          <div class="game-info">
-            <div>主</div>
-            <div class="win">胜</div>
-            <div class="fai">负</div>
-            <div class="tie">平</div>
-            <div class="win">胜</div>
-            <div class="fai">负</div>
-            <div class="tie">平</div>
-            <div class="win">胜</div>
-            <div class="fai">负</div>
-            <div class="win">胜</div>
-          </div>
-          <div class="game-info">
-            <div>客</div>
-            <div class="win">胜</div>
-            <div class="fai">负</div>
-            <div class="tie">平</div>
-            <div class="win">胜</div>
-            <div class="fai">负</div>
-            <div class="tie">平</div>
-            <div class="win">胜</div>
-            <div class="fai">负</div>
-            <div class="win">胜</div>
-          </div>
-        </div>
-      </div>
-    </div>
+
+    <BetHistory :showEvent="model.showEvent" :params="{ shortHome: data.shortHome, shortAway: data.shortAway }" />
 
     <van-dialog v-model:show="model.betModel">
       <template #footer>
@@ -143,10 +99,10 @@ import { useRouter } from 'vue-router';
 import { useBet } from 'src/hook'
 import { Utils, ODDS_MAP, betNameMap } from 'src/common'
 import BetView from './betView.vue';
-import { data } from 'autoprefixer';
+import BetHistory from './betHistory.vue';
 
 export default defineComponent({
-  components: { BetView },
+  components: { BetView, BetHistory },
   props: {
     data: {
       type: Object as PropType<any>,
@@ -330,104 +286,6 @@ export default defineComponent({
           background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAkCAYAAADl9UilAAAAAXNSR0IArs4c6QAAAuZJREFUWEfNmEtoE1EUhv8zj9pHsrMrH6BuqnSliFhLQahR0I0LoeILS1sttuDOjSCCG3eCldS2VHxhwYUbBa0FQWpFRFdFsxAEH6u6EJK2scnMkZnJYzJJ5t5MUpjZ3vuf880595z7IAT4mFe3IZM9DFA3CDsB3gpQ1DHFSYB+gPEV4Hno2iuilu+1uiFZATOrMFZPgI0RMLoAyGoZhAWQOga15SkRGTI+pYxzJtUL5tsAOmSM+sxJgGiU9MicyI4vGDM3w1i5BeYhMEv9hMghiBhEE1BbLxNRutr8qs6Yk+3I0gsw7xU6CzKB6CM0PkoUXaokrwiWg3oL5npT549MlIDGPZXgysDs9GWXLaj1iZQX1Y5cW483reVg2eVxmOaFINkJrFGUu6S1XXTrS8Ds6gNmG7bQZUmtggBi7motgNl9KpNabEBLkMXxzktAj3Tm+1wRLLvSB9N4EtRqQ3SKepK01hnLVhEsk5wH40BDHAQ1QnhHerS7AMbpv9uhqN9q2GaCuhbpGLq2w9pb7YjxWtKqiLifyjRNTN17iM5dHejav0/koGR84f0HLH5JYOD8GSiKItIOU1N0PAeWegTwKT/Fz1+/cex4H1RVxc0b13Co96DIgT3+eu4Nrly9DsMw8PzZDLZs3iTQ0WNqipx2wDKpT2DeLfJ0Jz6Fien70nBuqKH+c7g0PCByARB9Jj2yJweWXAJjo1gFjMUnMTn9QAjnhhrsP4uR4UEZ81Y5/iE92p6PWBrMG+SUYrjAUHY50j/SI82BwCx9tcjVBVUOJp9Kd1S9cNZYfqHXlD63UU8qpRZ/pVS74axxq/oCQzkRcy3+NXG78Ft/eThrTl1QthN3u5BosKLCeDnrHOOPxKwDSl2fq8GGdUtymmwIN3EbLLTHnrAeFHN7ZviO1vk64jBeRuyohfX65sDZt/BwXXgLKQ3jE0ERLoSPKu5NJXTPUCVwYXy4827J9nVP12MweN2eOv8Dzh+lNGvMb9YAAAAASUVORK5CYII=) no-repeat 50%;
           background-size: 19px 18px;
           transition: all 0.5s;
-        }
-      }
-    }
-  }
-
-  .content-more-active {
-    height: 124px !important;
-  }
-
-  .content-more {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    width: 100%;
-    height: 0;
-    color: #fff;
-    font-size: 12px;
-    transition: all 0.5s;
-    background: linear-gradient(158deg, #312f1f, #2e2f30);
-
-    .first-cloumn {
-      display: flex;
-      align-items: center;
-      margin-top: 12px;
-      width: 100%;
-      color: #fff;
-      font-size: 12px;
-
-      div:first-child {
-        padding-left: 12px;
-        width: 113px !important;
-        text-align: left;
-      }
-
-      div {
-        width: 88px;
-        text-align: center;
-      }
-    }
-
-    .two-cloumn {
-      display: flex;
-      align-items: center;
-      margin-top: 12px;
-      width: 100%;
-      color: #fff;
-      font-size: 12px;
-
-      div:first-child {
-        padding-left: 12px;
-        width: 113px !important;
-        text-align: left;
-      }
-
-      div {
-        width: 88px;
-        text-align: center;
-      }
-    }
-
-    .three-cloumn {
-      display: flex;
-      align-items: center;
-      margin-top: 12px;
-      width: 100%;
-      color: #fff;
-      font-size: 12px;
-
-      .title {
-        padding-left: 12px;
-        width: 113px !important;
-      }
-
-      .game-con {
-        .game-info {
-          color: #fff;
-          font-size: 12px;
-          display: flex;
-
-          :first-child {
-            margin: 0 41px 0 10px;
-          }
-
-          .win {
-            color: #e8b04f;
-          }
-
-          .fai {
-            color: #7cec80;
-          }
-
-          .tie {
-            color: #7cd4ec;
-          }
-
-          div {
-            margin: 0 3px;
-          }
         }
       }
     }

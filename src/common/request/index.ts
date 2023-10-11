@@ -430,3 +430,21 @@ export function MatchFootballHistroyRequest<T, R>(params = {} as T) {
 export function MatchBasketHistroyRequest<T, R>(params = {} as T) {
   return api.post<T, R>('/api/match/basketballHistory', params);
 }
+
+/**
+ * 自购订单
+ * @param params {}
+ * @returns
+ */
+export function SaveOrderRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/followOrder/saveOrder', params);
+}
+
+/**
+ * 发单
+ * @param params {}
+ * @returns
+ */
+export function SaveFollowOrderRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/followOrder/saveFollowOrder', params);
+}

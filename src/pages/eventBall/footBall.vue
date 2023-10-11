@@ -79,7 +79,8 @@
       @handlerSelect="handlerSelect"></FilterPopup>
 
     <van-popup v-model:show="model.betOrderPopup" position="bottom" :style="{ width: '100vw', height: '100vh' }">
-      <BetOrder :title="model.betOrderTitle" :isSingle="model.isSingle" @back="() => model.betOrderPopup = false" />
+      <BetOrder :title="model.betOrderTitle" :isSingle="model.isSingle" :betType="BET_TYPE.FOOTEBALL"
+        @back="() => model.betOrderPopup = false" />
     </van-popup>
   </div>
 </template>
@@ -97,7 +98,7 @@ import Choose2Bet from './components/choose2Bet.vue';
 import YczsBet from './components/yczsBet.vue';
 import BetOrder from './betOrder.vue';
 import { useMatch, useCustomRouter, useBet, useNotify } from 'src/hook';
-import { Utils, MATCH_STATUS, XA_DEL_BET, RouterNameEnum } from 'src/common'
+import { Utils, MATCH_STATUS, XA_DEL_BET, BET_TYPE, RouterNameEnum } from 'src/common'
 import { watch } from 'vue';
 export default defineComponent({
   components: {
@@ -168,7 +169,7 @@ export default defineComponent({
       }
 
       model.betOrderTitle = getEventName()
-      model.isSingle = model.currEvent === '2'
+      model.isSingle = model.currEvent !== '2'
 
       model.betOrderPopup = true
 
@@ -188,7 +189,7 @@ export default defineComponent({
       getFootBallGroupList({ status: MATCH_STATUS.NOT_START_YET })
     })
 
-    return { router, model, privateMatchStore, getEventName, filterData, handlerSelect, gotoBetOrder, Utils, getBetMatchCount, delBet };
+    return { router, model, privateMatchStore, getEventName, filterData, handlerSelect, gotoBetOrder, Utils, getBetMatchCount, delBet, BET_TYPE };
   },
 });
 </script>

@@ -93,6 +93,13 @@ export enum ERROR_CODES {
   'UPI_ERROR' = 1014,
 }
 
+export enum BET_TYPE {
+  // 足球
+  'FOOTEBALL' = 1,
+  // 篮球
+  'BASKETBALL' = 2,
+}
+
 export enum MATCH_STATUS {
   // 未开赛
   'NOT_START_YET' = 0,

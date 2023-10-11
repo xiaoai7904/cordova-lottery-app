@@ -1,5 +1,6 @@
 import { reactive, computed, onMounted } from 'vue';
-import { betNameMap, XA_DEL_BET, Utils } from 'src/common';
+import { betNameMap, XA_DEL_BET, Utils, BET_TYPE } from 'src/common';
+import { useMatch, useNotify } from 'src/hook';
 
 // 默认单注金额
 const defaultBetAmount = 2;
@@ -9,6 +10,8 @@ const betStore = reactive({
 });
 
 export function useBet() {
+  const { privateMatchStore, saveFollowOrder, saveOrder } = useMatch();
+  const { showComfirmDialog } = useNotify();
   const model = reactive({
     showEvent: false,
     betModel: false,
@@ -179,23 +182,29 @@ export function useBet() {
   const getEstimatedBonus = (isSingle: boolean) => {
     const betValue: any[] = [];
     Object.keys(betStore.betInfo).forEach((item) => {
-      betValue.push(
-        ...[
-          ...betStore.betInfo[item].orderOdds.map((item: any) =>
-            Number(item.oddValue)
-          ),
-        ]
-      );
+      if (item) {
+        betValue.push(
+          ...[
+            ...betStore.betInfo[item].orderOdds.map((item: any) =>
+              Number(item.oddValue)
+            ),
+          ]
+        );
+      }
     });
 
-    const max = Math.max(...betValue);
-    const min = Math.min(...betValue);
-    const betAmount = getBetTotalAmount(isSingle);
+    if (betValue.length) {
+      const max = Math.max(...betValue);
+      const min = Math.min(...betValue);
+      const betAmount = getBetTotalAmount(isSingle);
 
-    return `${Utils.mathTimes(min, betAmount)}~${Utils.mathTimes(
-      max,
-      betAmount
-    )}`;
+      return `${Utils.mathTimes(min, betAmount)}~${Utils.mathTimes(
+        max,
+        betAmount
+      )}`;
+    }
+
+    return '0~0';
   };
 
   const factorial = (n: number): number => {
@@ -216,6 +225,27 @@ export function useBet() {
         Utils.mathTimes(factorial(k), factorial(n - k))
       )
     );
+  };
+
+  const addOrder = (isSingle: boolean, betType: BET_TYPE) => {
+    try {
+      const params = {
+        tmoney: getBetTotalAmount(isSingle),
+        betType,
+        codes: [],
+      };
+
+      showComfirmDialog({
+        title: '提示',
+        content: `<div>
+          <p>方案金额<span style="color:##FF7733">${params.tmoney}</span></p>
+          <p>您确定要提交方案吗？</p>
+        </div>`,
+        async confirm() {
+          console.log(11);
+        },
+      });
+    } catch (e) {}
   };
 
   onMounted(() => {
@@ -244,5 +274,6 @@ export function useBet() {
     getBetCount,
     getBetTotalAmount,
     getEstimatedBonus,
+    addOrder,
   };
 }

@@ -7,7 +7,10 @@ import {
   MatchBaketBallGroupRequest,
   MatchFootballHistroyRequest,
   MatchBasketHistroyRequest,
+  SaveOrderRequest,
+  SaveFollowOrderRequest,
 } from 'src/common';
+import { useNotify } from 'src/hook';
 import { reactive } from 'vue';
 
 export function useMatch() {
@@ -48,6 +51,8 @@ export function useMatch() {
     basketballHistory: {},
     footballHistory: {},
   });
+
+  const { successNotify } = useNotify();
 
   const getBaketBallScoreList = async (params = {}) => {
     try {
@@ -167,7 +172,8 @@ export function useMatch() {
     try {
       privateMatchStore.loading = true;
       const data = await MatchFootballHistroyRequest<any, any>(params);
-      privateMatchStore.footballHistory = { ...data };
+      // privateMatchStore.footballHistory = { ...data };
+      return Promise.resolve(data);
     } finally {
       privateMatchStore.loading = false;
     }
@@ -177,7 +183,28 @@ export function useMatch() {
     try {
       privateMatchStore.loading = true;
       const data = await MatchBasketHistroyRequest<any, any>(params);
-      privateMatchStore.basketballHistory = { ...data };
+      return Promise.resolve(data);
+      // privateMatchStore.basketballHistory = { ...data };
+    } finally {
+      privateMatchStore.loading = false;
+    }
+  };
+
+  const saveOrder = async (params = {}) => {
+    try {
+      privateMatchStore.loading = true;
+      await SaveOrderRequest<any, any>(params);
+      successNotify('下单成功');
+    } finally {
+      privateMatchStore.loading = false;
+    }
+  };
+
+  const saveFollowOrder = async (params = {}) => {
+    try {
+      privateMatchStore.loading = true;
+      await SaveFollowOrderRequest<any, any>(params);
+      successNotify('跟单成功');
     } finally {
       privateMatchStore.loading = false;
     }
@@ -193,5 +220,7 @@ export function useMatch() {
     getFootBallGroupList,
     getFootballHistory,
     getBaketBallHistory,
+    saveOrder,
+    saveFollowOrder,
   };
 }
