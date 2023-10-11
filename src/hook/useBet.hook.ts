@@ -22,16 +22,81 @@ export function useBet() {
 
   const betCount = computed(() => model.betList.length);
   const betNames = computed(() =>
-    model.betList.map((item) => item.code + '_' + item.name)
+    model.betList.map(
+      (item) => item.matchId + '_' + item.code + '_' + item.name
+    )
   );
-  const betAmount = computed(() =>
-    Utils.mathTimes(model.multiple, defaultBetAmount)
-  );
+  const isSingle = computed(() => Object.keys(betStore.betInfo).length === 1);
+  const getBetOrder = computed(() => {
+    const betOder = [];
+    const betInfo = betStore.betInfo;
+    const betInfoKeys = Object.keys(betInfo);
 
-  const isSpfSelect = (txt: string) => betNames.value.includes(`spf_${txt}`);
-  const isRqSelect = (txt: string) => betNames.value.includes(`rq_${txt}`);
-  const isJqSelect = (txt: string) => betNames.value.includes(`jq_${txt}`);
-  const isBqcSelect = (txt: string) => betNames.value.includes(`bqc_${txt}`);
+    for (let i = 0; i < betInfoKeys.length; i++) {
+      const betMatchItem = betInfo[betInfoKeys[i]];
+
+      const defaultData = {
+        matchId: betMatchItem.matchId,
+        shortComp: betMatchItem.shortComp,
+        shortHome: betMatchItem.shortHome,
+        shortAway: betMatchItem.shortAway,
+        multiple: model.multiple,
+      };
+
+      for (let j = 0; j < betMatchItem.orderOdds.length; j++) {
+        const preOddsItem = betMatchItem.orderOdds[j];
+
+        if (betInfoKeys.length === 1) {
+          betOder.push({
+            ...defaultData,
+            orderOdds: [
+              {
+                odds: preOddsItem.odds,
+                oddRate: preOddsItem.oddRate,
+              },
+            ],
+          });
+        } else {
+          for (let k = i + 1; !!betInfoKeys[k]; k++) {
+            for (
+              let kk = 0;
+              kk < betInfo[betInfoKeys[k]].orderOdds.length;
+              kk++
+            ) {
+              const oddsItem = betInfo[betInfoKeys[k]].orderOdds[kk];
+
+              betOder.push({
+                ...defaultData,
+                orderOdds: [
+                  {
+                    odds: preOddsItem.odds,
+                    oddRate: preOddsItem.oddRate,
+                  },
+                  {
+                    odds: oddsItem.odds,
+                    oddRate: oddsItem.oddRate,
+                  },
+                ],
+              });
+            }
+          }
+        }
+      }
+    }
+
+    console.log(betOder);
+
+    return betOder;
+  });
+
+  const isSpfSelect = (matchId: number, txt: string) =>
+    betNames.value.includes(`${matchId}_spf_${txt}`);
+  const isRqSelect = (matchId: number, txt: string) =>
+    betNames.value.includes(`${matchId}_rq_${txt}`);
+  const isJqSelect = (matchId: number, txt: string) =>
+    betNames.value.includes(`${matchId}_jq_${txt}`);
+  const isBqcSelect = (matchId: number, txt: string) =>
+    betNames.value.includes(`${matchId}_bqc_${txt}`);
 
   const addBet = (data: any) => {
     const matchInfo = betStore.betInfo[data.matchId];
@@ -40,6 +105,7 @@ export function useBet() {
         odds: data.odds,
         oddRate: data.oddRate,
         oddValue: data.oddValue,
+        betName: data.betName,
       });
     } else {
       betStore.betInfo[data.matchId] = {
@@ -70,7 +136,7 @@ export function useBet() {
     if (data && betStore.betInfo[data.matchId]) {
       betStore.betInfo[data.matchId].orderOdds = betStore.betInfo[
         data.matchId
-      ].orderOdds.filter((item: any) => item.odds !== data.odds);
+      ].orderOdds.filter((item: any) => item.oddRate !== data.oddRate);
 
       if (!betStore.betInfo[data.matchId].orderOdds.length) {
         delete betStore.betInfo[data.matchId];
@@ -124,14 +190,25 @@ export function useBet() {
     const betMap = betNameMap[code];
     const name =
       betMap.betName[betMap.betCode.findIndex((v: string) => v === playCode)];
-    if (betNames.value.includes(`${code}_${name}`)) {
-      model.betList = model.betList.filter((item) => item.name !== name);
+
+    if (betNames.value.includes(`${data.id}_${code}_${name}`)) {
+      model.betList.splice(
+        model.betList.findIndex(
+          (item) =>
+            item.matchId === data.id &&
+            item.playCode === playCode &&
+            item.value === value &&
+            item.code === code
+        ),
+        1
+      );
       delBet({
         matchId: data.id,
-        odds: code,
+        oddRate: `${playCode},${value}`,
       });
     } else {
       model.betList.push({
+        matchId: data.id,
         name,
         playCode,
         value,
@@ -158,28 +235,20 @@ export function useBet() {
   };
 
   // 获取投注总注单数
-  const getBetCount = (isSingle: boolean) => {
-    let betCount = 0;
-    Object.keys(betStore.betInfo).forEach((item) => {
-      betCount += betStore.betInfo[item].orderOdds.length;
-    });
-
-    if (isSingle) {
-      return combination(betCount, 2);
-    }
-    return betCount;
+  const getBetCount = () => {
+    return getBetOrder.value.length;
   };
 
   // 获取投注总金额
-  const getBetTotalAmount = (isSingle: boolean) => {
+  const getBetTotalAmount = () => {
     return Utils.mathTimes(
       Utils.mathTimes(model.multiple, defaultBetAmount),
-      getBetCount(isSingle)
+      getBetCount()
     );
   };
 
   // 计算预计奖金
-  const getEstimatedBonus = (isSingle: boolean) => {
+  const getEstimatedBonus = () => {
     const betValue: any[] = [];
     Object.keys(betStore.betInfo).forEach((item) => {
       if (item) {
@@ -196,7 +265,7 @@ export function useBet() {
     if (betValue.length) {
       const max = Math.max(...betValue);
       const min = Math.min(...betValue);
-      const betAmount = getBetTotalAmount(isSingle);
+      const betAmount = getBetTotalAmount();
 
       return `${Utils.mathTimes(min, betAmount)}~${Utils.mathTimes(
         max,
@@ -207,42 +276,43 @@ export function useBet() {
     return '0~0';
   };
 
-  const factorial = (n: number): number => {
-    // 阶乘函数
-    if (n === 0) {
-      return 1;
-    } else {
-      return Utils.mathTimes(n, factorial(n - 1));
-    }
-  };
-
-  // 计算排列组合
-  const combination = (n: number, k: number) => {
-    // 组合数函数
-    return Math.ceil(
-      Utils.mathDiv(
-        factorial(n),
-        Utils.mathTimes(factorial(k), factorial(n - k))
-      )
-    );
-  };
-
-  const addOrder = (isSingle: boolean, betType: BET_TYPE) => {
+  const addOrder = (betType: BET_TYPE) => {
     try {
       const params = {
-        tmoney: getBetTotalAmount(isSingle),
+        tmoney: getBetTotalAmount(),
         betType,
-        codes: [],
+        codes: getBetOrder.value,
       };
 
       showComfirmDialog({
         title: '提示',
         content: `<div>
-          <p>方案金额<span style="color:##FF7733">${params.tmoney}</span></p>
+          <p>方案金额<span style="color:#FF7733;font-weight:500">${params.tmoney}</span></p>
           <p>您确定要提交方案吗？</p>
         </div>`,
         async confirm() {
-          console.log(11);
+          await saveOrder(params);
+        },
+      });
+    } catch (e) {}
+  };
+
+  const flolowOrder = (betType: BET_TYPE) => {
+    try {
+      const params = {
+        tmoney: getBetTotalAmount(),
+        betType,
+        codes: getBetOrder.value,
+      };
+
+      showComfirmDialog({
+        title: '提示',
+        content: `<div>
+          <p>方案金额<span style="color:#FF7733;font-weight:500">${params.tmoney}</span></p>
+          <p>您确定要进入发单设置吗？</p>
+        </div>`,
+        async confirm() {
+          await saveFollowOrder(params);
         },
       });
     } catch (e) {}
@@ -259,6 +329,7 @@ export function useBet() {
     model,
     betCount,
     betNames,
+    isSingle,
     addBet,
     delBet,
     getBetValue,
@@ -275,5 +346,6 @@ export function useBet() {
     getBetTotalAmount,
     getEstimatedBonus,
     addOrder,
+    flolowOrder,
   };
 }

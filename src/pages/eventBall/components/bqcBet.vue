@@ -10,13 +10,13 @@
           <!--投注项-->
           <div class="bet-item">
             <div v-for="(item, index) in betNameMap.bqc.betName" :key="index" class="item flex-center"
-              :class="{ 'active': isBqcSelect(item), 'hidden': index === 4 }"
+              :class="{ 'active': isBqcSelect(data.id, item), 'hidden': index === 4 }"
               @click="selectBetEvent(getBetValue(data.bqc, index), ODDS_MAP.bqc, betNameMap[ODDS_MAP.bqc].betCode[index])">
               {{ item }} <span>{{ getBetValue(data.bqc, index) }}</span>
             </div>
           </div>
           <!--选择值-->
-          <div class="number-box" :class="{ 'active': isBqcSelect('平平') }"
+          <div class="number-box" :class="{ 'active': isBqcSelect(data.id, '平平') }"
             @click="selectBetEvent(getBetValue(data.bqc, 4), ODDS_MAP.bqc, betNameMap[ODDS_MAP.bqc].betCode[4])">
             <span>平平<br />{{ getBetValue(data.bqc, 4) }}</span>
           </div>
@@ -45,7 +45,6 @@ export default defineComponent({
   setup(props) {
     const {
       model,
-      betNames,
       getBetValue,
       betEvent,
       selectBet, isBqcSelect } = useBet()
@@ -55,7 +54,7 @@ export default defineComponent({
       selectBet(props.data, value, code, playCode)
     }
 
-    return { model, selectBetEvent, betEvent, getBetValue, isBqcSelect, Utils, betNameMap, betNames, ODDS_MAP };
+    return { model, selectBetEvent, betEvent, getBetValue, isBqcSelect, Utils, betNameMap, ODDS_MAP };
   },
 });
 </script>

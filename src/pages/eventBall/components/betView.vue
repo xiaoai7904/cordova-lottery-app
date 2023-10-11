@@ -8,8 +8,8 @@
                 </p> -->
                 <div class="grid">
                     <p v-for="(item1, index1) in item.betName" :key="index1"
-                        @click="select({ name: item1, value: getBetValue(data[index], index1), code: index, playCode: item.betCode[index1] })"
-                        :class="{ 'active': betNames.includes(`${index}_${item1}`) }">
+                        @click="select({ name: item1, value: getBetValue(data[index], index1), code: index, playCode: item.betCode[index1], matchId: data.id, })"
+                        :class="{ 'active': betNames.includes(`${data.matchId}_${index}_${item1}`) }">
                         <span>{{ item1 }}</span>
                         <span>{{ getBetValue(data[index], index1) }}</span>
                     </p>
@@ -49,7 +49,7 @@ export default defineComponent({
 
         const { getBetValue } = useBet();
 
-        const betNames = computed(() => betStore.betList.map(item => item.code + '_' + item.name))
+        const betNames = computed(() => betStore.betList.map(item => props.data.matchId + '_' + item.code + '_' + item.name))
         const betAreaMap = computed(() => props.type ? { [props.type]: betNameMap[props.type] } : betNameMap)
 
         const select = (item: any) => {

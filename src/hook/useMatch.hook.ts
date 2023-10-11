@@ -52,7 +52,7 @@ export function useMatch() {
     footballHistory: {},
   });
 
-  const { successNotify } = useNotify();
+  const { successNotify, showLoading } = useNotify();
 
   const getBaketBallScoreList = async (params = {}) => {
     try {
@@ -193,6 +193,7 @@ export function useMatch() {
   const saveOrder = async (params = {}) => {
     try {
       privateMatchStore.loading = true;
+      showLoading('加载中...');
       await SaveOrderRequest<any, any>(params);
       successNotify('下单成功');
     } finally {
@@ -203,6 +204,7 @@ export function useMatch() {
   const saveFollowOrder = async (params = {}) => {
     try {
       privateMatchStore.loading = true;
+      showLoading('加载中...');
       await SaveFollowOrderRequest<any, any>(params);
       successNotify('跟单成功');
     } finally {

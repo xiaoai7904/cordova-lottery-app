@@ -48,7 +48,6 @@ export default defineComponent({
   setup(props) {
     const {
       model,
-      betNames,
       confirm,
       getBetValue,
       betEvent,
@@ -64,7 +63,7 @@ export default defineComponent({
       selectBet(props.data, value, code, playCode)
     }
 
-    return { model, selectBetEvent, betEvent, getBetValue, confirmEvent, explandAll, Utils, betNameMap, betNames, ODDS_MAP, betStr };
+    return { model, selectBetEvent, betEvent, getBetValue, confirmEvent, explandAll, Utils, betNameMap, ODDS_MAP, betStr };
   },
 });
 </script>

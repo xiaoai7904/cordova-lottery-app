@@ -79,8 +79,7 @@
       @handlerSelect="handlerSelect"></FilterPopup>
 
     <van-popup v-model:show="model.betOrderPopup" position="bottom" :style="{ width: '100vw', height: '100vh' }">
-      <BetOrder :title="model.betOrderTitle" :isSingle="model.isSingle" :betType="BET_TYPE.FOOTEBALL"
-        @back="() => model.betOrderPopup = false" />
+      <BetOrder :title="model.betOrderTitle" :betType="BET_TYPE.FOOTEBALL" @back="() => model.betOrderPopup = false" />
     </van-popup>
   </div>
 </template>
@@ -126,7 +125,6 @@ export default defineComponent({
       activeMatch: [] as any[],
       betOrderPopup: false, // 订单页面
       betOrderTitle: '' as any,
-      isSingle: false,
     });
     const filterData = [
       { label: '胜平负[让]', value: '1' },
@@ -169,7 +167,6 @@ export default defineComponent({
       }
 
       model.betOrderTitle = getEventName()
-      model.isSingle = model.currEvent !== '2'
 
       model.betOrderPopup = true
 

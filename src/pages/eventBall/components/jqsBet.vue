@@ -10,7 +10,7 @@
           <!--投注项-->
           <div class="bet-item">
             <div v-for="(item, index) in betNameMap.jq.betName" :key="index" class="item"
-              :class="{ 'hasdan': index === 0, 'active': isJqSelect(item) }"
+              :class="{ 'hasdan': index === 0, 'active': isJqSelect(data.id, item) }"
               @click="selectBetEvent(getBetValue(data.jq, index), ODDS_MAP.jq, betNameMap[ODDS_MAP.jq].betCode[index])">
               {{ item }} <span>{{ getBetValue(data.bqc, index) }}</span>
             </div>
@@ -41,7 +41,6 @@ export default defineComponent({
   setup(props) {
     const {
       model,
-      betNames,
       getBetValue,
       confirm,
       selectBet, isJqSelect } = useBet()
@@ -52,7 +51,7 @@ export default defineComponent({
     const selectBetEvent = (value: any, code: string, playCode: string) => {
       selectBet(props.data, value, code, playCode)
     }
-    return { model, Utils, ODDS_MAP, betNameMap, betNames, confirmEvent, selectBetEvent, getBetValue, isJqSelect };
+    return { model, Utils, ODDS_MAP, betNameMap, confirmEvent, selectBetEvent, getBetValue, isJqSelect };
   },
 });
 </script>

@@ -17,7 +17,7 @@
           </div>
           <!--投注项-->
           <div class="bet-item">
-            <div class="item" :class="{ 'hasdan': true, 'active': isRqSelect('胜') }"
+            <div class="item" :class="{ 'hasdan': true, 'active': isRqSelect(data.id, '胜') }"
               @click="selectBetEvent(getBetValue(data.rq, 1), ODDS_MAP.rq, betNameMap[ODDS_MAP.rq].betCode[1])">让胜
               <span>
                 {{
@@ -25,7 +25,7 @@
                 }}
               </span>
             </div>
-            <div class="item" :class="{ 'active': isRqSelect('平') }"
+            <div class="item" :class="{ 'active': isRqSelect(data.id, '平') }"
               @click="selectBetEvent(getBetValue(data.rq, 2), ODDS_MAP.rq, betNameMap[ODDS_MAP.rq].betCode[2])">让平
               <span>
                 {{
@@ -33,7 +33,7 @@
                 }}
               </span>
             </div>
-            <div class="item" :class="{ 'active': isRqSelect('负') }"
+            <div class="item" :class="{ 'active': isRqSelect(data.id, '负') }"
               @click="selectBetEvent(getBetValue(data.rq, 3), ODDS_MAP.rq, betNameMap[ODDS_MAP.rq].betCode[3])">让负
               <span>
                 {{
@@ -69,7 +69,6 @@ export default defineComponent({
 
     const {
       model,
-      betNames,
       getBetValue,
       confirm,
       selectBet, isRqSelect } = useBet()
@@ -80,7 +79,7 @@ export default defineComponent({
     const selectBetEvent = (value: any, code: string, playCode: string) => {
       selectBet(props.data, value, code, playCode)
     }
-    return { model, Utils, ODDS_MAP, betNameMap, betNames, confirmEvent, selectBetEvent, getBetValue, isRqSelect };
+    return { model, Utils, ODDS_MAP, betNameMap, confirmEvent, selectBetEvent, getBetValue, isRqSelect };
   },
 });
 </script>
