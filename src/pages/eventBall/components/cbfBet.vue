@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-
+    <BetHistory :showEvent="model.showEvent" :params="{ shortHome: data.shortHome, shortAway: data.shortAway }" />
     <van-dialog v-model:show="model.betModel">
       <template #footer>
         <div class="bet-modal-footer flex-between">
@@ -35,9 +35,10 @@ import { defineComponent, computed, PropType } from 'vue';
 import { useBet } from 'src/hook'
 import { Utils, betNameMap, ODDS_MAP } from 'src/common'
 import BetView from './betView.vue';
+import BetHistory from './betHistory.vue';
 
 export default defineComponent({
-  components: { BetView },
+  components: { BetView, BetHistory },
   props: {
     data: {
       type: Object as PropType<any>,
@@ -153,103 +154,6 @@ export default defineComponent({
     }
   }
 
-  .content-more-active {
-    height: 124px !important;
-  }
-
-  .content-more {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    width: 100%;
-    height: 0;
-    color: #fff;
-    font-size: 12px;
-    transition: all 0.5s;
-    background: linear-gradient(158deg, #312f1f, #2e2f30);
-
-    .first-cloumn {
-      display: flex;
-      align-items: center;
-      margin-top: 12px;
-      width: 100%;
-      color: #fff;
-      font-size: 12px;
-
-      div:first-child {
-        padding-left: 12px;
-        width: 113px !important;
-        text-align: left;
-      }
-
-      div {
-        width: 88px;
-        text-align: center;
-      }
-    }
-
-    .two-cloumn {
-      display: flex;
-      align-items: center;
-      margin-top: 12px;
-      width: 100%;
-      color: #fff;
-      font-size: 12px;
-
-      div:first-child {
-        padding-left: 12px;
-        width: 113px !important;
-        text-align: left;
-      }
-
-      div {
-        width: 88px;
-        text-align: center;
-      }
-    }
-
-    .three-cloumn {
-      display: flex;
-      align-items: center;
-      margin-top: 12px;
-      width: 100%;
-      color: #fff;
-      font-size: 12px;
-
-      .title {
-        padding-left: 12px;
-        width: 113px !important;
-      }
-
-      .game-con {
-        .game-info {
-          color: #fff;
-          font-size: 12px;
-          display: flex;
-
-          :first-child {
-            margin: 0 41px 0 10px;
-          }
-
-          .win {
-            color: #e8b04f;
-          }
-
-          .fai {
-            color: #7cec80;
-          }
-
-          .tie {
-            color: #7cd4ec;
-          }
-
-          div {
-            margin: 0 3px;
-          }
-        }
-      }
-    }
-  }
 }
 
 .bet-modal-content {
