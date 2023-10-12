@@ -40,9 +40,9 @@ export function useBet() {
 
         const defaultMatchInfo = {
           matchId: betMatchItem.matchId,
-          shortComp: betMatchItem.shortComp,
-          shortHome: betMatchItem.shortHome,
-          shortAway: betMatchItem.shortAway,
+          // shortComp: betMatchItem.shortComp,
+          // shortHome: betMatchItem.shortHome,
+          // shortAway: betMatchItem.shortAway,
         };
 
         if (betInfoKeys.length === 1) {
@@ -60,9 +60,9 @@ export function useBet() {
           for (let k = i + 1; !!betInfoKeys[k]; k++) {
             const matchInfo = {
               matchId: betInfo[betInfoKeys[k]].matchId,
-              shortComp: betInfo[betInfoKeys[k]].shortComp,
-              shortHome: betInfo[betInfoKeys[k]].shortHome,
-              shortAway: betInfo[betInfoKeys[k]].shortAway,
+              // shortComp: betInfo[betInfoKeys[k]].shortComp,
+              // shortHome: betInfo[betInfoKeys[k]].shortHome,
+              // shortAway: betInfo[betInfoKeys[k]].shortAway,
             };
 
             for (
