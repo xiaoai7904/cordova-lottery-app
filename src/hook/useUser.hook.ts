@@ -9,6 +9,8 @@ import {
   UserBankInfoRequest,
   SaveUserBankRequest,
   CustomerListRequest,
+  IsFocusRequest,
+  UpdateNikeNameRequest,
   XA_TOKEN,
   UserInfoType,
   BankItemType,
@@ -40,6 +42,7 @@ export function useUser() {
     bankLoading: false,
     flowLoading: false,
     bankList: [] as BankItemType[],
+    nikeName: '',
     loginPassword: {
       oldPassword: '',
       newPassword: '',
@@ -99,6 +102,21 @@ export function useUser() {
         privateUserStore.loginPassword
       );
       showSuccessToast('密码修改成功');
+      router.back();
+    } catch (error) {}
+  };
+
+  /**
+   *修改用户昵称
+   */
+  const updateNickName = async () => {
+    try {
+      if (!isLogin.value) return;
+      await UpdateNikeNameRequest<object, any>({
+        nikeName: privateUserStore.nikeName,
+      });
+      await getUserInfo();
+      showSuccessToast('修改成功');
       router.back();
     } catch (error) {}
   };
@@ -178,6 +196,16 @@ export function useUser() {
     } catch (error) {}
   };
 
+  /**
+   * 是否关注
+   */
+  const getFoucsStatus = async (params = {}) => {
+    try {
+      const data = await IsFocusRequest<any, any>(params);
+      return Promise.resolve(data);
+    } catch (error) {}
+  };
+
   return {
     userStore,
     privateUserStore,
@@ -186,11 +214,13 @@ export function useUser() {
     customerService,
     getUserInfo,
     updateLoginPassword,
+    updateNickName,
     getUserBindBankList,
     addUserBank,
     getCertificationInfo,
     addCertificationInfo,
     getCustomList,
     updateUserAvatar,
+    getFoucsStatus,
   };
 }

@@ -98,7 +98,7 @@ export default defineComponent({
   setup() {
     const router = useCustomRouter();
     const { privateMatchStore, getBaketBallGroupList } = useMatch();
-    const { getBetMatchCount } = useBet();
+    const { getBetMatchCount, clearBet } = useBet();
     const { errorNotify } = useNotify()
     const model = reactive({
       currEvent: '2',
@@ -153,6 +153,7 @@ export default defineComponent({
 
     onMounted(() => {
       getBaketBallGroupList({ status: MATCH_STATUS.NOT_START_YET })
+      clearBet()
     })
 
     return { router, model, privateMatchStore, getEventName, filterData, handlerSelect, gotoBetOrder, Utils, getBetMatchCount, delBet, BET_TYPE };

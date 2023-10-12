@@ -8,7 +8,7 @@
           <div class="top">{{ privateRecordStore.followOrder.details.nikeName }}</div>
           <div class="bottom"><span>{{ privateRecordStore.followOrder.details.fans }}</span>粉丝</div>
         </div>
-        <div class="follow" @click="follow2cancel">已关注</div>
+        <div class="follow" @click="follow2cancel">{{ isFoucs ? '已关注' : '+关注' }}</div>
       </div>
     </div>
     <div class="c_box">
@@ -31,11 +31,11 @@
       <div class="bottom">
         <span>七天战绩</span>
         <div class="ball-box">
-          <div class="item" v-for="(item, i) in data" :key="i">
-            <div class="ball" :class="item.value ? 'yes' : 'no'">
-              {{ item.label }}
+          <div class="item" v-for="(item, i) in betInfoStatusList" :key="i">
+            <div class="ball" :class="Number(item) === 1 ? 'yes' : 'no'">
+              {{ Number(item) === 1 ? '中' : '未' }}
             </div>
-            <div class="arrow" v-if="i < data.length - 1"></div>
+            <div class="arrow" v-if="i < betInfoStatusList.length - 1"></div>
           </div>
         </div>
       </div>
@@ -153,34 +153,39 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch, computed } from 'vue';
 import { useRoute } from 'vue-router'
-import { useRecord } from 'src/hook'
+import { useRecord, useUser } from 'src/hook'
 import { onMounted } from 'vue';
 export default defineComponent({
   setup() {
-    const { privateRecordStore, getFollowOrderDetails, cancelFocus, addFocus, } = useRecord();
+    const { getFoucsStatus } = useUser()
+    const { privateRecordStore, getFollowOrderDetails, cancelFocus, addFocus } = useRecord();
     const { query } = useRoute()
     const activeName = ref('a')
-    const data = [
-      { label: '中', value: 1 },
-      { label: '中', value: 1 },
-      { label: '中', value: 1 },
-      { label: '中', value: 1 },
-      { label: '未', value: 0 },
-    ];
+    const isFoucs = ref(false)
 
-    const follow2cancel = () => {
-      cancelFocus()
-      addFocus()
+    const follow2cancel = async () => {
+      isFoucs.value ? await cancelFocus() : await addFocus()
+      isFoucs.value = !isFoucs.value
     }
+
+    const betInfoStatusList = computed(() => privateRecordStore.followOrder.details?.betInfo?.split(',').filter((v: any) => v !== ''))
+
+
+    watch(() => privateRecordStore.followOrder.details, async (newValue) => {
+      if (newValue && newValue.uid) {
+        const data = await getFoucsStatus({ focusId: newValue.uid })
+        isFoucs.value = data
+      }
+    }, { immediate: true })
 
     onMounted(() => {
       if (query.id) {
         getFollowOrderDetails(query.id as string)
       }
     })
-    return { data, activeName, follow2cancel, privateRecordStore };
+    return { activeName, betInfoStatusList, follow2cancel, privateRecordStore, isFoucs };
   },
 });
 </script>

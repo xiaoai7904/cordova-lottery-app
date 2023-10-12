@@ -8,32 +8,32 @@
           <div class="top">{{ privateRecordStore.hotUser.details.nikeName }}</div>
           <div class="bottom"><span>{{ privateRecordStore.hotUser.details.fans }}</span>粉丝</div>
         </div>
-        <div class="follow">已关注</div>
+        <div class="follow" @click="follow2cancel">{{ isFoucs ? '已关注' : '+关注' }}</div>
       </div>
     </div>
     <div class="c_box">
       <div class="top">
         <div class="item">
-          {{ privateRecordStore.hotUser.details }}
+          {{ privateRecordStore.hotUser.details.winAmount }}
           <div>累计中奖</div>
         </div>
         <div class="item item1">
           {{ privateRecordStore.hotUser.details.profit }}
           <div>7日盈利</div>
         </div>
-        <!-- <div class="item">
-          {{privateRecordStore.hotUser.details}}
+        <div class="item">
+          {{ privateRecordStore.hotUser.details.hit }}
           <div>7日命中</div>
-        </div> -->
+        </div>
       </div>
       <div class="bottom">
         <span>七天战绩</span>
         <div class="ball-box">
-          <div class="item" v-for="(item, i) in privateRecordStore.hotUser.details.betInfoDetail" :key="i">
-            <div class="ball" :class="item.value ? 'yes' : 'no'">
-              {{ item.label }}
+          <div class="item" v-for="(item, i) in betInfoStatusList" :key="i">
+            <div class="ball" :class="+item === 1 ? 'yes' : 'no'">
+              {{ +item == 1 ? '中' : '未' }}
             </div>
-            <div class="arrow" v-if="i < data.length - 1"></div>
+            <div class="arrow" v-if="i < betInfoStatusList.length - 1"></div>
           </div>
         </div>
       </div>
@@ -45,14 +45,14 @@
           <div class="top">{{ item.name }}</div>
           <div class="bottom">
             <div class="win-box" :class="status[item.status]">
-              {{ item.status == 2 ? item.money + '元' : prize[item.status] }}
+              {{ item.status == 2 ? item.bonus + '元' : prize[item.status] }}
             </div>
             <div class="money">
-              自购：<span>{{ item.money }}元</span>
+              自购：<span>{{ item.tmoney }}元</span>
             </div>
             <div class="rq">
               <span>人气</span>
-              <div class="start" v-for="(item, i) in item.people" :key="i"></div>
+              <div class="start" v-for="(k, i) in item.joins" :key="i"></div>
             </div>
             <div class="time">{{ item.time }}截止</div>
           </div>
@@ -63,62 +63,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router'
-import { useRecord } from 'src/hook'
+import { useRecord, useUser } from 'src/hook'
+import { computed } from 'vue';
+import { watch } from 'vue';
 export default defineComponent({
   setup() {
-    const data = [
-      { label: '中', value: 1 },
-      { label: '中', value: 1 },
-      { label: '中', value: 1 },
-      { label: '中', value: 1 },
-      { label: '未', value: 0 },
-    ];
-    const list: any = [
-      {
-        name: '竞猜足球(2串1)',
-        status: 0,
-        money: 6888,
-        people: 5,
-        time: '09-19 05:30',
-      },
-      {
-        name: '竞猜足球(2串1)',
-        status: 1,
-        money: 4562,
-        people: 5,
-        time: '09-19 05:30',
-      },
-      {
-        name: '竞猜足球(2串1)',
-        status: 2,
-        money: 1156,
-        people: 5,
-        time: '09-19 05:30',
-      },
-      {
-        name: '竞猜足球(2串1)',
-        status: 2,
-        money: 1156,
-        people: 5,
-        time: '09-19 05:30',
-      },
-      {
-        name: '竞猜足球(2串1)',
-        status: 2,
-        money: 1156,
-        people: 5,
-        time: '09-19 05:30',
-      },
-      {
-        name: '竞猜足球(2串1)',
-        status: 2,
-        money: 1156,
-        people: 5,
-        time: '09-19 05:30',
-      },
-    ];
     const status: any = {
       0: '',
       1: 'no',
@@ -129,16 +80,34 @@ export default defineComponent({
       1: '未中奖',
     };
 
+    const isFoucs = ref(false)
+
+    const { getFoucsStatus } = useUser()
     const { query } = useRoute()
-    const { privateRecordStore, getHotUserDetails } = useRecord();
+    const { privateRecordStore, getHotUserDetails, cancelFocus, addFocus } = useRecord();
+
+    const betInfoStatusList = computed(() => privateRecordStore.hotUser.details?.betInfo?.split(',').filter((v: any) => v !== ''))
+
+    const follow2cancel = async () => {
+      isFoucs.value ? await cancelFocus() : await addFocus()
+      isFoucs.value = !isFoucs.value
+    }
+
+    watch(() => privateRecordStore.hotUser.details, async (newValue) => {
+      if (newValue && newValue.uid) {
+        const data = await getFoucsStatus({ focusId: newValue.uid })
+        isFoucs.value = data
+      }
+    }, { immediate: true })
 
     onMounted(() => {
       if (query.id) {
         getHotUserDetails(query.id as string)
+
       }
     })
 
-    return { data, list, prize, status, privateRecordStore };
+    return { prize, status, privateRecordStore, betInfoStatusList, isFoucs, follow2cancel };
   },
 });
 </script>

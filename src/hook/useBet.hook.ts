@@ -11,13 +11,14 @@ const betStore = reactive({
 
 export function useBet() {
   const { privateMatchStore, saveFollowOrder, saveOrder } = useMatch();
-  const { showComfirmDialog } = useNotify();
+  const { showComfirmDialog, errorNotify } = useNotify();
   const model = reactive({
     showEvent: false,
     betModel: false,
     tempBetList: [] as any[],
     betList: [] as any[],
     multiple: 50,
+    cdesc: '',
   });
 
   const betCount = computed(() => model.betList.length);
@@ -115,6 +116,10 @@ export function useBet() {
   const isSfcSelect = (matchId: number, txt: string) =>
     betNames.value.includes(`${matchId}_sfc_${txt}`);
 
+  const clearBet = () => {
+    betStore.betInfo = {};
+  };
+
   const addBet = (data: any) => {
     const matchInfo = betStore.betInfo[data.matchId];
     if (matchInfo) {
@@ -186,7 +191,9 @@ export function useBet() {
         matchTime: data.matchTime,
         playCode: item.playCode,
         betName: item.name,
-        oddRate: `${item.playCode},${item.value}`,
+        oddRate: `${item.code === 'rq' ? getBetValue(data.rq, 0) + ',' : ''}${
+          item.playCode
+        },${item.value}`,
         odds: item.code,
         oddValue: item.value,
         org: { ...data },
@@ -240,7 +247,9 @@ export function useBet() {
         matchTime: data.matchTime,
         playCode,
         betName: name,
-        oddRate: `${playCode},${value}`,
+        oddRate: `${
+          code === 'rq' ? getBetValue(data.rq, 0) + ',' : ''
+        }${playCode},${value}`,
         odds: code,
         oddValue: value,
         org: { ...data },
@@ -314,24 +323,18 @@ export function useBet() {
     } catch (e) {}
   };
 
-  const flolowOrder = (betType: BET_TYPE) => {
+  const flolowOrder = async (betType: BET_TYPE) => {
     try {
       const params = {
-        tmoney: getBetTotalAmount(),
+        cname: `竞猜${betType === BET_TYPE.BASKETBALL ? '篮球' : '足球'}(${
+          isSingle.value ? '单关' : '2串1'
+        })`,
+        cdesc: model.cdesc,
         betType,
         codes: getBetOrder.value,
       };
 
-      showComfirmDialog({
-        title: '提示',
-        content: `<div>
-          <p>方案金额<span style="color:#FF7733;font-weight:500"> ${params.tmoney}</span></p>
-          <p>您确定要进入发单设置吗？</p>
-        </div>`,
-        async confirm() {
-          await saveFollowOrder(params);
-        },
-      });
+      await saveFollowOrder(params);
     } catch (e) {}
   };
 
@@ -343,10 +346,12 @@ export function useBet() {
 
   return {
     betStore,
+    privateMatchStore,
     model,
     betCount,
     betNames,
     isSingle,
+    getBetOrder,
     addBet,
     delBet,
     getBetValue,
@@ -368,5 +373,6 @@ export function useBet() {
     getEstimatedBonus,
     addOrder,
     flolowOrder,
+    clearBet,
   };
 }

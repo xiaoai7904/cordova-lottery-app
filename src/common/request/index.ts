@@ -448,3 +448,21 @@ export function SaveOrderRequest<T, R>(params = {} as T) {
 export function SaveFollowOrderRequest<T, R>(params = {} as T) {
   return api.post<T, R>('/api/followOrder/saveFollowOrder', params);
 }
+
+/**
+ * 是否关注
+ * @param params {}
+ * @returns
+ */
+export function IsFocusRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/user/isFocus', params);
+}
+
+/**
+ * 修改昵称
+ * @param params {}
+ * @returns
+ */
+export function UpdateNikeNameRequest<T, R>(params = {} as T) {
+  return api.post<T, R>('/api/user/updateNikeName', params);
+}

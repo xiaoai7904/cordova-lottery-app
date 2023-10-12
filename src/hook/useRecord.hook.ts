@@ -588,7 +588,9 @@ export function useRecord() {
       await AddFollowOrderRequest<any, any>(params);
       showSuccessToast('跟单成功');
       return Promise.resolve();
-    } catch (error) {}
+    } catch (error) {
+      return Promise.reject();
+    }
   };
 
   /**
@@ -601,7 +603,9 @@ export function useRecord() {
       await AddFousRequest<any, any>(params);
       showSuccessToast('关注成功');
       return Promise.resolve();
-    } catch (error) {}
+    } catch (error) {
+      return Promise.reject();
+    }
   };
 
   /**
@@ -614,7 +618,9 @@ export function useRecord() {
       await CancelFousRequest<any, any>(params);
       showSuccessToast('取消成功');
       return Promise.resolve();
-    } catch (error) {}
+    } catch (error) {
+      return Promise.reject();
+    }
   };
 
   return {

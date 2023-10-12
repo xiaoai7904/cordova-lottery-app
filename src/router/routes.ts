@@ -118,6 +118,16 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/settingNickName',
+    name: RouterNameEnum.NICKNAME,
+    component: () => import('pages/setting/settingNickNamePage.vue'),
+    meta: {
+      title: '修改昵称',
+      depth: 4,
+      isFooter: false,
+    },
+  },
+  {
     path: '/settingBank',
     name: RouterNameEnum.BANK,
     component: () => import('pages/setting/settingBankPage.vue'),

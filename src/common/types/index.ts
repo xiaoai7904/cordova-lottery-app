@@ -115,6 +115,12 @@ export type UserInfoType = {
   phone: string;
   // 用户名
   username: string;
+  // 昵称
+  nikeName: string;
+  //关注
+  focusNum: number;
+  // 粉丝
+  fanNum: number;
 };
 
 export type BankItemType = {

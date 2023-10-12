@@ -34,6 +34,8 @@ export enum RouterNameEnum {
   SETTING = 'setting',
   // 登录密码
   LOGINPASSWORD = 'loginPassword',
+  // 昵称
+  NICKNAME = 'nickName',
   // 银行卡
   BANK = 'bank',
   // 添加银行卡

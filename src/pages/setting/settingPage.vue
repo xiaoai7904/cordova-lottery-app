@@ -11,6 +11,7 @@
                     </template>
                 </van-cell>
                 <van-cell title="用户名" :value="userInfo.username" />
+                <van-cell title="昵称" :value="userInfo.nikeName" is-link @click="gotoByPath('/settingNickName')" />
                 <van-cell title="登录密码" is-link value="修改密码" @click="gotoByPath('/settingPassword')" />
             </van-cell-group>
             <van-cell-group>

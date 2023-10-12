@@ -20,6 +20,7 @@ import {
   CollapseItem,
   Popup,
   Stepper,
+  Field,
 } from 'vant';
 import 'vant/lib/index.css';
 import Header from 'src/components/Header/Header.vue';
@@ -46,6 +47,7 @@ export default boot(({ app }) => {
   app.use(CollapseItem);
   app.use(Popup);
   app.use(Stepper);
+  app.use(Field);
 
   app.component('Headers', Header);
   app.component('PageList', PageList);
