@@ -14,32 +14,32 @@
           </div>
           <!--投注项-->
           <div class="bet-item">
-            <div class="item" :class="{ 'active': isSpfSelect(data.id, '胜') }"
-              @click="selectBetEvent(getBetValue(data.sf, 0), ODDS_MAP.sf, betNameMap[ODDS_MAP.sf].betCode[0])">
-              客胜 <span>{{ getBetValue(data.sf, 0) }}</span>
+            <div class="item" :class="{ 'active': isSfSelect(data.id, '负') }"
+              @click="selectBetEvent(getBetValue(data.sf, 1), ODDS_MAP.sf, betNameMap[ODDS_MAP.sf].betCode[1])">
+              客胜 <span>{{ getBetValue(data.sf, 1) }}</span>
             </div>
-            <div class="item" :class="{ 'active': isSpfSelect(data.id, '平') }"
-              @click="selectBetEvent(getBetValue(data.sf, 1), ODDS_MAP.sf, betNameMap[ODDS_MAP.sf].betCode[1])">主胜
+            <div class="item" :class="{ 'active': isSfSelect(data.id, '胜') }"
+              @click="selectBetEvent(getBetValue(data.sf, 0), ODDS_MAP.sf, betNameMap[ODDS_MAP.sf].betCode[0])">主胜
               <span>
                 {{
-                  getBetValue(data.sf, 1)
+                  getBetValue(data.sf, 0)
                 }}
               </span>
             </div>
-            <div class="item" :class="{ 'active': isSpfSelect(data.id, '负') }"
-              @click="selectBetEvent(getBetValue(data.rf, 1), ODDS_MAP.rf, betNameMap[ODDS_MAP.rf].betCode[1])">让客胜
-              <span>
-                {{
-                  getBetValue(data.rf, 1)
-                }}
-              </span>
-            </div>
-            <div class="item" :class="{ 'active': isRqSelect(data.id, '胜') }"
-              @click="selectBetEvent(getBetValue(data.rf, 2), ODDS_MAP.rf, betNameMap[ODDS_MAP.rf].betCode[2])">
-              <span class="up">{{ getBetValue(data.rf, 0) }}</span> 让主胜
+            <div class="item" :class="{ 'active': isRfSelect(data.id, '负') }"
+              @click="selectBetEvent(getBetValue(data.rf, 2), ODDS_MAP.rf, betNameMap[ODDS_MAP.rf].betCode[2])">让客胜
               <span>
                 {{
                   getBetValue(data.rf, 2)
+                }}
+              </span>
+            </div>
+            <div class="item" :class="{ 'active': isRfSelect(data.id, '胜') }"
+              @click="selectBetEvent(getBetValue(data.rf, 1), ODDS_MAP.rf, betNameMap[ODDS_MAP.rf].betCode[1])">
+              <span class="up">{{ getBetValue(data.rf, 1) }}</span> 让主胜
+              <span>
+                {{
+                  getBetValue(data.rf, 1)
                 }}
               </span>
             </div>
@@ -100,8 +100,8 @@ export default defineComponent({
       confirm,
       betEvent,
       selectBet,
-      isSpfSelect,
-      isRqSelect } = useBet()
+      isSfSelect,
+      isRfSelect } = useBet()
 
     const confirmEvent = () => {
       confirm(props.data)
@@ -110,7 +110,7 @@ export default defineComponent({
       selectBet(props.data, value, code, playCode)
     }
 
-    return { router, model, betCount, explandAll, confirm, betEvent, selectBetEvent, confirmEvent, getBetValue, isSpfSelect, isRqSelect, Utils, ODDS_MAP, betNameMap };
+    return { router, model, betCount, explandAll, confirm, betEvent, selectBetEvent, confirmEvent, getBetValue, isSfSelect, isRfSelect, Utils, ODDS_MAP, betNameMap };
   },
 });
 </script>

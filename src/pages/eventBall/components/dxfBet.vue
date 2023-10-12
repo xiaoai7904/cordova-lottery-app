@@ -9,12 +9,12 @@
         <div class="game-item">
           <!--投注项-->
           <div class="bet-item">
-            <div class="item" :class="{ 'active': isJqSelect(data.id, '大') }"
-              @click="selectBetEvent(getBetValue(data.dxf, 1), ODDS_MAP.jq, betNameMap[ODDS_MAP.dxf].betCode[1])">
+            <div class="item" :class="{ 'active': isDxfSelect(data.id, '大') }"
+              @click="selectBetEvent(getBetValue(data.dxf, 1), ODDS_MAP.dxf, betNameMap[ODDS_MAP.dxf].betCode[1])">
               大于 {{ getBetValue(data.dxf, 0) }} <span>{{ getBetValue(data.dxf, 1) }}</span>
             </div>
-            <div class="item" :class="{ 'active': isJqSelect(data.id, '大') }"
-              @click="selectBetEvent(getBetValue(data.dxf, 2), ODDS_MAP.jq, betNameMap[ODDS_MAP.dxf].betCode[2])">
+            <div class="item" :class="{ 'active': isDxfSelect(data.id, '小') }"
+              @click="selectBetEvent(getBetValue(data.dxf, 2), ODDS_MAP.dxf, betNameMap[ODDS_MAP.dxf].betCode[2])">
               小于 {{ getBetValue(data.dxf, 0) }} <span>{{ getBetValue(data.dxf, 2) }}</span>
             </div>
           </div>
@@ -47,7 +47,7 @@ export default defineComponent({
       model,
       getBetValue,
       confirm,
-      selectBet, isJqSelect } = useBet()
+      selectBet, isDxfSelect } = useBet()
 
     const confirmEvent = () => {
       confirm(props.data)
@@ -55,7 +55,7 @@ export default defineComponent({
     const selectBetEvent = (value: any, code: string, playCode: string) => {
       selectBet(props.data, value, code, playCode)
     }
-    return { model, Utils, ODDS_MAP, betNameMap, confirmEvent, selectBetEvent, getBetValue, isJqSelect };
+    return { model, Utils, ODDS_MAP, betNameMap, confirmEvent, selectBetEvent, getBetValue, isDxfSelect };
   },
 });
 </script>

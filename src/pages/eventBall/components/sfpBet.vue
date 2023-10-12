@@ -9,13 +9,13 @@
         <div class="game-item">
           <!--投注项-->
           <div class="bet-item">
-            <div class="item" :class="{ 'active': isJqSelect(data.id, '') }"
-              @click="selectBetEvent(getBetValue(data.rf, 1), ODDS_MAP.rf, betNameMap[ODDS_MAP.rf].betCode[1])">
-              让客胜 <span>{{ getBetValue(data.rf, 1) }}</span>
-            </div>
-            <div class="item" :class="{ 'active': isJqSelect(data.id, '') }"
+            <div class="item" :class="{ 'active': isRfSelect(data.id, '负') }"
               @click="selectBetEvent(getBetValue(data.rf, 2), ODDS_MAP.rf, betNameMap[ODDS_MAP.rf].betCode[2])">
-              <span class="up">{{ getBetValue(data.rf, 0) }}</span> 让主胜 <span>{{ getBetValue(data.rf, 2) }}</span>
+              让客胜 <span>{{ getBetValue(data.rf, 2) }}</span>
+            </div>
+            <div class="item" :class="{ 'active': isRfSelect(data.id, '胜') }"
+              @click="selectBetEvent(getBetValue(data.rf, 1), ODDS_MAP.rf, betNameMap[ODDS_MAP.rf].betCode[1])">
+              <span class="up">{{ getBetValue(data.rf, 1) }}</span> 让主胜 <span>{{ getBetValue(data.rf, 1) }}</span>
             </div>
           </div>
         </div>
@@ -47,7 +47,7 @@ export default defineComponent({
       model,
       getBetValue,
       confirm,
-      selectBet, isJqSelect } = useBet()
+      selectBet, isRfSelect } = useBet()
 
     const confirmEvent = () => {
       confirm(props.data)
@@ -55,7 +55,7 @@ export default defineComponent({
     const selectBetEvent = (value: any, code: string, playCode: string) => {
       selectBet(props.data, value, code, playCode)
     }
-    return { model, Utils, ODDS_MAP, betNameMap, confirmEvent, selectBetEvent, getBetValue, isJqSelect };
+    return { model, Utils, ODDS_MAP, betNameMap, confirmEvent, selectBetEvent, getBetValue, isRfSelect };
   },
 });
 </script>

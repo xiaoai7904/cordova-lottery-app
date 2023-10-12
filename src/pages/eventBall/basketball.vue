@@ -35,7 +35,7 @@
         <div class="content-expand">
           <!--胜平负[让]-->
           <template v-for="item in data" :key="item">
-            <SfrBet v-if="model.currEvent == '1'" :data="item"></SfrBet>
+            <SfpBet v-if="model.currEvent == '1'" :data="item"></SfpBet>
           </template>
           <!--混合投注-->
           <template v-for="item in data" :key="item">
@@ -77,7 +77,7 @@ import { defineComponent, reactive, onMounted, computed } from 'vue';
 import PlayerPopup from './components/playerPopup.vue';
 import FilterPopup from './components/filerPopup.vue';
 import LhhBet from './components/lhhBet.vue';
-import SfrBet from './components/sfrBet.vue';
+import SfpBet from './components/sfpBet.vue';
 import DxfBet from './components/dxfBet.vue';
 import SfcBet from './components/sfcBet.vue'
 
@@ -90,7 +90,7 @@ export default defineComponent({
     PlayerPopup,
     FilterPopup,
     LhhBet,
-    SfrBet,
+    SfpBet,
     DxfBet,
     SfcBet,
     BetOrder

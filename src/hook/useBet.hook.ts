@@ -35,22 +35,22 @@ export function useBet() {
     for (let i = 0; i < betInfoKeys.length; i++) {
       const betMatchItem = betInfo[betInfoKeys[i]];
 
-      const defaultData = {
-        matchId: betMatchItem.matchId,
-        shortComp: betMatchItem.shortComp,
-        shortHome: betMatchItem.shortHome,
-        shortAway: betMatchItem.shortAway,
-        multiple: model.multiple,
-      };
-
       for (let j = 0; j < betMatchItem.orderOdds.length; j++) {
         const preOddsItem = betMatchItem.orderOdds[j];
 
+        const defaultMatchInfo = {
+          matchId: betMatchItem.matchId,
+          shortComp: betMatchItem.shortComp,
+          shortHome: betMatchItem.shortHome,
+          shortAway: betMatchItem.shortAway,
+        };
+
         if (betInfoKeys.length === 1) {
           betOder.push({
-            ...defaultData,
+            multiple: model.multiple,
             orderOdds: [
               {
+                ...defaultMatchInfo,
                 odds: preOddsItem.odds,
                 oddRate: preOddsItem.oddRate,
               },
@@ -58,6 +58,13 @@ export function useBet() {
           });
         } else {
           for (let k = i + 1; !!betInfoKeys[k]; k++) {
+            const matchInfo = {
+              matchId: betInfo[betInfoKeys[k]].matchId,
+              shortComp: betInfo[betInfoKeys[k]].shortComp,
+              shortHome: betInfo[betInfoKeys[k]].shortHome,
+              shortAway: betInfo[betInfoKeys[k]].shortAway,
+            };
+
             for (
               let kk = 0;
               kk < betInfo[betInfoKeys[k]].orderOdds.length;
@@ -66,15 +73,17 @@ export function useBet() {
               const oddsItem = betInfo[betInfoKeys[k]].orderOdds[kk];
 
               betOder.push({
-                ...defaultData,
+                multiple: model.multiple,
                 orderOdds: [
                   {
-                    odds: preOddsItem.odds,
-                    oddRate: preOddsItem.oddRate,
-                  },
-                  {
+                    ...matchInfo,
                     odds: oddsItem.odds,
                     oddRate: oddsItem.oddRate,
+                  },
+                  {
+                    ...defaultMatchInfo,
+                    odds: preOddsItem.odds,
+                    oddRate: preOddsItem.oddRate,
                   },
                 ],
               });
@@ -97,6 +106,14 @@ export function useBet() {
     betNames.value.includes(`${matchId}_jq_${txt}`);
   const isBqcSelect = (matchId: number, txt: string) =>
     betNames.value.includes(`${matchId}_bqc_${txt}`);
+  const isSfSelect = (matchId: number, txt: string) =>
+    betNames.value.includes(`${matchId}_sf_${txt}`);
+  const isRfSelect = (matchId: number, txt: string) =>
+    betNames.value.includes(`${matchId}_rf_${txt}`);
+  const isDxfSelect = (matchId: number, txt: string) =>
+    betNames.value.includes(`${matchId}_dxf_${txt}`);
+  const isSfcSelect = (matchId: number, txt: string) =>
+    betNames.value.includes(`${matchId}_sfc_${txt}`);
 
   const addBet = (data: any) => {
     const matchInfo = betStore.betInfo[data.matchId];
@@ -287,7 +304,7 @@ export function useBet() {
       showComfirmDialog({
         title: '提示',
         content: `<div>
-          <p>方案金额<span style="color:#FF7733;font-weight:500">${params.tmoney}</span></p>
+          <p>方案金额<span style="color:#FF7733;font-weight:500"> ${params.tmoney}</span></p>
           <p>您确定要提交方案吗？</p>
         </div>`,
         async confirm() {
@@ -308,7 +325,7 @@ export function useBet() {
       showComfirmDialog({
         title: '提示',
         content: `<div>
-          <p>方案金额<span style="color:#FF7733;font-weight:500">${params.tmoney}</span></p>
+          <p>方案金额<span style="color:#FF7733;font-weight:500"> ${params.tmoney}</span></p>
           <p>您确定要进入发单设置吗？</p>
         </div>`,
         async confirm() {
@@ -342,6 +359,10 @@ export function useBet() {
     isBqcSelect,
     isJqSelect,
     isRqSelect,
+    isSfSelect,
+    isRfSelect,
+    isDxfSelect,
+    isSfcSelect,
     getBetCount,
     getBetTotalAmount,
     getEstimatedBonus,
