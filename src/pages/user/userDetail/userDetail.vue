@@ -5,8 +5,8 @@
       <div class="user_box">
         <img :src="require('./assets/1.png')" />
         <div class="info">
-          <div class="top">博哥玩球</div>
-          <div class="bottom"><span>783</span>粉丝</div>
+          <div class="top">{{ privateRecordStore.hotUser.details.nikeName }}</div>
+          <div class="bottom"><span>{{ privateRecordStore.hotUser.details.fans }}</span>粉丝</div>
         </div>
         <div class="follow">已关注</div>
       </div>
@@ -14,22 +14,22 @@
     <div class="c_box">
       <div class="top">
         <div class="item">
-          11109.56
+          {{ privateRecordStore.hotUser.details }}
           <div>累计中奖</div>
         </div>
         <div class="item item1">
-          227%
+          {{ privateRecordStore.hotUser.details.profit }}
           <div>7日盈利</div>
         </div>
-        <div class="item">
-          11109.56
+        <!-- <div class="item">
+          {{privateRecordStore.hotUser.details}}
           <div>7日命中</div>
-        </div>
+        </div> -->
       </div>
       <div class="bottom">
         <span>七天战绩</span>
         <div class="ball-box">
-          <div class="item" v-for="(item, i) in data" :key="i">
+          <div class="item" v-for="(item, i) in privateRecordStore.hotUser.details.betInfoDetail" :key="i">
             <div class="ball" :class="item.value ? 'yes' : 'no'">
               {{ item.label }}
             </div>
@@ -41,7 +41,7 @@
     <div class="box">
       <div class="sub-box">
         <div class="title">近7天战绩</div>
-        <div class="item" v-for="(item, i) in list" :key="i">
+        <div class="item" v-for="(item, i) in privateRecordStore.hotUser.details.betInfoDetail" :key="i">
           <div class="top">{{ item.name }}</div>
           <div class="bottom">
             <div class="win-box" :class="status[item.status]">
@@ -138,7 +138,7 @@ export default defineComponent({
       }
     })
 
-    return { data, list, prize, status };
+    return { data, list, prize, status, privateRecordStore };
   },
 });
 </script>

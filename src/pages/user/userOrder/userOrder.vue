@@ -64,7 +64,7 @@
           </div>
           <div class="item">
             <div>{{ privateRecordStore.followOrder.details.rate }}倍</div>
-            <div>预估最高回报率</div>
+            <div>最高回报率</div>
           </div>
         </div>
       </div>
@@ -74,7 +74,11 @@
           <!--方案详情-->
           <van-tab title="方案详情" name="a">
             <div class="tab_box">
-              <table>
+              <div class="flex-center lock">
+                <img src="./assets/lock.png" alt="">
+                <p>未公开时间</p>
+              </div>
+              <!-- <table>
                 <th>
                 <td>场次</td>
                 <td>对阵</td>
@@ -122,7 +126,7 @@
                   </td>
                   <td></td>
                 </tr>
-              </table>
+              </table> -->
             </div>
           </van-tab>
           <!--跟单用户-->
@@ -133,15 +137,13 @@
                 <div>跟单金额</div>
                 <div>跟单时间</div>
               </div>
-              <div class="tab-item">
-                <div>重***连</div>
-                <div><span class="tag">3000</span>元</div>
-                <div>2023-09-23 21:02:06</div>
+              <div v-for="(item, index) in privateRecordStore.followOrder.details.userVos" :key="index" class="tab-item">
+                <div>{{ item.nikeName }}</div>
+                <div><span class="tag">{{ item.betAmount }}</span>元</div>
+                <div>{{ item.betDate }}</div>
               </div>
-              <div class="tab-item">
-                <div>重***连</div>
-                <div><span class="tag">3000</span>元</div>
-                <div>2023-09-23 21:02:06</div>
+              <div class="empty flex-center">
+                暂无数据
               </div>
             </div>
           </van-tab>
@@ -451,6 +453,18 @@ export default defineComponent({
       background-color: #f6f6f6;
       overflow-y: auto;
 
+      .lock {
+        flex-direction: column;
+        font-size: 14px;
+        height: 100%;
+
+        img {
+          width: 22px;
+          height: 30px;
+          margin-bottom: 5px;
+        }
+      }
+
       .tag {
         color: #f73
       }
@@ -517,6 +531,11 @@ export default defineComponent({
         div:nth-of-type(3) {
           width: 40%
         }
+      }
+
+      .empty {
+        height: 100%;
+        font-size: 14px;
       }
     }
 

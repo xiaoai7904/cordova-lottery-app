@@ -75,6 +75,7 @@ export default defineComponent({
 .mine {
   overflow: hidden;
   padding-bottom: 108px;
+  min-height: 100vh;
 
   .user-box {
     display: flex;
