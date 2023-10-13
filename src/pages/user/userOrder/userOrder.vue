@@ -150,23 +150,39 @@
         </van-tabs>
       </div>
     </div>
+
+    <div class="order-bottom flex-between van-safe-area-bottom">
+      <div class="left flex-start">
+        <div class="flex-center field">
+          <span>买</span>
+          <van-stepper v-model="multiple" type="number" />
+          <span>倍</span>
+        </div>
+
+        <p>共 <span class="amount">200</span> 元</p>
+      </div>
+
+      <div class="flex-start">
+        <div class="btn" @click="addFollowOrderEvent">跟单</div>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, watch, computed } from 'vue';
+import { defineComponent, ref, watch, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router'
 import { useRecord, useUser } from 'src/hook'
-import { onMounted } from 'vue';
 export default defineComponent({
   setup() {
     const { getFoucsStatus } = useUser()
-    const { privateRecordStore, getFollowOrderDetails, cancelFocus, addFocus } = useRecord();
+    const { privateRecordStore, getFollowOrderDetails, cancelFocus, addFocus, addFollowOrder } = useRecord();
     const { query } = useRoute()
     const activeName = ref('a')
     const isFoucs = ref(false)
-
+    const multiple = ref(50)
     const follow2cancel = async () => {
-      isFoucs.value ? await cancelFocus() : await addFocus()
+      const uid = privateRecordStore.followOrder.details.uid
+      isFoucs.value ? await cancelFocus({ focusId: uid }) : await addFocus({ focusId: uid })
       isFoucs.value = !isFoucs.value
     }
 
@@ -180,12 +196,17 @@ export default defineComponent({
       }
     }, { immediate: true })
 
+
+    const addFollowOrderEvent = () => {
+      addFollowOrder()
+    }
+
     onMounted(() => {
       if (query.id) {
         getFollowOrderDetails(query.id as string)
       }
     })
-    return { activeName, betInfoStatusList, follow2cancel, privateRecordStore, isFoucs };
+    return { multiple, activeName, betInfoStatusList, follow2cancel, privateRecordStore, isFoucs, addFollowOrderEvent };
   },
 });
 </script>
@@ -554,6 +575,49 @@ export default defineComponent({
       // bottom: -3px;
     }
 
+  }
+
+  .order-bottom {
+    font-size: 14px;
+    width: 100%;
+    height: 68px;
+    background-color: #fff;
+    box-shadow: 0 -2px 7px 0 #e5e5e5;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    font-weight: 600;
+
+    .left {
+      padding: 0 0 0 15px;
+    }
+
+    .field {
+      >span {
+        margin: 0 10px;
+      }
+
+      :deep(input) {
+        color: #f73;
+      }
+    }
+
+    .amount {
+      font-weight: 600;
+      color: #f73;
+    }
+
+    .btn {
+      width: 84px;
+      height: 68px;
+      font-size: 16px;
+      color: #2e2f30;
+      text-align: center;
+      line-height: 68px;
+      // box-shadow: -2px 4px 8px 0 #f2f4df;
+      background: linear-gradient(127deg, #fff120, #fcdf6b);
+      font-weight: 500;
+    }
   }
 }
 </style>

@@ -1,25 +1,25 @@
 <template>
   <div class="flow-order">
     <div class="flex-between">
-      <div class="top">
+      <div class="top flex-start">
         <img src="./userOrder/assets/ball.png" alt="">
-        <span>{{ data.title }}</span>
+        <span>{{ title }}</span>
       </div>
-      <span class="time">10-12 16:10截止</span>
+      <span class="time">{{ data.cdate }} 截止</span>
     </div>
 
-    <div class="flex-between">
+    <div class="bottom flex-between">
       <div class="title flex-start">
         <div>
-          <h2>1111</h2>
+          <h2>{{ data.tmoney }}</h2>
           <p>自购金额</p>
         </div>
         <div>
-          <div class="start" v-for="(item, i) in 4" :key="i"></div>
+          <div class="start" v-for="(item, i) in start" :key="i"></div>
           <p>跟单人气</p>
         </div>
       </div>
-      <div class="btn">跟单</div>
+      <div class="btn" @click="addFollowOrderEvent">跟单</div>
     </div>
   </div>
 </template>
@@ -27,17 +27,66 @@
 <script lang="ts">
 import { PropType } from 'vue';
 import { defineComponent } from 'vue';
-
+import { useCustomRouter } from 'src/hook'
+import { RouterNameEnum, BET_TYPE } from 'src/common'
+import { computed } from 'vue';
 export default defineComponent({
   props: {
     data: {
       type: Object as PropType<any>,
       default: () => ({})
+    },
+    uid: {
+      type: Number as PropType<number>
     }
   },
-  setup() {
-    return {}
+  setup(props) {
+    const router = useCustomRouter();
 
+    const title = computed(() => {
+      let __title = '';
+      let isSingle = true;
+
+      if (props.data.codes) {
+        const codes = JSON.parse(props.data.codes);
+
+        if (codes.length > 1) {
+          isSingle = true;
+        }
+
+        if (!isSingle) {
+          codes.forEach((item: any) => {
+            if (!isSingle && item.orderOdds.length > 1) {
+              isSingle = true
+            }
+          })
+        }
+      }
+
+      if (props.data.betType === BET_TYPE.BASKETBALL) {
+        __title = '竞猜篮球'
+      } else {
+        __title = '竞猜足球'
+      }
+
+      __title += isSingle ? '(单关)' : '(2串1)'
+
+      return __title;
+    })
+
+    const start = computed(() => {
+      if (props.data.followUsers >= 5) {
+        return 5;
+      }
+
+      return props.data.followUsers || 1
+
+    })
+    const addFollowOrderEvent = async () => {
+      router.push({ name: RouterNameEnum.USERORDER, query: { id: props.uid } })
+    }
+
+    return { title, start, addFollowOrderEvent }
   }
 })
 </script>
@@ -45,7 +94,7 @@ export default defineComponent({
 <style scoped lang="scss">
 .flow-order {
   width: 345px;
-  margin: 0 auto;
+  margin: 10px auto;
   background-color: #fff;
   border-radius: 8px;
   padding: 10px 15px;
@@ -58,6 +107,10 @@ export default defineComponent({
       width: 50px;
       height: 50px;
     }
+  }
+
+  .bottom {
+    margin-top: 20px;
   }
 
   .time {

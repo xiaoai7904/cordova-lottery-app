@@ -3,10 +3,10 @@
     <Headers transparent> </Headers>
     <div class="head_box">
       <div class="user_box">
-        <img :src="require('./assets/1.png')" />
+        <img :src="details.avatar" />
         <div class="info">
-          <div class="top">{{ privateRecordStore.hotUser.details.nikeName }}</div>
-          <div class="bottom"><span>{{ privateRecordStore.hotUser.details.fans }}</span>粉丝</div>
+          <div class="top">{{ details.nikeName }}</div>
+          <div class="bottom"><span>{{ details.fans }}</span>粉丝</div>
         </div>
         <div class="follow" @click="follow2cancel">{{ isFoucs ? '已关注' : '+关注' }}</div>
       </div>
@@ -14,15 +14,15 @@
     <div class="c_box">
       <div class="top">
         <div class="item">
-          {{ privateRecordStore.hotUser.details }}
+          {{ details.winAmount }}
           <div>累计中奖</div>
         </div>
         <div class="item item1">
-          {{ privateRecordStore.hotUser.details.profit }}
+          {{ details.profit }}
           <div>7日盈利</div>
         </div>
         <div class="item">
-          <!-- {{privateRecordStore.hotUser.details}} -->
+          {{ details.hit }}
           <div>7日命中</div>
         </div>
       </div>
@@ -40,27 +40,32 @@
     </div>
 
     <div class="flllow-box">
-      <FlowOrderItem />
+      <FlowOrderItem v-for="(item, index) in details.followOrders" :key="index" :data="item" :uid="details.uid" />
     </div>
 
     <div class="box">
       <div class="sub-box">
         <div class="title">近7天战绩</div>
-        <div class="item" v-for="(item, i) in privateRecordStore.hotUser.details.betInfoDetail" :key="i">
-          <div class="top">{{ item.name }}</div>
-          <div class="bottom">
-            <div class="win-box" :class="status[item.status]">
-              {{ item.status == 2 ? item.money + '元' : prize[item.status] }}
+        <div v-if="details?.betInfoDetail?.length">
+          <div class="item" v-for="(item, i) in details.betInfoDetail" :key="i">
+            <div class="top">{{ item.name }}</div>
+            <div class="bottom">
+              <div class="win-box" :class="status[item.status]">
+                {{ item.status == 2 ? item.money + '元' : prize[item.status] }}
+              </div>
+              <div class="money">
+                自购：<span>{{ item.money }}元</span>
+              </div>
+              <div class="rq">
+                <span>人气</span>
+                <div class="start" v-for="(k, i) in item.join" :key="i"></div>
+              </div>
+              <div class="time">{{ item.time }}截止</div>
             </div>
-            <div class="money">
-              自购：<span>{{ item.money }}元</span>
-            </div>
-            <div class="rq">
-              <span>人气</span>
-              <div class="start" v-for="(k, i) in item.join" :key="i"></div>
-            </div>
-            <div class="time">{{ item.time }}截止</div>
           </div>
+        </div>
+        <div v-else>
+          <p class="empty">暂无数据</p>
         </div>
       </div>
     </div>
@@ -88,16 +93,16 @@ export default defineComponent({
 
     const isFoucs = ref(false)
 
-
-
     const { query } = useRoute()
     const { getFoucsStatus } = useUser()
     const { privateRecordStore, getHotUserDetails, cancelFocus, addFocus } = useRecord();
 
     const betInfoStatusList = computed(() => privateRecordStore.hotUser.details?.betInfo?.split(',').filter((v: any) => v !== ''))
+    const details = computed(() => privateRecordStore.hotUser.details)
 
     const follow2cancel = async () => {
-      isFoucs.value ? await cancelFocus() : await addFocus()
+      const uid = privateRecordStore.hotUser.details.uid
+      isFoucs.value ? await cancelFocus({ focusId: uid }) : await addFocus({ focusId: uid })
       isFoucs.value = !isFoucs.value
     }
 
@@ -114,7 +119,7 @@ export default defineComponent({
       }
     })
 
-    return { prize, status, privateRecordStore, isFoucs, betInfoStatusList, follow2cancel };
+    return { prize, status, privateRecordStore, isFoucs, betInfoStatusList, details, follow2cancel };
   },
 });
 </script>
@@ -383,6 +388,13 @@ export default defineComponent({
           }
         }
       }
+    }
+
+    .empty {
+      font-size: 14px;
+      text-align: center;
+      min-height: 200px;
+      line-height: 200px;
     }
   }
 }

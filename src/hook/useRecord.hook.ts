@@ -21,8 +21,10 @@ import {
 } from 'src/common';
 import type { MyFocusItemType } from 'src/common';
 import { reactive } from 'vue';
+import { useNotify } from 'src/hook';
 
 export function useRecord() {
+  const { showComfirmDialog } = useNotify();
   const privateRecordStore = reactive({
     loading: false,
     accountDetails: {
@@ -583,14 +585,22 @@ export function useRecord() {
    * @returns {}
    */
   const addFollowOrder = async (params = {}) => {
-    try {
-      showLoadingToast('操作中...');
-      await AddFollowOrderRequest<any, any>(params);
-      showSuccessToast('跟单成功');
-      return Promise.resolve();
-    } catch (error) {
-      return Promise.reject();
-    }
+    showComfirmDialog({
+      title: '提示',
+      content: `<div>
+      <p>您确定复制<span style="color:#FF7733;font-weight:500"> ${1}</span>倍，合计<span style="color:#FF7733;font-weight:500"> ${2}元</span>吗？</p>
+      </div>`,
+      async confirm() {
+        try {
+          showLoadingToast('操作中...');
+          await AddFollowOrderRequest<any, any>(params);
+          showSuccessToast('跟单成功');
+          return Promise.resolve();
+        } catch (error) {
+          return Promise.reject();
+        }
+      },
+    });
   };
 
   /**
