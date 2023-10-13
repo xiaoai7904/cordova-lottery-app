@@ -10,7 +10,7 @@
           <!--投注项-->
           <div class="bet-item">
             <div v-for="(item, index) in betNameMap.bqc.betName" :key="index" class="item flex-center"
-              :class="{ 'active': isBqcSelect(data.id, item), 'hidden': index === 4 }"
+              :class="{ 'hasdan': index === 0 && getBetValue(data.sellStatus, betNameMap.bqc.status) === '2', 'active': isBqcSelect(data.id, item), 'hidden': index === 4 }"
               @click="selectBetEvent(getBetValue(data.bqc, index), ODDS_MAP.bqc, betNameMap[ODDS_MAP.bqc].betCode[index])">
               {{ item }} <span>{{ getBetValue(data.bqc, index) }}</span>
             </div>

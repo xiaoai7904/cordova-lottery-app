@@ -143,11 +143,13 @@ export const betNameMap: any = {
     name: '胜平负',
     betName: ['胜', '平', '负'],
     betCode: ['3', '1', '0'],
+    status: 0,
   },
   rq: {
     name: '让球',
     betName: ['让球数', '胜', '平', '负'],
     betCode: ['', '3', '1', '0'],
+    status: 1,
   },
   bf: {
     name: '比分',
@@ -217,11 +219,13 @@ export const betNameMap: any = {
       '2:5',
       '负其他',
     ],
+    status: 2,
   },
   jq: {
     name: '进球数',
     betName: ['0球', '1球', '2球', '3球', '4球', '5球', '6球', '7+球'],
     betCode: ['0', '1', '2', '3', '4', '5', '6', '7+'],
+    status: 3,
   },
   bqc: {
     name: '半全场胜平负',
@@ -237,21 +241,25 @@ export const betNameMap: any = {
       '负负',
     ],
     betCode: ['3,3', '3,1', '3,0', '1,3', '1,0', '1,1', '0,3', '0,1', '0,0'],
+    status: 4,
   },
   sf: {
     name: '胜负',
     betName: ['胜', '负'],
     betCode: ['3', '0'],
+    status: 0,
   },
   rf: {
     name: '让分胜负',
     betName: ['让分数', '胜', '负'],
     betCode: ['', '3', '0'],
+    status: 1,
   },
   dxf: {
     name: '大小分',
     betName: ['预设分', '大', '小'],
     betCode: ['', '1', '0'],
+    status: 2,
   },
   sfc: {
     name: '胜分差',
@@ -270,5 +278,6 @@ export const betNameMap: any = {
       '客胜26+',
     ],
     betCode: ['7', '1,', '8', '2', '9', '3', '10', '4', '11', '5', '12', '6'],
+    status: 3,
   },
 };

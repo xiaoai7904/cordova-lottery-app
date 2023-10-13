@@ -18,7 +18,7 @@
           </div>
           <!--投注项-->
           <div class="bet-item">
-            <div class="item" :class="{ 'hasdan': true, 'active': isSpfSelect(data.id, '胜') }"
+            <div class="item" :class="{ 'active': isSpfSelect(data.id, '胜') }"
               @click="selectBetEvent(getBetValue(data.spf, 0), ODDS_MAP.spf, betNameMap[ODDS_MAP.spf].betCode[0])">
               胜 <span>{{ getBetValue(data.spf, 0) }}</span>
             </div>

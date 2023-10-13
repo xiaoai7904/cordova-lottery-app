@@ -202,7 +202,7 @@ export function FinanceListRequest<T, R>(params = {} as T) {
  * @returns
  */
 export function RechargeListRequest<T, R>(params = {} as T) {
-  return api.post<T, R>('/api/finance/rechareList', params);
+  return api.post<T, R>('/api/finance/rechargeList', params);
 }
 
 /**

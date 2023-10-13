@@ -9,7 +9,8 @@
         <div class="game-item">
           <!--投注项-->
           <div class="bet-item">
-            <div class="item" :class="{ 'active': isRfSelect(data.id, '负') }"
+            <div class="item"
+              :class="{ 'hasdan': getBetValue(data.sellStatus, betNameMap[ODDS_MAP.rf].status) === '2', 'active': isRfSelect(data.id, '负') }"
               @click="selectBetEvent(getBetValue(data.rf, 2), ODDS_MAP.rf, betNameMap[ODDS_MAP.rf].betCode[2])">
               让客胜 <span>{{ getBetValue(data.rf, 2) }}</span>
             </div>

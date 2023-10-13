@@ -17,7 +17,8 @@
           </div>
           <!--投注项-->
           <div class="bet-item">
-            <div class="item" :class="{ 'hasdan': true, 'active': isRqSelect(data.id, '胜') }"
+            <div class="item"
+              :class="{ 'hasdan': getBetValue(data.sellStatus, betNameMap[ODDS_MAP.rq].status) === '2', 'active': isRqSelect(data.id, '胜') }"
               @click="selectBetEvent(getBetValue(data.rq, 1), ODDS_MAP.rq, betNameMap[ODDS_MAP.rq].betCode[1])">让胜
               <span>
                 {{

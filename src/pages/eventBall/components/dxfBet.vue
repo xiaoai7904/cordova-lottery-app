@@ -8,7 +8,8 @@
       <div class="bottom">
         <div class="game-item">
           <!--投注项-->
-          <div class="bet-item">
+          <div class="bet-item"
+            :class="{ 'hasdan': getBetValue(data.sellStatus, betNameMap[ODDS_MAP.dxf].status) === '2' }">
             <div class="item" :class="{ 'active': isDxfSelect(data.id, '大') }"
               @click="selectBetEvent(getBetValue(data.dxf, 1), ODDS_MAP.dxf, betNameMap[ODDS_MAP.dxf].betCode[1])">
               大于 {{ getBetValue(data.dxf, 0) }} <span>{{ getBetValue(data.dxf, 1) }}</span>
