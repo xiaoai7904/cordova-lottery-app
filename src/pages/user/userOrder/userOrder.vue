@@ -3,10 +3,10 @@
     <Headers transparent> </Headers>
     <div class="head_box">
       <div class="user_box">
-        <img :src="require('./assets/1.png')" />
+        <img :src="details.avatar" />
         <div class="info">
-          <div class="top">{{ privateRecordStore.followOrder.details.nikeName }}</div>
-          <div class="bottom"><span>{{ privateRecordStore.followOrder.details.fans }}</span>粉丝</div>
+          <div class="top">{{ details.nikeName }}</div>
+          <div class="bottom"><span>{{ details.fans }}</span>粉丝</div>
         </div>
         <div class="follow" @click="follow2cancel">{{ isFoucs ? '已关注' : '+关注' }}</div>
       </div>
@@ -15,15 +15,15 @@
       <!--中奖信息-->
       <div class="top">
         <div class="item">
-          {{ privateRecordStore.followOrder.details.winAmount || '--' }}
+          {{ details.winAmount || '--' }}
           <div>累计中奖</div>
         </div>
         <div class="item item1">
-          {{ privateRecordStore.followOrder.details.profit }}%
+          {{ details.profit }}
           <div>7日盈利</div>
         </div>
         <div class="item">
-          --
+          {{ details.hit }}
           <div>7日命中</div>
         </div>
       </div>
@@ -43,27 +43,27 @@
       <div class="game_box">
         <div class="top">
           <img src="./assets/ball.png" />
-          <span>{{ privateRecordStore.followOrder.details.cname }}</span>
-          <span class="right">{{ privateRecordStore.followOrder.details.cdate }}截止 </span>
+          <span>{{ getOrderTitle(details) }}</span>
+          <span class="right">{{ details.cdate }}截止 </span>
         </div>
         <div class="middle">
-          {{ privateRecordStore.followOrder.details.cdesc }}
+          {{ details.cdesc }}
         </div>
         <div class="bottom">
           <div class="item">
-            <div>{{ privateRecordStore.followOrder.details.tmoney }}元</div>
+            <div>{{ details.tmoney }}元</div>
             <div>自购</div>
           </div>
           <div class="item">
-            <div>{{ privateRecordStore.followOrder.details.commission }}%</div>
+            <div>{{ details.commission }}%</div>
             <div>佣金</div>
           </div>
           <div class="item">
-            <div>{{ privateRecordStore.followOrder.details.startAmount }}</div>
+            <div>{{ details.startAmount }}</div>
             <div>起投</div>
           </div>
           <div class="item">
-            <div>{{ privateRecordStore.followOrder.details.rate }}倍</div>
+            <div>{{ details.rate }}倍</div>
             <div>最高回报率</div>
           </div>
         </div>
@@ -137,7 +137,7 @@
                 <div>跟单金额</div>
                 <div>跟单时间</div>
               </div>
-              <div v-for="(item, index) in privateRecordStore.followOrder.details.userVos" :key="index" class="tab-item">
+              <div v-for="(item, index) in details.userVos" :key="index" class="tab-item">
                 <div>{{ item.nikeName }}</div>
                 <div><span class="tag">{{ item.betAmount }}</span>元</div>
                 <div>{{ item.betDate }}</div>
@@ -159,7 +159,7 @@
           <span>倍</span>
         </div>
 
-        <p>共 <span class="amount">200</span> 元</p>
+        <p>共 <span class="amount">{{ totalAmount }}</span> 元</p>
       </div>
 
       <div class="flex-start">
@@ -171,15 +171,18 @@
 <script lang="ts">
 import { defineComponent, ref, watch, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router'
-import { useRecord, useUser } from 'src/hook'
+import { useRecord, useUser, useBet } from 'src/hook'
+import { Utils } from 'src/common'
 export default defineComponent({
   setup() {
     const { getFoucsStatus } = useUser()
     const { privateRecordStore, getFollowOrderDetails, cancelFocus, addFocus, addFollowOrder } = useRecord();
+    const { getOrderTitle, getOrderInfo } = useBet()
     const { query } = useRoute()
     const activeName = ref('a')
     const isFoucs = ref(false)
     const multiple = ref(50)
+
     const follow2cancel = async () => {
       const uid = privateRecordStore.followOrder.details.uid
       isFoucs.value ? await cancelFocus({ focusId: uid }) : await addFocus({ focusId: uid })
@@ -187,7 +190,9 @@ export default defineComponent({
     }
 
     const betInfoStatusList = computed(() => privateRecordStore.followOrder.details?.betInfo?.split(',').filter((v: any) => v !== ''))
-
+    const details = computed(() => privateRecordStore.followOrder.details)
+    const orderAmountInfo = computed(() => getOrderInfo(details.value))
+    const totalAmount = computed(() => Utils.mathTimes(orderAmountInfo.value.amount, multiple.value))
 
     watch(() => privateRecordStore.followOrder.details, async (newValue) => {
       if (newValue && newValue.uid) {
@@ -196,9 +201,16 @@ export default defineComponent({
       }
     }, { immediate: true })
 
+    watch(() => orderAmountInfo.value, newValue => {
+      multiple.value = newValue.multiple
+    }, { immediate: true })
 
     const addFollowOrderEvent = () => {
-      addFollowOrder()
+      addFollowOrder({
+        betAmount: totalAmount.value,
+        multiple: multiple.value,
+        followId: query.id
+      })
     }
 
     onMounted(() => {
@@ -206,7 +218,7 @@ export default defineComponent({
         getFollowOrderDetails(query.id as string)
       }
     })
-    return { multiple, activeName, betInfoStatusList, follow2cancel, privateRecordStore, isFoucs, addFollowOrderEvent };
+    return { multiple, activeName, betInfoStatusList, details, totalAmount, follow2cancel, privateRecordStore, isFoucs, addFollowOrderEvent, getOrderTitle };
   },
 });
 </script>

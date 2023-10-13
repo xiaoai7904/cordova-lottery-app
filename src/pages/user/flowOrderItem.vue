@@ -3,7 +3,7 @@
     <div class="flex-between">
       <div class="top flex-start">
         <img src="./userOrder/assets/ball.png" alt="">
-        <span>{{ title }}</span>
+        <span>{{ getOrderTitle(data) }}</span>
       </div>
       <span class="time">{{ data.cdate }} 截止</span>
     </div>
@@ -27,7 +27,7 @@
 <script lang="ts">
 import { PropType } from 'vue';
 import { defineComponent } from 'vue';
-import { useCustomRouter } from 'src/hook'
+import { useCustomRouter, useBet } from 'src/hook'
 import { RouterNameEnum, BET_TYPE } from 'src/common'
 import { computed } from 'vue';
 export default defineComponent({
@@ -42,37 +42,7 @@ export default defineComponent({
   },
   setup(props) {
     const router = useCustomRouter();
-
-    const title = computed(() => {
-      let __title = '';
-      let isSingle = true;
-
-      if (props.data.codes) {
-        const codes = JSON.parse(props.data.codes);
-
-        if (codes.length > 1) {
-          isSingle = true;
-        }
-
-        if (!isSingle) {
-          codes.forEach((item: any) => {
-            if (!isSingle && item.orderOdds.length > 1) {
-              isSingle = true
-            }
-          })
-        }
-      }
-
-      if (props.data.betType === BET_TYPE.BASKETBALL) {
-        __title = '竞猜篮球'
-      } else {
-        __title = '竞猜足球'
-      }
-
-      __title += isSingle ? '(单关)' : '(2串1)'
-
-      return __title;
-    })
+    const { getOrderTitle } = useBet()
 
     const start = computed(() => {
       if (props.data.followUsers >= 5) {
@@ -83,10 +53,10 @@ export default defineComponent({
 
     })
     const addFollowOrderEvent = async () => {
-      router.push({ name: RouterNameEnum.USERORDER, query: { id: props.uid } })
+      router.push({ name: RouterNameEnum.USERORDER, query: { id: props.data.id } })
     }
 
-    return { title, start, addFollowOrderEvent }
+    return { start, addFollowOrderEvent, getOrderTitle }
   }
 })
 </script>

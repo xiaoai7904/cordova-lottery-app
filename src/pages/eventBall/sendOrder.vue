@@ -57,7 +57,7 @@ export default defineComponent({
     })
     const { model, privateMatchStore, isSingle, flolowOrder, getBetTotalAmount } = useBet();
     const sendOrderEvent = () => {
-      flolowOrder(props.betType)
+      flolowOrder(props.betType, sendOrderStore.commission)
     }
 
     return { privateMatchStore, model, sendOrderStore, isSingle, sendOrderEvent, getBetTotalAmount, BET_TYPE }

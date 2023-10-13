@@ -338,7 +338,7 @@ export function FollowOrderDetailsRequest<T, R>(id = '' as T) {
  * @returns
  */
 export function AddFollowOrderRequest<T, R>(params = {} as T) {
-  return api.get<T, R>('/api/followOrder/addFollowOrder', { params });
+  return api.post<T, R>('/api/followOrder/addFollowOrder', params);
 }
 
 /**

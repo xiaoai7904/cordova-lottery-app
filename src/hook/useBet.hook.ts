@@ -323,7 +323,7 @@ export function useBet() {
     } catch (e) {}
   };
 
-  const flolowOrder = async (betType: BET_TYPE) => {
+  const flolowOrder = async (betType: BET_TYPE, commission: number) => {
     try {
       const params = {
         cname: `竞猜${betType === BET_TYPE.BASKETBALL ? '篮球' : '足球'}(${
@@ -332,10 +332,59 @@ export function useBet() {
         cdesc: model.cdesc,
         betType,
         codes: getBetOrder.value,
+        commission,
       };
 
       await saveFollowOrder(params);
     } catch (e) {}
+  };
+
+  const getOrderTitle = (data: any) => {
+    let __title = '';
+    let isSingle = true;
+
+    if (data.codes) {
+      const codes = JSON.parse(data.codes);
+
+      if (codes.length > 1) {
+        isSingle = true;
+      }
+
+      if (!isSingle) {
+        codes.forEach((item: any) => {
+          if (!isSingle && item.orderOdds.length > 1) {
+            isSingle = true;
+          }
+        });
+      }
+    }
+
+    if (data.betType === BET_TYPE.BASKETBALL) {
+      __title = '竞猜篮球';
+    } else {
+      __title = '竞猜足球';
+    }
+
+    __title += isSingle ? '(单关)' : '(2串1)';
+
+    return __title;
+  };
+
+  const getOrderInfo = (data: any) => {
+    const result = {
+      amount: 2,
+      multiple: 50,
+    };
+    if (data.codes) {
+      const codes = JSON.parse(data.codes);
+
+      codes.forEach((item: any) => {
+        result.amount = item.amount;
+        result.multiple = item.multiple;
+      });
+    }
+
+    return result;
   };
 
   onMounted(() => {
@@ -374,5 +423,7 @@ export function useBet() {
     addOrder,
     flolowOrder,
     clearBet,
+    getOrderTitle,
+    getOrderInfo,
   };
 }

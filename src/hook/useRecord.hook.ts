@@ -438,7 +438,7 @@ export function useRecord() {
       );
 
       if (privateRecordStore.myfocus.pageNum === 1) {
-        privateRecordStore.myfocus.list = [{} as any, {} as any, {} as any]; //[...data.records];
+        privateRecordStore.myfocus.list = [];
       } else {
         privateRecordStore.myfocus.list = [
           ...privateRecordStore.myfocus.list,
@@ -584,11 +584,11 @@ export function useRecord() {
    * 加入跟单
    * @returns {}
    */
-  const addFollowOrder = async (params = {}) => {
+  const addFollowOrder = async (params = {} as any) => {
     showComfirmDialog({
       title: '提示',
       content: `<div>
-      <p>您确定复制<span style="color:#FF7733;font-weight:500"> ${1}</span>倍，合计<span style="color:#FF7733;font-weight:500"> ${2}元</span>吗？</p>
+      <p>您确定复制<span style="color:#FF7733;font-weight:500"> ${params.multiple}</span>倍，合计<span style="color:#FF7733;font-weight:500"> ${params.betAmount}元</span>吗？</p>
       </div>`,
       async confirm() {
         try {
