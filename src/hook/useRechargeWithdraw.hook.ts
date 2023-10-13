@@ -3,10 +3,12 @@ import {
   WithdrawRequest,
   RechargeConfigRequest,
   RechargeRequest,
+  RouterNameEnum,
 } from 'src/common';
 import { reactive } from 'vue';
-
+import { useCustomRouter } from 'src/hook';
 export function useRechargeWithdraw() {
+  const router = useCustomRouter();
   const privateRechargeWithdraw = reactive({
     loading: false,
     withdrawParams: {
@@ -15,6 +17,7 @@ export function useRechargeWithdraw() {
     },
     rechargeParams: {
       amount: '',
+      rcId: '',
     },
   });
 
@@ -32,6 +35,8 @@ export function useRechargeWithdraw() {
     try {
       privateRechargeWithdraw.loading = true;
       await RechargeRequest(privateRechargeWithdraw.rechargeParams);
+      showSuccessToast('充值提交成功');
+      router.push({ name: RouterNameEnum.MY });
     } finally {
       privateRechargeWithdraw.loading = false;
     }

@@ -41,6 +41,7 @@ export function useUser() {
   const privateUserStore = reactive({
     bankLoading: false,
     flowLoading: false,
+    realeNameLoading: false,
     bankList: [] as BankItemType[],
     nikeName: '',
     loginPassword: {
@@ -165,11 +166,13 @@ export function useUser() {
    */
   const getCertificationInfo = async () => {
     try {
+      privateUserStore.realeNameLoading = true;
       const data = await UserIdentityInfoRequest<any, CertificationInfoType>();
       privateUserStore.certificationInfo = { ...data };
       return Promise.resolve(data);
     } catch (error) {
     } finally {
+      privateUserStore.realeNameLoading = false;
     }
   };
 

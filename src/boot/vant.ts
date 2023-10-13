@@ -21,6 +21,8 @@ import {
   Popup,
   Stepper,
   Field,
+  RadioGroup,
+  Radio,
 } from 'vant';
 import 'vant/lib/index.css';
 import Header from 'src/components/Header/Header.vue';
@@ -48,6 +50,8 @@ export default boot(({ app }) => {
   app.use(Popup);
   app.use(Stepper);
   app.use(Field);
+  app.use(RadioGroup);
+  app.use(Radio);
 
   app.component('Headers', Header);
   app.component('PageList', PageList);

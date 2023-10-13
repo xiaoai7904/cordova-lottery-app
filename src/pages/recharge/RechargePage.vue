@@ -13,6 +13,7 @@
             {{ item }}元
           </div>
         </div>
+
         <div class="tips">
           <h2>充值说明</h2>
           <p class="red">1、未满18岁未成年人禁止充值与投注。</p>
@@ -20,6 +21,24 @@
           <p>3、已发起的支付必须完成支付，否则10分钟内不允许再次发起请求。</p>
           <p>4、充值金额全部用于充入店主彩票机内进行出票，非整百金额可享优先到账，大额支付请联系店主。</p>
         </div>
+      </div>
+
+      <div class="recharge-config">
+        <h2>充值通道</h2>
+        <div>
+          <van-radio-group v-model="privateRechargeWithdraw.rechargeParams.rcId">
+            <van-cell-group inset>
+              <van-cell v-for="item in rechargeInfo" :title="`${item.bank}(${item.openingBank})`"
+                :label="`${item.name} ${item.account}`" clickable :key="item.id"
+                @click="() => item.status === 0 && (privateRechargeWithdraw.rechargeParams.rcId = item.id)">
+                <template #right-icon>
+                  <van-radio :name="item.id" :disabled="item.status === 1" />
+                </template>
+              </van-cell>
+            </van-cell-group>
+          </van-radio-group>
+        </div>
+
       </div>
 
       <div class="btn row justify-center">
@@ -84,6 +103,7 @@
 import { defineComponent, ref } from 'vue';
 import { useRechargeWithdraw, useCopy } from 'src/hook';
 import { Utils } from 'src/common'
+import { onMounted } from 'vue';
 export default defineComponent({
   setup() {
     const rechargeAmountList = ref([13, 26, 75, 243, 416, 638, 1091, 4991]);
@@ -101,19 +121,36 @@ export default defineComponent({
 
     const submitRecharge = async () => {
       await recharge();
-      const data = await rechargeConfig();
-      rechargeInfo.value = data
-      rechargeModel.value = true
     }
 
     const copy = (text: string) => {
       handleCopy(text)
     }
-    return { rechargeAmountList, checkAmount, privateRechargeWithdraw, rechargeModel, submitRecharge, selectAmount, copy, Utils }
+
+    const getRechargeConfig = async () => {
+      try {
+        const data = await rechargeConfig();
+        console.log(data)
+        rechargeInfo.value = data
+      } catch (error) {
+
+      }
+    }
+
+    onMounted(() => {
+      getRechargeConfig()
+    })
+
+    return { rechargeAmountList, checkAmount, privateRechargeWithdraw, rechargeModel, rechargeInfo, submitRecharge, selectAmount, copy, Utils }
   }
 })
 </script>
 
+<style>
+:root {
+  --van-radio-checked-icon-color: #fcdf6b;
+}
+</style>
 <style scoped lang="scss">
 .recharge {
   background: #fffef5 url('../../css/common/body.png') no-repeat top;
@@ -197,6 +234,24 @@ export default defineComponent({
       font-size: 18px;
       color: #f73;
       font-weight: 900;
+    }
+  }
+
+  &-config {
+    margin-top: 20px;
+
+    >h2 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      padding: 0 0 0 15px;
+    }
+
+    >div {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px 0 hsla(0, 0%, 91.8%, .5);
+
     }
   }
 }

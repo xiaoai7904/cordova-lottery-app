@@ -14,7 +14,7 @@
     <div class="c_box">
       <div class="top">
         <div class="item">
-          {{ privateRecordStore.hotUser.details.winAmount }}
+          {{ privateRecordStore.hotUser.details }}
           <div>累计中奖</div>
         </div>
         <div class="item item1">
@@ -22,7 +22,7 @@
           <div>7日盈利</div>
         </div>
         <div class="item">
-          {{ privateRecordStore.hotUser.details.hit }}
+          <!-- {{privateRecordStore.hotUser.details}} -->
           <div>7日命中</div>
         </div>
       </div>
@@ -30,14 +30,19 @@
         <span>七天战绩</span>
         <div class="ball-box">
           <div class="item" v-for="(item, i) in betInfoStatusList" :key="i">
-            <div class="ball" :class="+item === 1 ? 'yes' : 'no'">
-              {{ +item == 1 ? '中' : '未' }}
+            <div class="ball" :class="Number(item) === 1 ? 'yes' : 'no'">
+              {{ Number(item) === 1 ? '中' : '未' }}
             </div>
             <div class="arrow" v-if="i < betInfoStatusList.length - 1"></div>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="flllow-box">
+      <FlowOrderItem />
+    </div>
+
     <div class="box">
       <div class="sub-box">
         <div class="title">近7天战绩</div>
@@ -45,14 +50,14 @@
           <div class="top">{{ item.name }}</div>
           <div class="bottom">
             <div class="win-box" :class="status[item.status]">
-              {{ item.status == 2 ? item.bonus + '元' : prize[item.status] }}
+              {{ item.status == 2 ? item.money + '元' : prize[item.status] }}
             </div>
             <div class="money">
-              自购：<span>{{ item.tmoney }}元</span>
+              自购：<span>{{ item.money }}元</span>
             </div>
             <div class="rq">
               <span>人气</span>
-              <div class="start" v-for="(k, i) in item.joins" :key="i"></div>
+              <div class="start" v-for="(k, i) in item.join" :key="i"></div>
             </div>
             <div class="time">{{ item.time }}截止</div>
           </div>
@@ -63,13 +68,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref, watch, computed } from 'vue';
 import { useRoute } from 'vue-router'
 import { useRecord, useUser } from 'src/hook'
-import { computed } from 'vue';
-import { watch } from 'vue';
+import FlowOrderItem from '../flowOrderItem.vue';
 export default defineComponent({
+  components: { FlowOrderItem },
   setup() {
+
     const status: any = {
       0: '',
       1: 'no',
@@ -82,8 +88,10 @@ export default defineComponent({
 
     const isFoucs = ref(false)
 
-    const { getFoucsStatus } = useUser()
+
+
     const { query } = useRoute()
+    const { getFoucsStatus } = useUser()
     const { privateRecordStore, getHotUserDetails, cancelFocus, addFocus } = useRecord();
 
     const betInfoStatusList = computed(() => privateRecordStore.hotUser.details?.betInfo?.split(',').filter((v: any) => v !== ''))
@@ -103,11 +111,10 @@ export default defineComponent({
     onMounted(() => {
       if (query.id) {
         getHotUserDetails(query.id as string)
-
       }
     })
 
-    return { prize, status, privateRecordStore, betInfoStatusList, isFoucs, follow2cancel };
+    return { prize, status, privateRecordStore, isFoucs, betInfoStatusList, follow2cancel };
   },
 });
 </script>
@@ -285,7 +292,7 @@ export default defineComponent({
     .sub-box {
       display: flex;
       flex-direction: column;
-      margin: 0 auto;
+      margin: 10px auto;
       padding: 0 10px 20px;
       width: 345px;
       border-radius: 8px;
